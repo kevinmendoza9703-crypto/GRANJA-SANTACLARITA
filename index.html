@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#7a1f2b">
+<title>Mortalidad por Galpón</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+/* Diseño de alta visibilidad: letra grande, alto contraste, botones grandes, pocas opciones a la vista */
+:root{--pri:#7a1f2b;--pri2:#a3303f;--bg:#f2efec;--card:#fff;--tx:#111;--mu:#555;--ok:#1b7a3e;--no:#c62828;--line:#d9d2cb;--amar:#ffd27a}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.4}
+header{background:var(--pri);color:#fff;padding:10px 14px;position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:8px}
+header h1{margin:0;font-size:19px}
+header .sub{display:none}
+.uch{display:flex;gap:6px;align-items:center}
+.uch span{font-size:15px;font-weight:600;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.uch button{background:rgba(255,255,255,.2);color:#fff;border:0;border-radius:10px;padding:10px 12px;font-size:15px;font-weight:600;min-height:44px}
+nav{display:flex;background:#fff;position:fixed;left:0;right:0;bottom:0;z-index:6;border-top:2px solid var(--line);box-shadow:0 -2px 10px rgba(0,0,0,.08)}
+nav button{flex:1;background:none;border:0;color:#666;padding:8px 2px 10px;font-size:13px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:66px}
+nav button i{font-style:normal;font-size:26px;line-height:1.1}
+nav button.on{color:var(--pri);background:#f7ebe9;box-shadow:inset 0 4px 0 var(--pri)}
+main{padding:12px;max-width:640px;margin:0 auto;padding-bottom:100px}
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.card h2{font-size:19px;margin:0 0 12px;color:var(--pri)}
+label{font-size:15px;color:var(--mu);display:block;margin-bottom:5px;font-weight:600}
+input,select,textarea{width:100%;padding:12px;border:2px solid var(--line);border-radius:10px;font-size:18px;background:#fff;color:var(--tx);font-family:inherit;min-height:50px}
+input:focus,select:focus{outline:3px solid var(--amar);border-color:var(--pri)}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.btn{border:0;border-radius:12px;padding:14px 16px;font-size:17px;font-weight:700;background:#e6dfd8;color:var(--tx);min-height:54px}
+.btn.p{background:var(--pri);color:#fff}.btn.ok{background:var(--ok);color:#fff}.btn.w{width:100%}
+.btn.sm{padding:10px 12px;font-size:15px;min-height:44px;border-radius:10px}
+.btn.danger{background:#fde0e0;color:#a11}
+.btn:disabled{opacity:.5}
+.btn:active,nav button:active{transform:scale(.97)}
+/* fecha */
+.fechabar{display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;border-radius:14px;padding:12px;margin-bottom:14px;font-size:20px;font-weight:800;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.fechabar{flex-wrap:wrap}.fechabar input{width:auto;min-width:180px;font-size:18px;font-weight:700;min-height:44px;padding:6px 10px}
+/* micrófono */
+.mic-wrap{text-align:center;padding:22px 16px}
+#mic{width:170px;height:170px;border-radius:50%;border:8px solid #fff;background:var(--pri);color:#fff;font-size:72px;box-shadow:0 6px 20px rgba(122,31,43,.45),0 0 0 4px var(--pri);margin:4px auto 10px;display:block}
+#mic.rec{background:var(--no);box-shadow:0 0 0 4px var(--no);animation:pulse 1.1s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 4px var(--no),0 0 0 4px rgba(198,40,40,.6)}100%{box-shadow:0 0 0 4px var(--no),0 0 0 34px rgba(198,40,40,0)}}
+@media(prefers-reduced-motion:reduce){#mic.rec{animation:none}}
+.miclbl{font-size:24px;font-weight:900;color:var(--pri);letter-spacing:.5px}
+#estado{font-size:19px;color:var(--tx);font-weight:600;min-height:26px;margin-top:6px}
+#transcrito{background:#f7f3ef;border-radius:12px;padding:12px;min-height:54px;font-size:20px;margin-top:12px;text-align:center;font-weight:600}
+.ejemplo{font-size:17px;color:var(--mu);margin-top:12px}
+.ejemplo b{color:var(--tx)}
+.warn{background:#fff3cd;color:#6b4a00;border:2px solid #f0c94b;border-radius:12px;padding:12px;font-size:17px;font-weight:600;margin-top:12px}
+/* resumen del día */
+.resbig{display:flex;justify-content:space-around;text-align:center;margin-bottom:10px}
+.resbig b{display:block;font-size:40px;line-height:1.1;color:var(--pri)}
+.resbig span{font-size:15px;color:var(--mu);font-weight:600}
+.resrow{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid #eee;gap:8px}
+.resrow .g{font-size:20px;font-weight:800;white-space:nowrap}
+.resrow .t{font-size:22px;font-weight:900;color:var(--pri);white-space:nowrap}
+/* formulario manual */
+#manualBtn{margin-bottom:14px;background:#fff;border:2px dashed var(--line);color:var(--mu)}
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}
+.gal-grid button{padding:14px 0;border-radius:12px;border:2px solid var(--line);background:#fff;font-size:21px;font-weight:800;min-height:58px}
+.gal-grid button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.gal-grid button.has{border-color:var(--ok);box-shadow:inset 0 -5px 0 var(--ok)}
+.causa{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #eee;gap:8px}
+.causa .n{font-size:18px}
+.step{display:flex;align-items:center;gap:6px}
+.step button{width:50px;height:50px;border-radius:12px;border:0;background:#e6dfd8;font-size:26px;font-weight:800}
+.step input{width:64px;text-align:center;padding:8px 4px;font-weight:800;font-size:22px}
+.causa.pos{background:#fbf0ee;margin:0 -8px;padding:9px 8px;border-radius:10px}
+.causa.pos .n{font-weight:800;color:var(--pri)}
+.total{display:flex;justify-content:space-between;font-weight:900;font-size:22px;padding:14px 0}
+.leyenda{font-size:14px;color:var(--mu);margin-top:8px}
+/* confirmación a pantalla completa */
+#confCard{position:fixed;inset:0;z-index:25;background:#fff;display:flex;flex-direction:column;padding:18px 16px calc(18px + env(safe-area-inset-bottom));overflow:auto}
+#confCard .ctit{font-size:30px;font-weight:900;text-align:center;color:var(--pri);margin:4px 0 4px}
+#confCard .csub{font-size:17px;text-align:center;color:var(--mu);margin-bottom:12px;font-weight:600}
+.cg{border:3px solid var(--pri);border-radius:16px;padding:12px 16px;margin-bottom:12px}
+.cg .gn{font-size:34px;font-weight:900;text-align:center;margin-bottom:6px}
+.cg .cr{display:flex;justify-content:space-between;font-size:24px;padding:6px 0;border-bottom:1px dashed #ddd}
+.cg .cr b{font-size:28px}
+.cg .ct{display:flex;justify-content:space-between;font-size:26px;font-weight:900;padding-top:8px;color:var(--pri)}
+#confTxt{flex:1}
+.cbtns{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+.cbtns .btn{font-size:24px;min-height:76px;border-radius:16px}
+#confNo{background:var(--no);color:#fff}
+#confEsc{font-size:18px;text-align:center;font-weight:700;color:var(--no);min-height:26px}
+/* éxito */
+#exito{position:fixed;inset:0;z-index:28;background:var(--ok);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px}
+#exito .ic{font-size:110px;line-height:1}
+#exito .tt{font-size:40px;font-weight:900;margin:8px 0}
+#exito .dd{font-size:26px;font-weight:700}
+/* tablas y listas */
+table{width:100%;border-collapse:collapse;font-size:16px}
+th,td{padding:9px 6px;border-bottom:1px solid #e5e5e5;text-align:center}
+th{background:#f6ece6;color:var(--pri);position:sticky;top:0}
+td:first-child,th:first-child{text-align:left}
+tr.tot td{font-weight:900;background:#faf1ec}
+.scroll{overflow-x:auto}
+.ent{border:2px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.ent .h{display:flex;justify-content:space-between;font-weight:800;font-size:19px}
+.ent .d{font-size:16px;color:var(--mu);margin:6px 0 10px}
+.ent .a{display:flex;gap:8px;justify-content:flex-end}
+.tag{display:inline-block;background:#f6ece6;color:var(--pri);border-radius:12px;padding:4px 10px;font-size:15px;font-weight:700;margin:3px 4px 3px 0}
+.pend{border:3px solid var(--amar);background:#fffbf0}
+.hint{font-size:15px;color:var(--mu);margin-top:6px;line-height:1.45}
+#toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);background:#111;color:#fff;padding:14px 20px;border-radius:24px;font-size:17px;font-weight:600;opacity:0;transition:.3s;pointer-events:none;z-index:40;max-width:92%;text-align:center}
+#toast.on{opacity:1}
+.hidden{display:none!important}
+.sync{border-radius:12px;padding:10px 14px;margin-bottom:14px;font-size:17px;font-weight:700;text-align:center}
+.sync.ok{background:#e3f4e8;color:#15652f}.sync.pen{background:#fff3cd;color:#6b4a00}.sync.err{background:#fde0e0;color:#a11}
+.cz{display:grid;grid-template-columns:1fr 1.5fr auto;gap:6px;margin-bottom:8px;align-items:center}
+.cz input{padding:8px;font-size:16px;min-height:46px}
+.switch{display:flex;align-items:flex-start;gap:10px;font-size:17px;margin-bottom:6px}
+.switch input{width:26px;height:26px;min-height:0;flex:none;margin-top:2px}
+.av{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.av div{display:flex;align-items:center;gap:6px;font-size:16px;font-weight:700}
+.av input{padding:8px;font-size:16px;min-height:44px}
+.overlay{position:fixed;inset:0;background:var(--pri);z-index:30;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+#modal{background:rgba(0,0,0,.55)}
+.lbox{width:100%;max-width:400px}
+.lbox h2{font-size:21px}.lbox label{margin-top:12px}
+.lbox .logo{text-align:center;color:#fff;margin-bottom:16px}.lbox .logo div{font-size:60px}.lbox .logo b{font-size:24px}
+.err{color:var(--no);font-size:16px;font-weight:700;min-height:22px;margin:10px 0}
+.mbox label{margin-top:10px}
+@media(max-width:380px){html,body{font-size:17px}#mic{width:150px;height:150px;font-size:62px}.cg .cr{font-size:21px}}
+</style>
+</head>
+<body>
+<header><div><h1>🐔 Mortalidad</h1><div class="sub" id="hdrSub"></div></div><div class="uch hidden" id="uBox"><span id="uChip"></span><button id="uPass" aria-label="Cambiar contraseña">🔑</button><button id="uOut">Salir</button></div></header>
+<nav>
+ <button data-t="reg" class="on"><i>🎤</i>Registrar</button>
+ <button data-t="his"><i>📋</i>Historial</button>
+ <button data-t="rep"><i>📊</i>Reporte</button>
+ <button data-t="aju"><i>⚙️</i>Ajustes</button>
+</nav>
+<main>
+
+<!-- REGISTRAR -->
+<section id="t-reg">
+ <div class="fechabar">📅 <span id="fFechaTxt"></span><input type="date" id="fFecha" class="hidden" aria-label="Fecha"></div>
+ <input type="hidden" id="fUser">
+ <div id="syncChip" class="sync hidden"></div>
+
+ <div class="card mic-wrap">
+  <button id="mic" aria-label="Tocar para hablar">🎤</button>
+  <div class="miclbl">TOCA Y HABLA</div>
+  <div id="estado"></div>
+  <div id="transcrito" class="hidden"></div>
+  <div id="vozWarn" class="warn hidden"></div>
+  <div class="ejemplo">Di así: <b>“Galpón 15, prolapso 3, picaje 2”</b></div>
+ </div>
+
+ <div class="card pend hidden" id="pendCard">
+  <h2>Galpones por guardar</h2>
+  <div id="pendList"></div>
+  <div class="row" style="margin-top:8px"><button class="btn" id="pendNo">Descartar</button><button class="btn ok" id="pendSi">✔ Guardar todos</button></div>
+ </div>
+
+ <button class="btn w" id="manualBtn">✍️ Registrar sin voz (con botones)</button>
+
+ <div class="card hidden" id="formCard">
+  <h2 id="formTit">Galpón</h2>
+  <div class="gal-grid" id="galGrid"></div>
+  <div class="leyenda">Borde verde = galpón ya registrado hoy</div>
+  <div id="galWarn" class="warn hidden"></div>
+  <div style="margin-top:12px" id="causasForm"></div>
+  <div class="total"><span>TOTAL MUERTAS</span><span id="fTotal">0</span></div>
+  <div class="row"><button class="btn" id="btnLimpiar">Limpiar</button><button class="btn ok" id="btnGuardar">Guardar</button></div>
+ </div>
+
+ <div class="card">
+  <h2>Resumen de <span id="resFecha"></span></h2>
+  <div id="resDia"></div>
+ </div>
+</section>
+
+<!-- CONFIRMACIÓN (pantalla completa) -->
+<div id="confCard" class="hidden" role="dialog" aria-modal="true">
+ <div class="ctit">¿ES CORRECTO?</div>
+ <div class="csub">Responde “sí” o “no” con la voz, o toca un botón</div>
+ <div id="confTxt"></div>
+ <div id="confEsc"></div>
+ <div class="cbtns">
+  <button class="btn ok" id="confSi">✔ SÍ, GUARDAR</button>
+  <button class="btn" id="confNo">✖ NO, REPETIR</button>
+  <button class="btn sm" id="confMano">Corregir con botones</button>
+ </div>
+</div>
+<div id="exito" class="hidden"><div class="ic">✔</div><div class="tt">GUARDADO</div><div class="dd" id="exitoTxt"></div></div>
+
+<!-- HISTORIAL -->
+<section id="t-his" class="hidden">
+ <div class="card">
+  <div class="row">
+   <div><label>Fecha</label><input type="date" id="hFecha"></div>
+   <div><label>Galpón</label><select id="hGal"><option value="">Todos</option></select></div>
+  </div>
+ </div>
+ <div class="card"><div id="hisList"></div></div>
+</section>
+
+<!-- REPORTE -->
+<section id="t-rep" class="hidden">
+ <div class="card">
+  <div class="row">
+   <div><label>Desde</label><input type="date" id="rDesde"></div>
+   <div><label>Hasta</label><input type="date" id="rHasta"></div>
+  </div>
+  <div class="row" style="margin-top:10px">
+   <button class="btn" id="rHoy">Hoy</button><button class="btn" id="rSem">7 días</button><button class="btn" id="rMes">Este mes</button>
+  </div>
+ </div>
+ <div class="card">
+  <h2>Casuística por galpón</h2>
+  <div class="scroll" id="repTabla"></div>
+ </div>
+ <div class="card">
+  <h2>Total por casuística</h2>
+  <div id="repCausas"></div>
+ </div>
+ <button class="btn ok w" id="btnXlsx">⬇ Exportar a Excel (.xlsx)</button>
+</section>
+
+<!-- AJUSTES -->
+<section id="t-aju" class="hidden">
+ <div class="card">
+  <h2>Usuarios y accesos</h2>
+  <div class="hint" style="margin:0 0 8px"><b>Registrador:</b> solo registra en la fecha de hoy y edita o elimina sus propios registros del día. <b>Administrador:</b> acceso total (cualquier fecha, cualquier registro, ajustes y usuarios).</div>
+  <div id="uList"></div>
+  <button class="btn p w" id="uAdd">+ Agregar usuario</button>
+ </div>
+ <div class="card">
+  <h2>☁️ Google Drive (hoja de cálculo)</h2>
+  <div class="hint" style="margin:0 0 10px">Cada registro se guarda también en tu hoja de Google Sheets. Si no hay internet, se guarda en el celular y se sube solo cuando vuelve la señal.</div>
+  <label>URL de la aplicación web (termina en /exec)</label><input id="gsUrl" placeholder="https://script.google.com/macros/s/.../exec" autocapitalize="none">
+  <label style="margin-top:10px">Clave (la misma del código de la hoja)</label><input id="gsKey" autocapitalize="none">
+  <div id="gsEstado" class="hint" style="font-weight:700"></div>
+  <div class="row" style="margin-top:10px"><button class="btn sm" id="gsProbar">Guardar y probar</button><button class="btn sm" id="gsSubir">Subir todo</button></div>
+  <button class="btn sm w" id="gsBajar" style="margin-top:8px">⬇ Traer registros de todos los celulares</button>
+ </div>
+ <div class="card">
+  <h2>Galpones</h2>
+  <label>Números de galpón (rangos y comas). Ej.: 11-34 o 1-10, 15, 20</label>
+  <input id="cGal">
+  <button class="btn sm" id="cGalOk" style="margin-top:8px">Aplicar</button>
+ </div>
+ <div class="card">
+  <h2>Aves por galpón (opcional, para % de mortalidad)</h2>
+  <div class="av" id="cAves"></div>
+ </div>
+ <div class="card">
+  <h2>Casuísticas</h2>
+  <div class="hint" style="margin:0 0 8px">Nombre y palabras que la app reconocerá por voz (separadas por coma).</div>
+  <div id="cCausas"></div>
+  <div class="row" style="margin-top:6px"><button class="btn sm" id="cAddCausa">+ Agregar casuística</button><button class="btn sm" id="cResetCausas">Restaurar lista</button></div>
+ </div>
+ <div class="card">
+  <h2>Voz</h2>
+  <div class="switch"><input type="checkbox" id="cTts"> <span>Confirmación por voz: la app repite lo que entendió y pregunta “¿es correcto?”</span></div>
+  <div class="switch" style="margin-top:8px"><input type="checkbox" id="cAuto"> <span>Abrir el micrófono solo para escuchar la respuesta “sí” o “no”</span></div>
+  <label style="margin-top:12px">Velocidad de la voz</label>
+  <select id="cVel"><option value="0.8">Lenta</option><option value="0.95">Normal</option><option value="1.1">Rápida</option></select>
+  <button class="btn sm" id="cProbar" style="margin-top:8px">🔊 Probar voz</button>
+ </div>
+ <div class="card">
+  <h2>Respaldo</h2>
+  <div class="row"><button class="btn" id="bkExp">Exportar respaldo</button><button class="btn" id="bkImp">Importar respaldo</button></div>
+  <input type="file" id="bkFile" accept=".json" class="hidden">
+  <button class="btn danger w" id="bkDel" style="margin-top:10px">Borrar todos los registros</button>
+ </div>
+ <div class="hint" style="text-align:center">Mortalidad por Galpón v1.4 · Kevin Mendoza Astocaza</div>
+</section>
+
+</main>
+<div id="login" class="overlay hidden"><div class="lbox">
+ <div class="logo"><div>🐔</div><b>Mortalidad por Galpón</b></div>
+ <div class="card" id="lgNormal">
+  <h2>Iniciar sesión</h2>
+  <label>Usuario</label><input id="lgU" autocomplete="username" autocapitalize="none">
+  <label>Contraseña</label><input id="lgP" type="password" autocomplete="current-password">
+  <div class="err" id="lgErr"></div>
+  <button class="btn p w" id="lgBtn">Ingresar</button>
+ </div>
+ <div class="card hidden" id="lgSetup">
+  <h2>Primera vez: crea la cuenta de administrador</h2>
+  <label>Usuario administrador</label><input id="suU" value="kevin" autocapitalize="none">
+  <label>Nombre</label><input id="suN" value="Kevin Mendoza">
+  <label>Contraseña</label><input id="suP" type="password">
+  <label>Repetir contraseña</label><input id="suP2" type="password">
+  <div class="err" id="suErr"></div>
+  <button class="btn p w" id="suBtn">Crear y entrar</button>
+ </div>
+</div></div>
+<div id="modal" class="overlay hidden"><div class="card mbox lbox"><h2 id="mTit"></h2><div id="mBody"></div><div class="err" id="mErr"></div><div class="row"><button class="btn" id="mNo">Cancelar</button><button class="btn p" id="mSi">Aceptar</button></div></div></div>
+<div id="toast"></div>
+
+<script>
+"use strict";
+/* ---------- almacenamiento ---------- */
+const LS='mortgalpon_';const mem={};
+function load(k,d){try{const v=localStorage.getItem(LS+k);return v?JSON.parse(v):(k in mem?mem[k]:d)}catch(e){return k in mem?mem[k]:d}}
+function store(k,v){mem[k]=v;try{localStorage.setItem(LS+k,JSON.stringify(v))}catch(e){}}
+
+const DEF_CAUSAS=[
+ {n:'Prolapso',s:'prolapso, prolapsada, prolapsado, prolapsadas'},
+ {n:'Picaje',s:'picaje, picoteo, picada, picadas, canibalismo'},
+ {n:'Asfixia',s:'asfixia, asfixiada, asfixiadas, amontonamiento, amontonada, amontonadas'},
+ {n:'Golpe de calor',s:'golpe de calor, calor, estres calorico, insolacion'},
+ {n:'Peritonitis',s:'peritonitis, peritonitis vitelina, yema'},
+ {n:'Respiratorio',s:'respiratorio, respiratoria, problema respiratorio, coriza'},
+ {n:'Atrapada',s:'atrapada, atrapadas, enganchada, enganchadas, aplastada, aplastadas'},
+ {n:'Hígado graso',s:'higado graso, higado'},
+ {n:'Desnutrida',s:'desnutrida, desnutridas, flaca, flacas, bajo peso, caquexia'},
+ {n:'Enteritis',s:'enteritis, diarrea, intestinal'},
+ {n:'Tumor',s:'tumor, tumores, leucosis, marek'},
+ {n:'Otros',s:'otros, otras, otra, desconocida, sin causa, no identificada'}
+];
+let cfg=load('cfg',null)||{galpones:'11-34',causas:DEF_CAUSAS.map(c=>({...c})),aves:{},tts:true,auto:true,usuarios:[]};
+if(!Array.isArray(cfg.usuarios))cfg.usuarios=[];
+let regs=load('regs',[]);
+function saveCfg(){store('cfg',cfg)}function saveRegs(){store('regs',regs)}
+
+/* ---------- utilidades ---------- */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function hoy(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function fmtF(f){if(!f)return'';const [y,m,d]=f.split('-');return d+'/'+m+'/'+y}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>e.classList.remove('on'),2600)}
+function galList(){const out=[];String(cfg.galpones).split(/[,;\s]+/).forEach(p=>{const m=p.match(/^(\d+)-(\d+)$/);if(m){let a=+m[1],b=+m[2];if(a>b)[a,b]=[b,a];for(let i=a;i<=b&&out.length<500;i++)out.push(i)}else if(/^\d+$/.test(p))out.push(+p)});return[...new Set(out)].sort((a,b)=>a-b)}
+function causaNames(){return cfg.causas.map(c=>c.n).filter(Boolean)}
+function sumCounts(c){return Object.values(c||{}).reduce((a,b)=>a+(+b||0),0)}
+function twoTap(btn,fn,label){if(btn.dataset.arm){fn();return}const o=btn.textContent;btn.dataset.arm=1;btn.textContent=label||'¿Seguro?';setTimeout(()=>{delete btn.dataset.arm;btn.textContent=o},2500)}
+
+/* ---------- pestañas ---------- */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ if(!cur||b.classList.contains('hidden'))return;
+ document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x===b));
+ ['reg','his','rep','aju'].forEach(t=>$('t-'+t).classList.toggle('hidden',t!==b.dataset.t));
+ if(b.dataset.t==='his')renderHis();if(b.dataset.t==='rep')renderRep();if(b.dataset.t==='aju')renderAju();if(b.dataset.t==='reg')renderReg();
+ window.scrollTo(0,0)});
+
+/* ---------- formulario ---------- */
+let form={galpon:null,counts:{},editId:null};let manual=false;
+const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'],MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function fechaLarga(f){if(!f)return'';const[y,m,d]=f.split('-').map(Number);const dt=new Date(y,m-1,d);const t=DIAS[dt.getDay()]+' '+d+' de '+MESES[m-1];return(f===hoy()?'Hoy, ':'')+t}
+function abrirManual(v){manual=v;$('formCard').classList.toggle('hidden',!v);$('manualBtn').textContent=v?'✖ Cerrar registro con botones':'✍️ Registrar sin voz (con botones)';if(v)setTimeout(()=>$('formCard').scrollIntoView({behavior:'smooth',block:'start'}),50)}
+$('manualBtn').onclick=()=>abrirManual(!manual);
+function exito(txt){$('exitoTxt').textContent=txt;$('exito').classList.remove('hidden');clearTimeout(exito._t);exito._t=setTimeout(()=>$('exito').classList.add('hidden'),2000)}
+$('exito').onclick=()=>$('exito').classList.add('hidden');
+function renderReg(){
+ const f=$('fFecha').value;$('fFechaTxt').textContent=fechaLarga(f);if(form.editId&&!manual)abrirManual(true);const enDia=new Set(regs.filter(r=>r.fecha===f).map(r=>r.galpon));
+ $('galGrid').innerHTML=galList().map(g=>`<button data-g="${g}" class="${g===form.galpon?'on':''} ${enDia.has(g)?'has':''}">${g}</button>`).join('');
+ $('galGrid').querySelectorAll('button').forEach(b=>b.onclick=()=>{form.galpon=+b.dataset.g;renderReg()});
+ $('formTit').textContent=form.editId?('✏️ Editando — Galpón '+(form.galpon??'?')):(form.galpon==null?'1. Toca el número de galpón':'Galpón '+form.galpon+' — 2. Marca las muertas');
+ const gw=$('galWarn');
+ if(form.galpon!=null&&!galList().includes(form.galpon)){gw.textContent='El galpón '+form.galpon+' no está en tu lista de galpones (Ajustes).';gw.classList.remove('hidden')}else gw.classList.add('hidden');
+ const names=causaNames();const extra=Object.keys(form.counts).filter(k=>!names.includes(k));
+ $('causasForm').innerHTML=[...names,...extra].map((n,i)=>{const v=form.counts[n]||0;return`<div class="causa ${v>0?'pos':''}"><span class="n">${esc(n)}</span><div class="step"><button data-i="${i}" data-d="-1">−</button><input inputmode="numeric" data-i="${i}" value="${v}"><button data-i="${i}" data-d="1">+</button></div></div>`}).join('');
+ const all=[...names,...extra];
+ $('causasForm').querySelectorAll('button').forEach(b=>b.onclick=()=>{const n=all[+b.dataset.i];form.counts[n]=Math.max(0,(form.counts[n]||0)+(+b.dataset.d));if(!form.counts[n])delete form.counts[n];renderReg()});
+ $('causasForm').querySelectorAll('input').forEach(inp=>inp.onchange=()=>{const n=all[+inp.dataset.i];const v=Math.max(0,parseInt(inp.value)||0);if(v)form.counts[n]=v;else delete form.counts[n];renderReg()});
+ $('fTotal').textContent=sumCounts(form.counts);
+ $('btnGuardar').textContent=form.editId?'✔ Guardar cambios':'✔ Guardar';
+ renderResDia();
+}
+function guardarRegistro(g,counts,texto){
+ const fecha=isAdmin()?($('fFecha').value||hoy()):hoy();const c={};Object.entries(counts).forEach(([k,v])=>{if(+v>0)c[k]=+v});
+ if(g==null){toast('Falta el número de galpón');return false}
+ if(!sumCounts(c)){toast('No hay cantidades para guardar');return false}
+ const now=new Date();const hora=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+ const nr={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),fecha,galpon:g,counts:c,hora,usuario:cur.u,nombre:cur.nombre,texto:texto||''};regs.push(nr);
+ saveRegs();encolar({op:'up',r:nr});return true;
+}
+$('btnGuardar').onclick=()=>{
+ cerrarConf();
+ if(form.editId){const r=regs.find(x=>x.id===form.editId);if(r&&!puede(r)){toast('No tienes permiso para modificar este registro');form={galpon:null,counts:{},editId:null};renderReg();return}if(r){if(form.galpon==null||!sumCounts(form.counts)){toast('Revisa galpón y cantidades');return}
+  r.galpon=form.galpon;r.counts={...form.counts};if(isAdmin())r.fecha=$('fFecha').value||r.fecha;r.editadoPor=cur.nombre;saveRegs();encolar({op:'up',r});exito('Registro corregido')}
+  form={galpon:null,counts:{},editId:null};abrirManual(false);renderReg();return}
+ const g=form.galpon,t=sumCounts(form.counts);
+ if(guardarRegistro(g,form.counts,lastText)){exito('Galpón '+g+' · '+t+(t===1?' muerta':' muertas'));hablar('Listo. Guardado el galpón '+g+' con '+t+(t===1?' muerta.':' muertas.'));form={galpon:g,counts:{},editId:null};lastText='';renderReg()}
+};
+$('btnLimpiar').onclick=()=>{cerrarConf();form={galpon:form.editId?null:form.galpon,counts:{},editId:null};renderReg()};
+$('fFecha').onchange=renderReg;
+
+function agregar(list){ // list de registros -> {galpon:{causa:n}}
+ const m={};list.forEach(r=>{m[r.galpon]=m[r.galpon]||{};Object.entries(r.counts).forEach(([k,v])=>m[r.galpon][k]=(m[r.galpon][k]||0)+v)});return m}
+function renderResDia(){
+ const f=$('fFecha').value;$('resFecha').textContent=f===hoy()?'hoy':fmtF(f);
+ const m=agregar(regs.filter(r=>r.fecha===f));const gs=Object.keys(m).map(Number).sort((a,b)=>a-b);
+ if(!gs.length){$('resDia').innerHTML='<div class="hint" style="font-size:17px">Todavía no hay registros.</div>';return}
+ const tot=gs.reduce((a,g)=>a+sumCounts(m[g]),0);
+ $('resDia').innerHTML=`<div class="resbig"><div><b>${tot}</b><span>muertas</span></div><div><b>${gs.length}</b><span>galpones</span></div></div>`+gs.map(g=>`<div class="resrow"><div><div class="g">Galpón ${g}</div><div>${Object.entries(m[g]).map(([k,v])=>`<span class="tag">${esc(k)} ${v}</span>`).join('')}</div></div><div class="t">${sumCounts(m[g])}</div></div>`).join('');
+}
+
+
+/* ---------- interpretación de voz ---------- */
+function norm(t){return String(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[.,;:!?¿¡()"']/g,' ').replace(/\s+/g,' ').trim()}
+const NUM={cero:0,un:1,uno:1,una:1,dos:2,tres:3,cuatro:4,cinco:5,seis:6,siete:7,ocho:8,nueve:9,diez:10,once:11,doce:12,trece:13,catorce:14,quince:15,dieciseis:16,diecisiete:17,dieciocho:18,diecinueve:19,veinte:20,veintiun:21,veintiuno:21,veintiuna:21,veintidos:22,veintitres:23,veinticuatro:24,veinticinco:25,veintiseis:26,veintisiete:27,veintiocho:28,veintinueve:29};
+const TENS={treinta:30,cuarenta:40,cincuenta:50,sesenta:60,setenta:70,ochenta:80,noventa:90};
+const HUND={cien:100,ciento:100,doscientos:200,doscientas:200,trescientos:300,trescientas:300,cuatrocientos:400,cuatrocientas:400,quinientos:500,quinientas:500,seiscientos:600,seiscientas:600,setecientos:700,setecientas:700,ochocientos:800,ochocientas:800,novecientos:900,novecientas:900};
+const has=(o,k)=>k!=null&&Object.prototype.hasOwnProperty.call(o,k);
+const reEsc=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+
+function interpretar(texto){
+ let t=' '+norm(texto)+' ';
+ // casuísticas (frases largas primero)
+ const syn=[];cfg.causas.forEach((c,i)=>{const lst=(c.n+','+(c.s||'')).split(',').map(x=>norm(x)).filter(Boolean);lst.forEach(s=>syn.push([s,i]))});
+ syn.sort((a,b)=>b[0].length-a[0].length);
+ syn.forEach(([s,i])=>{t=t.replace(new RegExp('(^|\\s)'+reEsc(s)+'(s|es)?(?=\\s)','g'),' zc'+i+'z ')});
+ t=t.replace(/(^|\s)(gal ?[pb]o[nm]e?s?|galpo|calpon|galpones|galpoon|gal pon|algodon)(?=\s)/g,' zgz ');
+ t=t.replace(/(^|\s)(guardar|guarda|guardalo|grabar|registrar|registra)(?=\s)/g,' zsz ');
+ t=t.replace(/(^|\s)(numero|nro|num|n°)(?=\s)/g,' ');
+ const tk=t.trim().split(/\s+/).filter(Boolean);
+ // tokens -> items
+ const it=[];let i=0;
+ while(i<tk.length){const w=tk[i];
+  if(/^\d+$/.test(w)){it.push({t:'n',v:+w});i++;continue}
+  let m;if((m=w.match(/^zc(\d+)z$/))){it.push({t:'c',i:+m[1]});i++;continue}
+  if(w==='zgz'){it.push({t:'g'});i++;continue}
+  if(w==='zsz'){it.push({t:'s'});i++;continue}
+  if(has(HUND,w)||has(TENS,w)||has(NUM,w)){let v=0,j=i;
+   if(has(HUND,tk[j])){v+=HUND[tk[j]];j++}
+   if(has(TENS,tk[j])){v+=TENS[tk[j]];j++;if(tk[j]==='y'&&has(NUM,tk[j+1])&&NUM[tk[j+1]]>0&&NUM[tk[j+1]]<10){v+=NUM[tk[j+1]];j+=2}}
+   else if(has(NUM,tk[j])){v+=NUM[tk[j]];j++}
+   it.push({t:'n',v});i=j;continue}
+  i++;}
+ // items -> grupos
+ const grupos=[];let cur=null,expG=false,pN=null,pC=null,save=false,sueltos=0;
+ const add=(ci,v)=>{if(!cur){cur={galpon:null,counts:{}};grupos.push(cur)}const n=cfg.causas[ci].n;cur.counts[n]=(cur.counts[n]||0)+v};
+ for(const x of it){
+  if(x.t==='g'){if(pC!==null){add(pC,1);pC=null}if(pN!==null){sueltos++;pN=null}expG=true;continue}
+  if(x.t==='s'){save=true;continue}
+  if(x.t==='n'){if(expG){cur={galpon:x.v,counts:{}};grupos.push(cur);expG=false;continue}
+   if(pC!==null){add(pC,x.v);pC=null}else{if(pN!==null)sueltos++;pN=x.v}continue}
+  if(x.t==='c'){expG=false;if(pC!==null)add(pC,1);if(pN!==null){add(x.i,pN);pN=null}else pC=x.i}
+ }
+ if(pC!==null)add(pC,1);if(pN!==null)sueltos++;
+ // unir grupos del mismo galpón consecutivos sin causas
+ const fin=grupos.filter(g=>g.galpon!=null||sumCounts(g.counts)>0);
+ return{grupos:fin,save,sueltos};
+}
+
+/* ---------- reconocimiento y confirmación por voz ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,grabando=false,lastText='';
+let pendientes=[];
+let confirmando=null; // {tipo:'form'|'pend', previo:{...}}
+let vozES=null;
+function elegirVoz(){try{const vs=speechSynthesis.getVoices();vozES=vs.find(v=>/^es[-_]PE/i.test(v.lang))||vs.find(v=>/^es[-_](US|MX|419|CO|AR|CL)/i.test(v.lang))||vs.find(v=>/^es/i.test(v.lang))||null}catch(e){}}
+if(window.speechSynthesis){elegirVoz();try{speechSynthesis.onvoiceschanged=elegirVoz}catch(e){}}
+function hablar(txt,cb){
+ if(!cfg.tts||!window.speechSynthesis){if(cb)cb();return}
+ let hecho=false;const fin=()=>{if(hecho)return;hecho=true;if(cb)setTimeout(cb,400)};
+ try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);if(vozES){u.voice=vozES;u.lang=vozES.lang}else u.lang='es-PE';u.rate=+cfg.vel||0.95;u.pitch=1;u.onend=fin;u.onerror=fin;speechSynthesis.speak(u)}catch(e){fin();return}
+ setTimeout(fin,2500+txt.length*110);
+}
+function describir(g){const c=Object.entries(g.counts);return 'Galpón '+(g.galpon??'sin número')+'. '+c.map(([k,v])=>k+': '+v).join('. ')+(c.length?'. Total: '+sumCounts(g.counts)+(sumCounts(g.counts)===1?' muerta':' muertas'):'')}
+function textoConf(lista){return lista.map(describir).join('. ')}
+
+function mostrarConf(lista){
+ $('confTxt').innerHTML=lista.map(g=>{const t=sumCounts(g.counts);return`<div class="cg"><div class="gn">GALPÓN ${g.galpon??'?'}</div>${Object.entries(g.counts).map(([k,v])=>`<div class="cr"><span>${esc(k)}</span><b>${v}</b></div>`).join('')}<div class="ct"><span>TOTAL</span><span>${t}</span></div></div>`}).join('');
+ $('confEsc').textContent='';$('confCard').classList.remove('hidden');$('confCard').scrollTop=0;
+}
+function cerrarConf(){confirmando=null;$('estado').textContent='';$('confCard').classList.add('hidden');if(grabando){try{rec.stop()}catch(e){}}}
+function pedirConfirmacion(tipo,previo){
+ confirmando={tipo,previo};const lista=tipo==='form'?[form]:pendientes;
+ mostrarConf(lista);
+ $('estado').textContent='¿Es correcto? Di “sí” o “no”';
+ hablar('Entendí. '+textoConf(lista)+'. ¿Es correcto?',()=>{if(confirmando&&cfg.auto&&SR)escuchar()});
+}
+function confirmarSi(){
+ if(!confirmando)return;const t=confirmando.tipo;cerrarConf();
+ if(t==='form')$('btnGuardar').click();else guardarPend();
+}
+function confirmarNo(){
+ if(!confirmando)return;const c=confirmando;cerrarConf();
+ if(c.tipo==='form')form=c.previo;else{pendientes=[];renderPend()}
+ renderReg();$('estado').textContent='Descartado. Dicta de nuevo';
+ hablar('Registro descartado. Dícteme nuevamente.',()=>{if(cfg.auto&&SR)escuchar()});
+}
+function respuesta(texto){
+ const t=' '+norm(texto)+' ';
+ if(/ (no|incorrecto|corregir|cancelar|cancela|mal|negativo|repetir|repite) /.test(t)){confirmarNo();return}
+ if(/ (si|sip|correcto|confirmo|confirmar|confirma|guardar|guarda|guardalo|ok|okey|dale|exacto|afirmativo|esta bien|de acuerdo|listo|asi es) /.test(t)){confirmarSi();return}
+ // si dictó datos nuevos, se toman como corrección
+ if(interpretar(texto).grupos.length){const c=confirmando;cerrarConf();if(c.tipo==='form')form=c.previo;else{pendientes=[];renderPend()}procesar(texto);return}
+ $('estado').textContent='No entendí. Di “sí” o “no”, o toca un botón';$('confEsc').textContent='No entendí. Di “SÍ” o “NO”, o toca un botón';
+ hablar('No le entendí. Diga sí o no.',()=>{if(confirmando&&cfg.auto&&SR)escuchar()});
+}
+
+function procesar(texto){
+ lastText=texto;const r=interpretar(texto);const w=$('vozWarn');const avisos=[];
+ if(!r.grupos.length){w.textContent='No entendí galpón ni casuísticas. Intenta: “galpón 12, prolapso 2”.';w.classList.remove('hidden');hablar('No le entendí. Repita por favor.');return}
+ if(r.sueltos)avisos.push('Hubo '+r.sueltos+' número(s) sin casuística; revisa las cantidades.');
+ if(r.grupos.length===1){
+  const previo={galpon:form.galpon,counts:{...form.counts},editId:form.editId};
+  const g=r.grupos[0];
+  if(g.galpon==null||g.galpon===form.galpon){Object.entries(g.counts).forEach(([k,v])=>form.counts[k]=(form.counts[k]||0)+v)}
+  else{form={galpon:g.galpon,counts:{...g.counts},editId:null}}
+  if(form.galpon==null)avisos.push('Falta el número de galpón: dilo (“galpón 15”) o tócalo en la lista.');
+  renderReg();
+  if(avisos.length){w.innerHTML=avisos.map(esc).join('<br>');w.classList.remove('hidden')}else w.classList.add('hidden');
+  if(form.galpon==null){abrirManual(true);hablar('Me falta el número de galpón. Dígalo o tóquelo en la pantalla.');return}
+  if(!sumCounts(form.counts)){hablar('Galpón '+form.galpon+'. Ahora dicte las casuísticas.');return}
+  if(!cfg.tts&&!r.save){return} // sin voz: confirma con el botón Guardar
+  pedirConfirmacion('form',previo);
+ }else{
+  let ultimoGal=form.galpon;r.grupos.forEach(g=>{if(g.galpon==null)g.galpon=ultimoGal;else ultimoGal=g.galpon});
+  pendientes=r.grupos.filter(g=>sumCounts(g.counts)>0);
+  if(r.grupos.some(g=>!sumCounts(g.counts)))avisos.push('Algún galpón se dictó sin casuísticas y se omitió.');
+  if(avisos.length){w.innerHTML=avisos.map(esc).join('<br>');w.classList.remove('hidden')}else w.classList.add('hidden');
+  renderPend();
+  if(pendientes.length)pedirConfirmacion('pend',null);
+ }
+}
+function renderPend(){
+ if(!pendientes.length){$('pendCard').classList.add('hidden');return}
+ $('pendCard').classList.remove('hidden');
+ $('pendList').innerHTML=pendientes.map((g,i)=>`<div class="ent"><div class="h"><span>Galpón ${g.galpon??'?'}</span><span>${sumCounts(g.counts)} muertas</span></div><div class="d">${Object.entries(g.counts).map(([k,v])=>`<span class="tag">${esc(k)} ${v}</span>`).join('')}</div><div class="a"><button class="btn sm" data-e="${i}">Editar</button><button class="btn sm danger" data-x="${i}">Quitar</button></div></div>`).join('');
+ $('pendList').querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>{cerrarConf();pendientes.splice(+b.dataset.x,1);renderPend()});
+ $('pendList').querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{cerrarConf();const g=pendientes.splice(+b.dataset.e,1)[0];form={galpon:g.galpon,counts:{...g.counts},editId:null};renderPend();renderReg();abrirManual(true)});
+}
+function guardarPend(){
+ cerrarConf();
+ if(pendientes.some(g=>g.galpon==null)){toast('Hay un registro sin galpón: edítalo');return}
+ let n=0,t=0;pendientes.forEach(g=>{if(guardarRegistro(g.galpon,g.counts,lastText)){n++;t+=sumCounts(g.counts)}});
+ exito(n+' galpones · '+t+' muertas');hablar('Listo. Guardados '+n+' galpones, con '+t+' muertas en total.');pendientes=[];renderPend();renderReg();
+}
+$('pendSi').onclick=guardarPend;$('pendNo').onclick=()=>{cerrarConf();pendientes=[];renderPend()};
+$('confSi').onclick=confirmarSi;$('confNo').onclick=confirmarNo;
+$('confMano').onclick=()=>{const tp=confirmando&&confirmando.tipo;cerrarConf();if(tp==='form')abrirManual(true);else $('pendCard').scrollIntoView({behavior:'smooth'});try{speechSynthesis.cancel()}catch(e){}$('estado').textContent='Corrige con los botones y toca Guardar'};
+
+function escuchar(){
+ if(!SR){$('estado').textContent='Este navegador no permite dictado. Usa Google Chrome en Android.';return}
+ if(grabando){try{rec.stop()}catch(e){}return}
+ try{if(window.speechSynthesis)speechSynthesis.cancel()}catch(e){}
+ const modoResp=!!confirmando;
+ rec=new SR();rec.lang='es-PE';rec.interimResults=true;rec.continuous=false;rec.maxAlternatives=1;
+ let final='';
+ rec.onstart=()=>{grabando=true;$('mic').classList.add('rec');$('estado').textContent=modoResp?'Escuchando tu respuesta…':'🔴 ESCUCHANDO… habla ahora';if(modoResp)$('confEsc').textContent='🎤 Escuchando tu respuesta…';else{$('transcrito').classList.remove('hidden');$('transcrito').textContent='…'}};
+ rec.onresult=e=>{let inter='';for(let i=e.resultIndex;i<e.results.length;i++){const s=e.results[i][0].transcript;if(e.results[i].isFinal)final+=s+' ';else inter+=s}const tx=(final+inter).trim();if(modoResp){$('estado').textContent='Respuesta: '+tx;$('confEsc').textContent='🎤 '+tx}else $('transcrito').textContent=tx||'…'};
+ rec.onerror=e=>{if(modoResp&&confirmando)$('confEsc').textContent=e.error==='no-speech'?'No escuché. Toca SÍ o NO':'';const m={'not-allowed':'Permiso de micrófono denegado. Actívalo en el navegador.','no-speech':modoResp?'No escuché respuesta. Toca “Sí” o “No”, o el micrófono.':'No se escuchó nada. Intenta de nuevo.','network':'El dictado necesita internet (o el paquete de voz español sin conexión).','audio-capture':'No se encontró micrófono.'};$('estado').textContent=m[e.error]||('Error: '+e.error)};
+ rec.onend=()=>{grabando=false;$('mic').classList.remove('rec');const f=final.trim();if(modoResp&&!f&&confirmando)$('confEsc').textContent='Toca SÍ o NO';
+  if(f){if(modoResp&&confirmando)respuesta(f);else{$('estado').textContent='Toca para dictar otra vez';procesar(f)}}
+  else if(!/Error|Permiso|necesita|No se|No escuch/.test($('estado').textContent))$('estado').textContent=''};
+ try{rec.start()}catch(e){$('estado').textContent='No se pudo iniciar el micrófono: '+e.message}
+}
+$('mic').onclick=escuchar;
+
+/* ---------- historial ---------- */
+function renderHis(){
+ const sel=$('hGal'),v=sel.value;sel.innerHTML='<option value="">Todos</option>'+galList().map(g=>`<option ${String(g)===v?'selected':''}>${g}</option>`).join('');
+ const f=$('hFecha').value;let l=regs.filter(r=>r.fecha===f&&(!v||String(r.galpon)===v));
+ l.sort((a,b)=>a.galpon-b.galpon||a.hora.localeCompare(b.hora));
+ if(!l.length){$('hisList').innerHTML='<div class="hint">Sin registros para '+fmtF(f)+'.</div>';return}
+ $('hisList').innerHTML=l.map(r=>`<div class="ent"><div class="h"><span>Galpón ${r.galpon}</span><span>${sumCounts(r.counts)} muertas</span></div><div class="d">${r.hora}${(r.nombre||r.usuario)?' · '+esc(r.nombre||r.usuario):''}${r.editadoPor?' · editado por '+esc(r.editadoPor):''}<br>${Object.entries(r.counts).map(([k,v])=>`<span class="tag">${esc(k)} ${v}</span>`).join('')}${r.texto?`<br><i>“${esc(r.texto)}”</i>`:''}</div>${puede(r)?`<div class="a"><button class="btn sm" data-ed="${r.id}">Editar</button><button class="btn sm danger" data-del="${r.id}">Eliminar</button></div>`:''}</div>`).join('');
+ $('hisList').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>twoTap(b,()=>{const rr=regs.find(r=>r.id===b.dataset.del);if(!rr||!puede(rr))return;regs=regs.filter(r=>r.id!==b.dataset.del);saveRegs();encolar({op:'del',id:b.dataset.del});renderHis();toast('Registro eliminado')},'¿Eliminar?'));
+ $('hisList').querySelectorAll('[data-ed]').forEach(b=>b.onclick=()=>{const r=regs.find(x=>x.id===b.dataset.ed);form={galpon:r.galpon,counts:{...r.counts},editId:r.id};$('fFecha').value=r.fecha;document.querySelector('nav button[data-t=reg]').click()});
+}
+$('hFecha').onchange=renderHis;$('hGal').onchange=renderHis;
+
+/* ---------- reporte ---------- */
+function rango(){let a=$('rDesde').value,b=$('rHasta').value;if(a>b)[a,b]=[b,a];return[a,b]}
+function datosRep(){
+ const[a,b]=rango();const l=regs.filter(r=>r.fecha>=a&&r.fecha<=b);const m=agregar(l);
+ const names=causaNames();l.forEach(r=>Object.keys(r.counts).forEach(k=>{if(!names.includes(k))names.push(k)}));
+ const usadas=names.filter(n=>l.some(r=>r.counts[n]));
+ const gs=Object.keys(m).map(Number).sort((x,y)=>x-y);
+ const dias=new Set(l.map(r=>r.fecha)).size;
+ return{a,b,l,m,usadas,gs,dias};
+}
+function renderRep(){
+ const d=datosRep();
+ if(!d.l.length){$('repTabla').innerHTML='<div class="hint">Sin registros en el rango.</div>';$('repCausas').innerHTML='';return}
+ const tieneAves=d.gs.some(g=>+cfg.aves[g]>0);
+ let h='<table><tr><th>Galpón</th>'+d.usadas.map(n=>`<th>${esc(n)}</th>`).join('')+'<th>Total</th>'+(tieneAves?'<th>Aves</th><th>% Mort.</th>':'')+'</tr>';
+ const tc={};let T=0,TA=0;
+ d.gs.forEach(g=>{const t=sumCounts(d.m[g]);T+=t;const av=+cfg.aves[g]||0;TA+=av;
+  h+=`<tr><td>${g}</td>`+d.usadas.map(n=>{const v=d.m[g][n]||0;tc[n]=(tc[n]||0)+v;return`<td>${v||''}</td>`}).join('')+`<td><b>${t}</b></td>`+(tieneAves?`<td>${av||''}</td><td>${av?(t/av*100).toFixed(3)+'%':''}</td>`:'')+'</tr>'});
+ h+='<tr class="tot"><td>Total</td>'+d.usadas.map(n=>`<td>${tc[n]}</td>`).join('')+`<td>${T}</td>`+(tieneAves?`<td>${TA||''}</td><td>${TA?(T/TA*100).toFixed(3)+'%':''}</td>`:'')+'</tr></table>';
+ h+=`<div class="hint">${fmtF(d.a)} al ${fmtF(d.b)} · ${d.dias} día(s) con registro · ${d.l.length} registro(s)</div>`;
+ $('repTabla').innerHTML=h;
+ const max=Math.max(...d.usadas.map(n=>tc[n]));
+ $('repCausas').innerHTML=d.usadas.sort((x,y)=>tc[y]-tc[x]).map(n=>`<div style="margin-bottom:7px"><div style="display:flex;justify-content:space-between;font-size:14px"><span>${esc(n)}</span><b>${tc[n]} (${(tc[n]/T*100).toFixed(1)}%)</b></div><div style="background:#f0e8e2;border-radius:5px;height:9px"><div style="background:var(--pri2);height:9px;border-radius:5px;width:${tc[n]/max*100}%"></div></div></div>`).join('');
+}
+['rDesde','rHasta'].forEach(id=>$(id).onchange=renderRep);
+function setR(a,b){$('rDesde').value=a;$('rHasta').value=b;renderRep()}
+$('rHoy').onclick=()=>setR(hoy(),hoy());
+$('rSem').onclick=()=>{const d=new Date();d.setDate(d.getDate()-6);setR(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'),hoy())};
+$('rMes').onclick=()=>setR(hoy().slice(0,8)+'01',hoy());
+
+/* ---------- XLSX (sin librerías) ---------- */
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(b){let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CRC[(c^b[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0}
+function zip(files){const enc=new TextEncoder();const parts=[],cd=[];let off=0;
+ const d=new Date(),dt=((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate(),tm=(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1);
+ files.forEach(f=>{const nm=enc.encode(f.name),data=enc.encode(f.data),crc=crc32(data);
+  const lh=new DataView(new ArrayBuffer(30));lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(8,0,true);lh.setUint16(10,tm,true);lh.setUint16(12,dt,true);lh.setUint32(14,crc,true);lh.setUint32(18,data.length,true);lh.setUint32(22,data.length,true);lh.setUint16(26,nm.length,true);lh.setUint16(28,0,true);
+  parts.push(new Uint8Array(lh.buffer),nm,data);
+  const ch=new DataView(new ArrayBuffer(46));ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint16(10,0,true);ch.setUint16(12,tm,true);ch.setUint16(14,dt,true);ch.setUint32(16,crc,true);ch.setUint32(20,data.length,true);ch.setUint32(24,data.length,true);ch.setUint16(28,nm.length,true);ch.setUint32(42,off,true);
+  cd.push(new Uint8Array(ch.buffer),nm);off+=30+nm.length+data.length});
+ const cdSize=cd.reduce((a,b)=>a+b.length,0);const e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cdSize,true);e.setUint32(16,off,true);
+ return new Blob([...parts,...cd,new Uint8Array(e.buffer)],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}
+const xe=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function colL(i){let s='';i++;while(i>0){const m=(i-1)%26;s=String.fromCharCode(65+m)+s;i=Math.floor((i-1)/26)}return s}
+function sheetXml(rows,widths){ // rows: [{c:[valores],s:estilo}]
+ let x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="3" topLeftCell="A4" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>';
+ if(widths)x+='<cols>'+widths.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols>';
+ x+='<sheetData>';rows.forEach((r,ri)=>{x+=`<row r="${ri+1}">`;(r.c||[]).forEach((v,ci)=>{const ref=colL(ci)+(ri+1),s=r.s||0;
+  if(v===''||v==null)x+=`<c r="${ref}" s="${s}"/>`;else if(typeof v==='number')x+=`<c r="${ref}" s="${r.pct&&ci===r.c.length-1?4:s}"><v>${v}</v></c>`;else x+=`<c r="${ref}" s="${s}" t="inlineStr"><is><t xml:space="preserve">${xe(v)}</t></is></c>`});x+='</row>'});
+ return x+'</sheetData></worksheet>'}
+function exportarXlsx(){
+ const d=datosRep();if(!d.l.length){toast('No hay registros en el rango');return}
+ const tit={c:['REGISTRO DE MORTALIDAD POR GALPÓN - CASUÍSTICA'],s:3},per={c:['Del '+fmtF(d.a)+' al '+fmtF(d.b)+'  ·  Exportado por '+cur.nombre]};
+ // Resumen
+ const tieneAves=d.gs.some(g=>+cfg.aves[g]>0);
+ const r1=[tit,per,{c:['Galpón',...d.usadas,'Total',...(tieneAves?['Aves','% Mortalidad']:[])],s:1}];const tc={};let T=0,TA=0;
+ d.gs.forEach(g=>{const t=sumCounts(d.m[g]);T+=t;const av=+cfg.aves[g]||0;TA+=av;r1.push({c:[g,...d.usadas.map(n=>{tc[n]=(tc[n]||0)+(d.m[g][n]||0);return d.m[g][n]||0}),t,...(tieneAves?[av||'',av?t/av:'']:[])],pct:tieneAves&&av})});
+ r1.push({c:['TOTAL',...d.usadas.map(n=>tc[n]),T,...(tieneAves?[TA||'',TA?T/TA:'']:[])],s:2,pct:tieneAves&&TA});
+ // Detalle
+ const r2=[tit,per,{c:['Fecha','Hora','Galpón','Registrado por',...d.usadas,'Total','Dictado'],s:1}];
+ [...d.l].sort((a,b)=>a.fecha.localeCompare(b.fecha)||a.galpon-b.galpon||a.hora.localeCompare(b.hora)).forEach(r=>r2.push({c:[fmtF(r.fecha),r.hora,r.galpon,r.nombre||r.usuario||'',...d.usadas.map(n=>r.counts[n]||0),sumCounts(r.counts),r.texto||'']}));
+ // Por día
+ const fechas=[...new Set(d.l.map(r=>r.fecha))].sort();
+ const r3=[tit,per,{c:['Fecha',...d.gs.map(g=>'G-'+g),'Total'],s:1}];
+ fechas.forEach(f=>{const m=agregar(d.l.filter(r=>r.fecha===f));const v=d.gs.map(g=>m[g]?sumCounts(m[g]):0);r3.push({c:[fmtF(f),...v,v.reduce((a,b)=>a+b,0)]})});
+ r3.push({c:['TOTAL',...d.gs.map(g=>sumCounts(d.m[g])),T],s:2});
+ // Casuística x día
+ const r4=[tit,per,{c:['Fecha',...d.usadas,'Total'],s:1}];
+ fechas.forEach(f=>{const l=d.l.filter(r=>r.fecha===f);const v=d.usadas.map(n=>l.reduce((a,r)=>a+(r.counts[n]||0),0));r4.push({c:[fmtF(f),...v,v.reduce((a,b)=>a+b,0)]})});
+ r4.push({c:['TOTAL',...d.usadas.map(n=>tc[n]),T],s:2});
+ const sh=[['Resumen galpón',sheetXml(r1,[10,...d.usadas.map(()=>13),9,10,13])],['Detalle',sheetXml(r2,[11,7,8,18,...d.usadas.map(()=>12),8,50])],['Por día',sheetXml(r3,[11,...d.gs.map(()=>7),8])],['Casuística por día',sheetXml(r4,[11,...d.usadas.map(()=>13),8])]];
+ const styles='<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><numFmts count="1"><numFmt numFmtId="164" formatCode="0.000%"/></numFmts><fonts count="4"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="14"/><color rgb="FF7A1F2B"/><name val="Calibri"/></font></fonts><fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF7A1F2B"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF6E7E0"/></patternFill></fill></fills><borders count="2"><border/><border><left style="thin"><color rgb="FFBBBBBB"/></left><right style="thin"><color rgb="FFBBBBBB"/></right><top style="thin"><color rgb="FFBBBBBB"/></top><bottom style="thin"><color rgb="FFBBBBBB"/></bottom></border></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="5"><xf borderId="1" applyBorder="1"/><xf fontId="1" fillId="2" borderId="1" applyFont="1" applyFill="1" applyBorder="1"><alignment horizontal="center" wrapText="1"/></xf><xf fontId="2" fillId="3" borderId="1" applyFont="1" applyFill="1" applyBorder="1"/><xf fontId="3" applyFont="1"/><xf numFmtId="164" borderId="1" applyNumberFormat="1" applyBorder="1"/></cellXfs></styleSheet>';
+ const files=[
+  {name:'[Content_Types].xml',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'+sh.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')+'</Types>'},
+  {name:'_rels/.rels',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'},
+  {name:'xl/workbook.xml',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>'+sh.map((s,i)=>`<sheet name="${xe(s[0])}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')+'</sheets></workbook>'},
+  {name:'xl/_rels/workbook.xml.rels',data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'+sh.map((s,i)=>`<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')+`<Relationship Id="rId${sh.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`},
+  {name:'xl/styles.xml',data:styles},
+  ...sh.map((s,i)=>({name:`xl/worksheets/sheet${i+1}.xml`,data:s[1]}))];
+ const blob=zip(files);const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+ a.download='Mortalidad_'+d.a+(d.a!==d.b?'_al_'+d.b:'')+'.xlsx';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);toast('Excel generado');
+}
+$('btnXlsx').onclick=exportarXlsx;
+
+/* ---------- ajustes ---------- */
+function renderAju(){
+ renderUsers();
+ $('gsUrl').value=cfg.gsUrl||'';$('gsKey').value=cfg.gsKey||'';updSync();
+ $('cGal').value=cfg.galpones;$('cTts').checked=!!cfg.tts;$('cAuto').checked=!!cfg.auto;$('cVel').value=String(cfg.vel||0.95);
+ $('cAves').innerHTML=galList().map(g=>`<div>G-${g}<input inputmode="numeric" data-g="${g}" value="${cfg.aves[g]||''}" placeholder="aves"></div>`).join('');
+ $('cAves').querySelectorAll('input').forEach(i=>i.onchange=()=>{const v=parseInt(i.value)||0;if(v)cfg.aves[i.dataset.g]=v;else delete cfg.aves[i.dataset.g];saveCfg()});
+ $('cCausas').innerHTML=cfg.causas.map((c,i)=>`<div class="cz"><input data-i="${i}" data-k="n" value="${esc(c.n)}"><input data-i="${i}" data-k="s" value="${esc(c.s)}" placeholder="palabras de voz"><button class="btn sm danger" data-x="${i}">✕</button></div>`).join('');
+ $('cCausas').querySelectorAll('input').forEach(i=>i.onchange=()=>{cfg.causas[+i.dataset.i][i.dataset.k]=i.value.trim();saveCfg()});
+ $('cCausas').querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>twoTap(b,()=>{cfg.causas.splice(+b.dataset.x,1);saveCfg();renderAju()},'¿?'));
+}
+$('cGalOk').onclick=()=>{const v=$('cGal').value.trim();cfg.galpones=v||'11-34';saveCfg();renderAju();toast(galList().length+' galpones configurados')};
+$('cAddCausa').onclick=()=>{cfg.causas.push({n:'Nueva casuística',s:''});saveCfg();renderAju()};
+$('cResetCausas').onclick=e=>twoTap(e.target,()=>{cfg.causas=DEF_CAUSAS.map(c=>({...c}));saveCfg();renderAju();toast('Lista restaurada')},'¿Restaurar?');
+$('cTts').onchange=e=>{cfg.tts=e.target.checked;saveCfg()};$('cAuto').onchange=e=>{cfg.auto=e.target.checked;saveCfg()};
+$('cVel').onchange=e=>{cfg.vel=+e.target.value;saveCfg()};
+$('cProbar').onclick=()=>{const t=cfg.tts;cfg.tts=true;hablar('Entendí. Galpón 15. Prolapso: 3. Picaje: 2. Total: 5 muertas. ¿Es correcto?');cfg.tts=t};
+$('bkExp').onclick=()=>{const b=new Blob([JSON.stringify({cfg,regs},null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='respaldo_mortalidad_'+hoy()+'.json';document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),1000)};
+$('bkImp').onclick=()=>$('bkFile').click();
+$('bkFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const o=JSON.parse(rd.result);if(o.cfg){['galpones','causas','aves','tts','auto','vel','gsUrl','gsKey'].forEach(k=>{if(k in o.cfg)cfg[k]=o.cfg[k]});(o.cfg.usuarios||[]).forEach(x=>{if(x&&x.u&&!findU(x.u))cfg.usuarios.push(x)})}if(Array.isArray(o.regs)){const ids=new Set(regs.map(r=>r.id));o.regs.forEach(r=>{if(!ids.has(r.id))regs.push(r)})}saveCfg();saveRegs();renderAju();toast('Respaldo importado (usuarios nuevos agregados)')}catch(err){toast('Archivo no válido')}};rd.readAsText(f);e.target.value=''};
+$('bkDel').onclick=e=>twoTap(e.target,()=>{regs=[];saveRegs();toast('Registros borrados')},'Toca otra vez para BORRAR TODO');
+
+/* ---------- sincronización con Google Sheets ---------- */
+let cola=load('cola',[]),sincronizando=false,syncErr='';
+function encolar(op){cola.push(op);store('cola',cola);sincronizar()}
+async function gsPost(body){const r=await fetch(cfg.gsUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({key:cfg.gsKey||''},body)),redirect:'follow'});const j=await r.json();if(!j.ok)throw new Error(j.error||'Error del servidor');return j}
+async function sincronizar(){
+ if(!cfg.gsUrl||sincronizando||!cola.length){updSync();return}
+ if(navigator.onLine===false){syncErr='';updSync();return}
+ sincronizando=true;updSync();let seguir=false;
+ try{const lote=cola.slice(0,40);await gsPost({ops:lote});cola.splice(0,lote.length);store('cola',cola);syncErr='';seguir=cola.length>0}
+ catch(e){syncErr=e.message||'sin conexión'}
+ sincronizando=false;updSync();if(seguir)sincronizar();
+}
+function updSync(){
+ const c=$('syncChip');if(!c)return;
+ if(!cfg.gsUrl){c.className='sync hidden';return}
+ if(cola.length&&syncErr){c.className='sync err';c.textContent='☁️ '+cola.length+' registro(s) por subir a Drive · se reintentará'}
+ else if(cola.length){c.className='sync pen';c.textContent=sincronizando?'☁️ Subiendo a Drive…':'☁️ '+cola.length+' registro(s) esperando internet'}
+ else{c.className='sync ok';c.textContent='☁️ Todo guardado en Drive'}
+ const g=$('gsEstado');if(g&&syncErr)g.textContent='Último error: '+syncErr;
+}
+window.addEventListener('online',sincronizar);setInterval(sincronizar,60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)sincronizar()});
+$('gsProbar').onclick=async()=>{cfg.gsUrl=$('gsUrl').value.trim();cfg.gsKey=$('gsKey').value.trim();saveCfg();
+ if(!cfg.gsUrl){updSync();$('gsEstado').textContent='Conexión con Drive desactivada';return}
+ $('gsEstado').textContent='Probando…';
+ try{const j=await gsPost({action:'ping'});$('gsEstado').textContent='✔ Conectado a la hoja “'+j.hoja+'”';sincronizar()}
+ catch(e){$('gsEstado').textContent='✖ No se pudo conectar: '+e.message}};
+$('gsSubir').onclick=e=>twoTap(e.target,()=>{const ids=new Set(cola.filter(o=>o.op==='up').map(o=>o.r.id));regs.forEach(r=>{if(!ids.has(r.id))cola.push({op:'up',r})});store('cola',cola);toast('Subiendo '+regs.length+' registros…');sincronizar()},'¿Subir todos?');
+$('gsBajar').onclick=async()=>{if(!cfg.gsUrl){toast('Primero configura la URL');return}$('gsEstado').textContent='Descargando…';
+ try{await sincronizar();const j=await gsPost({action:'list'});const loc=new Map(regs.map(r=>[r.id,r]));let n=0,u=0;
+  (j.regs||[]).forEach(r=>{if(!r.id||!r.fecha)return;if(loc.has(r.id)){Object.assign(loc.get(r.id),r);u++}else{regs.push(r);n++}});
+  saveRegs();renderReg();$('gsEstado').textContent='✔ '+n+' registros nuevos y '+u+' actualizados desde Drive';toast('Registros de Drive descargados')}
+ catch(e){$('gsEstado').textContent='✖ '+e.message}};
+
+/* ---------- usuarios y accesos ---------- */
+let cur=null;
+function isAdmin(){return !!cur&&cur.rol==='admin'}
+function puede(r){return isAdmin()||(!!cur&&r.usuario===cur.u&&r.fecha===hoy())}
+function findU(u){u=String(u||'').trim().toLowerCase();return cfg.usuarios.find(x=>x.u===u)}
+async function hashPw(u,p){const s='mg|'+String(u).toLowerCase()+'|'+p;try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){let h=5381,h2=52711;for(const c of s){h=((h<<5)+h+c.charCodeAt(0))>>>0;h2=((h2<<5)+h2^c.charCodeAt(0))>>>0}return'f'+h.toString(16)+h2.toString(16)}}
+function adminsActivos(){return cfg.usuarios.filter(x=>x.rol==='admin'&&x.activo)}
+function showLogin(){const setup=!cfg.usuarios.length;$('login').classList.remove('hidden');$('lgSetup').classList.toggle('hidden',!setup);$('lgNormal').classList.toggle('hidden',setup);$('lgErr').textContent='';$('uBox').classList.add('hidden');setTimeout(()=>{try{(setup?$('suP'):$('lgU')).focus()}catch(e){}},100)}
+function iniciarSesion(){const u=findU(load('ses',''));if(u&&u.activo)entrar(u,true);else showLogin()}
+function entrar(u,silencioso){cur=u;store('ses',u.u);$('login').classList.add('hidden');$('lgP').value='';$('lgU').value='';aplicarPermisos();if(!silencioso)toast('Bienvenido, '+u.nombre)}
+function salir(){cerrarConf();cur=null;store('ses','');form={galpon:null,counts:{},editId:null};pendientes=[];renderPend();document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('on',x.dataset.t==='reg'));['reg','his','rep','aju'].forEach(t=>$('t-'+t).classList.toggle('hidden',t!=='reg'));showLogin()}
+function aplicarPermisos(){
+ $('uBox').classList.remove('hidden');$('uChip').textContent=cur.nombre.split(' ')[0]+(isAdmin()?' · Admin':'');ajNav();$('fUser').value=cur.nombre;
+ document.querySelector('nav button[data-t=aju]').classList.toggle('hidden',!isAdmin());
+ document.querySelector('nav button[data-t=rep]').classList.toggle('hidden',!(isAdmin()||cur.rep));
+ $('fFecha').disabled=!isAdmin();$('fFecha').classList.toggle('hidden',!isAdmin());if(!isAdmin())$('fFecha').value=hoy();
+ renderReg();
+}
+$('lgBtn').onclick=async()=>{const u=findU($('lgU').value),p=$('lgP').value;
+ if(!u||u.h!==await hashPw(u.u,p)){$('lgErr').textContent='Usuario o contraseña incorrectos';return}
+ if(!u.activo){$('lgErr').textContent='Usuario desactivado. Consulta al administrador.';return}
+ entrar(u)};
+$('lgP').onkeydown=e=>{if(e.key==='Enter')$('lgBtn').click()};
+$('lgU').onkeydown=e=>{if(e.key==='Enter')$('lgP').focus()};
+$('suBtn').onclick=async()=>{const u=$('suU').value.trim().toLowerCase(),n=$('suN').value.trim(),p=$('suP').value;
+ if(!/^[a-z0-9._-]{3,20}$/.test(u)){$('suErr').textContent='Usuario: 3 a 20 letras o números, sin espacios';return}
+ if(p.length<4){$('suErr').textContent='La contraseña debe tener al menos 4 caracteres';return}
+ if(p!==$('suP2').value){$('suErr').textContent='Las contraseñas no coinciden';return}
+ cfg.usuarios=[{u,nombre:n||u,rol:'admin',rep:true,activo:true,h:await hashPw(u,p)}];saveCfg();entrar(cfg.usuarios[0])};
+$('uOut').onclick=salir;
+function modal(t,body,ok){$('mTit').textContent=t;$('mBody').innerHTML=body;$('mErr').textContent='';$('modal').classList.remove('hidden');
+ $('mSi').onclick=async()=>{const e=await ok();if(e)$('mErr').textContent=e;else $('modal').classList.add('hidden')};$('mNo').onclick=()=>$('modal').classList.add('hidden')}
+$('uPass').onclick=()=>modal('Cambiar mi contraseña','<label>Contraseña actual</label><input type="password" id="m1"><label>Nueva contraseña</label><input type="password" id="m2"><label>Repetir nueva</label><input type="password" id="m3">',async()=>{
+ if(cur.h!==await hashPw(cur.u,$('m1').value))return'La contraseña actual no es correcta';
+ if($('m2').value.length<4)return'Mínimo 4 caracteres';if($('m2').value!==$('m3').value)return'Las contraseñas nuevas no coinciden';
+ cur.h=await hashPw(cur.u,$('m2').value);saveCfg();toast('Contraseña actualizada')});
+function userModal(x){const nuevo=!x;
+ modal(nuevo?'Nuevo usuario':'Editar usuario: '+x.u,
+ (nuevo?'<label>Usuario (para ingresar)</label><input id="m1" autocapitalize="none">':'')+
+ `<label>Nombre completo</label><input id="m2" value="${esc(x?x.nombre:'')}">`+
+ (nuevo?'<label>Contraseña</label><input type="password" id="m3">':'')+
+ `<label>Tipo de usuario</label><select id="m4" ${x&&x.u===cur.u?'disabled':''}><option value="reg">Registrador</option><option value="admin" ${x&&x.rol==='admin'?'selected':''}>Administrador</option></select>`+
+ `<div class="switch" style="margin-top:10px"><input type="checkbox" id="m5" ${!x||x.rep?'checked':''}> <span>Puede ver reportes y exportar Excel</span></div>`,
+ async()=>{const nombre=$('m2').value.trim(),rol=$('m4').value,rep=$('m5').checked;
+  if(nuevo){const u=$('m1').value.trim().toLowerCase(),p=$('m3').value;
+   if(!/^[a-z0-9._-]{3,20}$/.test(u))return'Usuario: 3 a 20 letras o números, sin espacios';
+   if(findU(u))return'Ese usuario ya existe';if(p.length<4)return'La contraseña debe tener al menos 4 caracteres';
+   cfg.usuarios.push({u,nombre:nombre||u,rol,rep,activo:true,h:await hashPw(u,p)});toast('Usuario '+u+' creado')}
+  else{if(x.rol==='admin'&&rol!=='admin'&&adminsActivos().length<=1)return'Debe quedar al menos un administrador activo';
+   x.nombre=nombre||x.u;if(x.u!==cur.u)x.rol=rol;x.rep=rep;if(x.u===cur.u)aplicarPermisos();toast('Usuario actualizado')}
+  saveCfg();renderUsers()})}
+function renderUsers(){
+ $('uList').innerHTML=cfg.usuarios.map((x,i)=>`<div class="ent"><div class="h"><span>${esc(x.nombre)} <span style="color:var(--mu);font-weight:400">(${esc(x.u)})</span></span><span class="tag">${x.rol==='admin'?'Administrador':'Registrador'}</span></div><div class="d">${x.activo?'Activo':'<b style="color:#a11">Desactivado</b>'} · ${x.rol==='admin'||x.rep?'Ve reportes':'Sin reportes'}${x.u===cur.u?' · (tú)':''}</div><div class="a" style="flex-wrap:wrap"><button class="btn sm" data-a="ed" data-i="${i}">Editar</button><button class="btn sm" data-a="pw" data-i="${i}">Cambiar clave</button>${x.u!==cur.u?`<button class="btn sm" data-a="ac" data-i="${i}">${x.activo?'Desactivar':'Activar'}</button><button class="btn sm danger" data-a="del" data-i="${i}">Eliminar</button>`:''}</div></div>`).join('');
+ $('uList').querySelectorAll('button').forEach(b=>{const x=cfg.usuarios[+b.dataset.i];b.onclick=()=>{
+  if(b.dataset.a==='ed')userModal(x);
+  if(b.dataset.a==='pw')modal('Nueva contraseña para '+x.u,'<label>Nueva contraseña</label><input type="password" id="m1"><label>Repetir</label><input type="password" id="m2">',async()=>{if($('m1').value.length<4)return'Mínimo 4 caracteres';if($('m1').value!==$('m2').value)return'No coinciden';x.h=await hashPw(x.u,$('m1').value);saveCfg();toast('Clave de '+x.u+' cambiada')});
+  if(b.dataset.a==='ac'){if(x.activo&&x.rol==='admin'&&adminsActivos().length<=1){toast('Debe quedar al menos un administrador activo');return}x.activo=!x.activo;saveCfg();renderUsers()}
+  if(b.dataset.a==='del')twoTap(b,()=>{if(x.rol==='admin'&&adminsActivos().filter(a=>a!==x).length<1){toast('Debe quedar al menos un administrador activo');return}cfg.usuarios.splice(cfg.usuarios.indexOf(x),1);saveCfg();renderUsers();toast('Usuario eliminado (sus registros se conservan)')},'¿Eliminar?')}})}
+$('uAdd').onclick=()=>userModal(null);
+
+/* ---------- inicio ---------- */
+$('fFecha').value=hoy();$('hFecha').value=hoy();$('rDesde').value=hoy();$('rHasta').value=hoy();
+if(!SR){$('estado').textContent='Dictado no disponible en este navegador: usa Chrome en Android. Puedes registrar tocando los botones.'}
+function ajNav(){}
+window.addEventListener('resize',ajNav);
+iniciarSesion();ajNav();updSync();sincronizar();
+if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+window.__interpretar=interpretar;
+</script>
+</body>
+</html>
