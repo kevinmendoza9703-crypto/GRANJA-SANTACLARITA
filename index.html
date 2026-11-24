@@ -195,6 +195,9 @@ tr.tot td{font-weight:900;background:#faf1ec}
 .pcfg7 b{font-size:11px;color:var(--mu);text-align:center}
 .pcfg b{font-size:12px;color:var(--mu);text-align:center}
 /* inicio, pesaje y levante */
+.plan{font-size:15px}.plan th{font-size:13px;line-height:1.2}.plan td{padding:8px 4px}.plan .ab{font-size:26px;font-weight:900;color:var(--pri);text-align:center}
+.acz4{display:grid;grid-template-columns:1fr .8fr .8fr .8fr .8fr;gap:5px;align-items:center;margin-top:6px}.acz4 b{font-size:14px}.acz4 input{min-height:46px;text-align:center;font-size:19px;font-weight:800;padding:4px}
+.acz4.acz-h span{font-size:11px;color:var(--mu);font-weight:700;text-align:center;line-height:1.15}.acaves{text-align:center;font-weight:900;color:var(--pri);font-size:16px}
 .acz{display:grid;grid-template-columns:.8fr 1fr 1fr;gap:6px;align-items:center;margin-top:6px}.acz b{font-size:15px}.acz input{min-height:44px;text-align:center;font-size:18px;font-weight:800;padding:6px}
 .acz-h span{font-size:12px;color:var(--mu);font-weight:700;text-align:center}.aczona{font-weight:900;color:var(--pri);margin-top:12px;font-size:16px}
 .chips button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
@@ -320,18 +323,16 @@ tr.tot td{font-weight:900;background:#faf1ec}
  </div>
  <div id="aDatos" class="hidden">
   <div class="card">
-   <label>2. Aves en el galpón</label><input id="aAves" inputmode="numeric">
-   <div class="hint" id="aFuente"></div>
-   <label style="margin-top:12px">3. Gramos que debe comer cada ave (meta)</label><input id="aGr" inputmode="decimal" placeholder="Ej.: 110" style="font-size:26px;font-weight:900;text-align:center">
+   <label>2. Gramos que debe comer cada gallina (meta)</label><input id="aGr" inputmode="decimal" placeholder="Ej.: 110" style="font-size:26px;font-weight:900;text-align:center">
    <label style="margin-top:12px">¿Cómo calcular el total del día?</label>
-   <div class="row tipo" id="aModo"><button class="btn" data-m="gr">Según gramos por ave<br><small>recomendado</small></button><button class="btn" data-m="sacos">Según sacos del día<br><small>compara con la meta</small></button></div>
+   <div class="row tipo" id="aModo"><button class="btn" data-m="gr">Según gramos por gallina<br><small>recomendado</small></button><button class="btn" data-m="sacos">Según sacos del día<br><small>compara con la meta</small></button></div>
    <div id="aSacosBox" class="hidden"><label style="margin-top:12px">Sacos de 40 kg del día</label><input id="aSacos" inputmode="decimal"></div>
   </div>
-  <div class="card"><h2>Jaulas del galpón</h2>
-   <div class="hint">3 zonas × 3 cuadros. Cada cuadro tiene 4 filas × 2 pisos = 8 comederos.</div>
-   <label style="margin-top:8px">Jaulas por fila (si es igual en todo el galpón)</label><input id="aJxf" inputmode="numeric">
-   <div class="hint">Si un cuadro tiene jaulas vacías, escribe sus jaulas con aves. Si contaste las aves de un cuadro, anótalas: es lo más exacto.</div>
+  <div class="card"><h2>3. Gallinas por jaula en cada cuadro</h2>
+   <div class="hint" style="font-size:16px">En cada cuadro escribe <b>cuántas jaulas</b> tienen 4, 5 y 6 gallinas. La app suma las gallinas del cuadro.</div>
+   <div class="row" style="margin-top:8px"><button class="btn sm" id="aCopiar">Copiar Tanque 1 a todos los cuadros</button><button class="btn sm" id="aLimpiar">Limpiar</button></div>
    <div id="aCuad"></div>
+   <div id="aAvesTot" style="margin-top:12px"></div>
   </div>
   <div class="card"><div class="row"><label>Kg de tu balde lleno (opcional)<input id="aBalde" inputmode="decimal"></label><label>Repartos al día<select id="aRep"><option>1</option><option>2</option><option>3</option></select></label></div></div>
  </div>
@@ -492,7 +493,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <input type="file" id="bkFile" accept=".json" class="hidden">
   <button class="btn danger w" id="bkDel" style="margin-top:10px">Borrar todos los registros</button>
  </div>
- <div class="hint" style="text-align:center">Granja Santa Clarita v3.2 · Kevin Mendoza Astocaza</div>
+ <div class="hint" style="text-align:center">Granja Santa Clarita v3.5 · Kevin Mendoza Astocaza</div>
 </section>
 
 </main>
@@ -1156,39 +1157,49 @@ let fx=null;
 function ayer(){const d=new Date();d.setDate(d.getDate()-1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function fxNombreCampo(c){if(c.startsWith('m:'))return'Causa '+c.slice(2);if(c==='cant')return'CANT (mortalidad)';if(c==='obs')return'Observación';const x=FXCAMPOS.find(z=>z[0]===c);return x?x[1]:c}
 function svgHoja(z){let l='';for(let i=0;i<9;i++)l+=`<line x1="6" y1="${12+i*8}" x2="194" y2="${12+i*8}" stroke="#ccc"/>`;for(let i=0;i<4;i++)l+=`<line x1="6" y1="${92+i*8}" x2="96" y2="${92+i*8}" stroke="#ccc"/><line x1="104" y1="${92+i*8}" x2="194" y2="${92+i*8}" stroke="#ccc"/>`;
- return`<svg viewBox="0 0 200 130" class="fxsvg" aria-hidden="true"><rect x="2" y="2" width="196" height="126" rx="4" fill="#fff" stroke="#888"/>${l}<rect x="6" y="88" width="90" height="34" fill="none" stroke="#aaa"/><rect x="104" y="88" width="90" height="34" fill="none" stroke="#aaa"/><rect x="${z==='sup'?4:4}" y="${z==='sup'?4:84}" width="192" height="${z==='sup'?80:42}" rx="4" fill="rgba(46,125,79,.22)" stroke="#2e7d4f" stroke-width="2.5" stroke-dasharray="6 4"/><text x="100" y="${z==='sup'?50:110}" text-anchor="middle" font-size="12" font-weight="800" fill="#1b5e3a">${z==='sup'?'PRODUCCIÓN':'CAUSA DE MORTALIDAD'}</text></svg>`}
+ return`<svg viewBox="0 0 200 130" class="fxsvg" aria-hidden="true"><rect x="2" y="2" width="196" height="126" rx="4" fill="#fff" stroke="#888"/>${l}<rect x="6" y="88" width="90" height="34" fill="none" stroke="#aaa"/><rect x="104" y="88" width="90" height="34" fill="none" stroke="#aaa"/><rect x="4" y="${z==='inf'?84:4}" width="192" height="${z==='sup'?80:z==='inf'?42:122}" rx="4" fill="rgba(46,125,79,.22)" stroke="#2e7d4f" stroke-width="2.5" stroke-dasharray="6 4"/><text x="100" y="${z==='inf'?110:50}" text-anchor="middle" font-size="12" font-weight="800" fill="#1b5e3a">${z==='sup'?'PRODUCCIÓN':z==='inf'?'CAUSA DE MORTALIDAD':'HOJA COMPLETA'}</text></svg>`}
 const FXPASOS=[{k:'sup',t:'Foto 1 de 2 · Parte de arriba',d:'La tabla de producción completa: desde LOTE / COD GPRO hasta el control de sacos, incluyendo la fila TOTAL.'},{k:'inf',t:'Foto 2 de 2 · Parte de abajo',d:'Las dos tablas de CAUSA DE MORTALIDAD completas, con sus filas TOTAL y la columna OBSERVACIÓN.'}];
+const FXFULL=[{k:'full',t:'Foto de la hoja completa',d:'Toda la hoja en una sola foto: la tabla de producción y las dos tablas de mortalidad, con sus filas TOTAL.'}];
+function fxPasos(){return fx&&fx.modo==='1'?FXFULL:FXPASOS}
 const FXTIPS='<ul class="fxtips"><li>📱 Celular <b>horizontal</b>, la hoja sobre una mesa</li><li>💡 Buena luz, sin sombras ni reflejos</li><li>🔍 Que se lean bien los números; toca la pantalla para enfocar</li><li>📐 Que no se corte ninguna columna</li></ul>';
 function fxAbrir(){
  if(!cfg.gsUrl){modal('Falta conectar Drive','<div class="hint" style="font-size:16px">Para leer las fotos, la app usa tu hoja de Google Drive. Pide al administrador que la configure en <b>Ajustes → Google Drive</b> y que agregue la clave de lectura de fotos en la hoja.</div>',()=>{});return}
- fx={f:puedeDia('prod',ayer())?ayer():hoy(),paso:-1,fotos:{},datos:{},ok:new Set(),filas:null};$('fx').classList.remove('hidden');fxInicio()}
+ fx={f:puedeDia('prod',ayer())?ayer():hoy(),paso:-1,fotos:{},datos:{},ok:new Set(),filas:null,modo:cfg.fxModo||'2'};$('fx').classList.remove('hidden');fxInicio()}
 function fxPie(h){$('fxPie').innerHTML=h}
 function fxInicio(){
  fx.paso=-1;$('fxSub').textContent='Granja de Producción';
- $('fxBody').innerHTML=`<div class="card"><h2>📷 Cargar el parte con fotos</h2><div class="hint" style="font-size:16px">La app te pedirá <b>2 fotos</b> de la hoja física, leerá los datos que necesita el Sistema Avícola y te mostrará las alertas para que confirmes o corrijas antes de guardar.</div>
+ $('fxBody').innerHTML=`<div class="card"><h2>📷 Cargar el parte con fotos</h2><div class="hint" style="font-size:16px">Toma la foto del parte y la app <b>llena el parte sola</b> con los datos que necesita el Sistema Avícola. Si algo no cuadra, te muestra las alertas para que confirmes o corrijas.</div>
  <label style="margin-top:14px">Fecha del parte</label><input type="date" id="fxF" value="${fx.f}"><div class="err" id="fxErr"></div>
- <div class="fxpasos">${FXPASOS.map((p,i)=>`<div><b>${i+1}</b>${p.t.split('·')[1]}</div>`).join('')}<div><b>✔</b>Revisar alertas</div></div></div>`;
+ <label>¿Cuántas fotos?</label><div class="row tipo" id="fxModo"><button class="btn ${fx.modo==='1'?'on':''}" data-m="1">1 foto<br><small>hoja completa</small></button><button class="btn ${fx.modo!=='1'?'on':''}" data-m="2">2 fotos<br><small>arriba y abajo · más nítido</small></button></div>
+ <div class="switch" style="margin-top:12px"><input type="checkbox" id="fxAuto" ${cfg.fxAuto!==false?'checked':''}> <span>Si todo cuadra, guardar el parte automáticamente</span></div>
+ <div class="fxpasos">${'<div><b>📷</b>Foto(s)</div><div><b>🔍</b>Lectura automática</div>'}<div><b>✔</b>Revisar alertas</div></div></div>`;
  fxPie('<button class="btn ok w" id="fxEmp" style="min-height:64px;font-size:21px">Empezar ▶</button>');
+ $('fxModo').querySelectorAll('button').forEach(b=>b.onclick=()=>{fx.modo=b.dataset.m;cfg.fxModo=fx.modo;saveCfg();$('fxModo').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))});
+ $('fxAuto').onchange=e=>{cfg.fxAuto=e.target.checked;saveCfg()};
  $('fxEmp').onclick=()=>{const f=$('fxF').value;if(!f){$('fxErr').textContent='Elige la fecha';return}if(!puedeDia('prod',f)){$('fxErr').textContent='Solo puedes cargar el parte de hoy o de ayer';return}fx.f=f;fxPaso(0)}}
 function fxPaso(i){
- fx.paso=i;const P=FXPASOS[i],foto=fx.fotos[P.k];$('fxSub').textContent=fmtF(fx.f);
+ fx.paso=i;const P=fxPasos()[i],foto=fx.fotos[P.k];$('fxSub').textContent=fmtF(fx.f);
  $('fxBody').innerHTML=`<div class="card"><h2>${P.t}</h2>${svgHoja(P.k)}<div class="hint" style="font-size:17px;margin-top:8px">${P.d}</div>${foto?`<img src="${foto}" class="fxprev" alt="Foto tomada">`:FXTIPS}</div>`;
  fxPie(foto?`<div class="row"><button class="btn" id="fxRep">↺ Repetir</button><button class="btn ok" id="fxUsar" style="flex:2">Usar esta foto ▶</button></div>`:`<button class="btn ok w" id="fxCamB" style="min-height:64px;font-size:21px">📷 Tomar foto</button><button class="btn w" id="fxGalB" style="margin-top:8px">🖼 Elegir de la galería</button>`+(i>0?'<button class="btn sm w" id="fxAtr" style="margin-top:8px">◀ Volver a la foto anterior</button>':''));
- if(foto){$('fxRep').onclick=()=>{delete fx.fotos[P.k];fxPaso(i)};$('fxUsar').onclick=()=>i<FXPASOS.length-1?fxPaso(i+1):fxLeer()}
+ if(foto){$('fxRep').onclick=()=>{delete fx.fotos[P.k];fxPaso(i)};$('fxUsar').onclick=()=>i<fxPasos().length-1?fxPaso(i+1):fxLeer()}
  else{$('fxCamB').onclick=()=>$('fxCam').click();$('fxGalB').onclick=()=>$('fxGal').click();if(i>0)$('fxAtr').onclick=()=>fxPaso(i-1)}}
 async function fxFotoSel(e){const fl=e.target.files[0];e.target.value='';if(!fl||!fx)return;$('fxBody').insertAdjacentHTML('beforeend','<div class="hint" style="text-align:center">Procesando foto…</div>');
- const rd=new FileReader();rd.onload=async()=>{const u=await reducir(rd.result,0,2400,0.85);if(!u){toast('No se pudo leer la foto');return}fx.fotos[FXPASOS[fx.paso].k]=u;fxPaso(fx.paso)};rd.readAsDataURL(fl)}
+ const rd=new FileReader();rd.onload=async()=>{const u=await reducir(rd.result,0,2400,0.85);if(!u){toast('No se pudo leer la foto');return}fx.fotos[fxPasos()[fx.paso].k]=u;fxPaso(fx.paso)};rd.readAsDataURL(fl)}
 $('fxCam').onchange=fxFotoSel;$('fxGal').onchange=fxFotoSel;
 $('fxCerrar').onclick=()=>{if(fx&&fx.filas&&!fx.guardado){if(!$('fxCerrar').dataset.arm){$('fxCerrar').dataset.arm=1;toast('Toca “Salir” otra vez para salir sin guardar');setTimeout(()=>delete $('fxCerrar').dataset.arm,2500);return}}fx=null;$('fx').classList.add('hidden');renderPrd()};
 async function fxLeer(){
- const pasos=FXPASOS.filter(p=>!fx.datos[p.k]);
- for(let i=0;i<pasos.length;i++){const P=pasos[i];
-  $('fxBody').innerHTML=`<div class="card" style="text-align:center;padding:30px 16px"><div class="fxspin"></div><div style="font-size:21px;font-weight:800;margin-top:14px">Leyendo ${P.t.split('·')[1].trim().toLowerCase()}…</div><div class="hint" style="font-size:16px">Puede tardar hasta un minuto. No cierres la app.</div></div>`;fxPie('');
-  try{const j=await gsPost({action:'leerFoto',parte:P.k,img:fx.fotos[P.k].split(',')[1],mime:'image/jpeg'});fx.datos[P.k]=j.datos||{}}
+ const tareas=fx.modo==='1'?[['sup','full','la tabla de producción'],['inf','full','las tablas de mortalidad']]:[['sup','sup','la parte de arriba'],['inf','inf','la parte de abajo']];
+ for(const[k,foto,txt] of tareas){if(fx.datos[k])continue;
+  $('fxBody').innerHTML=`<div class="card" style="text-align:center;padding:30px 16px"><div class="fxspin"></div><div style="font-size:21px;font-weight:800;margin-top:14px">Leyendo ${txt}…</div><div class="hint" style="font-size:16px">Puede tardar hasta un minuto. No cierres la app.</div></div>`;fxPie('');
+  try{const j=await gsPost({action:'leerFoto',parte:k,img:fx.fotos[foto].split(',')[1],mime:'image/jpeg'});fx.datos[k]=j.datos||{}}
   catch(e){$('fxBody').innerHTML=`<div class="card"><h2>⚠️ No se pudo leer la foto</h2><div class="hint" style="font-size:16px">${esc(e.message||'Sin conexión')}</div></div>`;
    fxPie('<div class="row"><button class="btn" id="fxOtra">📷 Tomar otra foto</button><button class="btn ok" id="fxReint">↺ Reintentar</button></div>');
-   $('fxOtra').onclick=()=>{delete fx.fotos[P.k];fxPaso(FXPASOS.indexOf(P))};$('fxReint').onclick=fxLeer;return}}
- fxArmar();fxRevision()}
+   const ip=fxPasos().findIndex(p=>p.k===foto);$('fxOtra').onclick=()=>{delete fx.fotos[foto];delete fx.datos[k];fxPaso(Math.max(0,ip))};$('fxReint').onclick=fxLeer;return}}
+ fxArmar();
+ const{A,T}=fxAlertas();
+ if(cfg.fxAuto!==false&&!A.length&&!T.some(t=>t.ok===false)&&Object.keys(fx.filas).length){fx.auto=true;fxGuardar();return}
+ fxRevision()}
+function fN(x){x=+x;return Number.isInteger(x)?f1(x):f1(x,Math.abs(x*10-Math.round(x*10))<1e-9?1:2)}
 function fxN(v){if(v==null||v==='')return null;if(typeof v==='number')return v;const s=String(v).trim();if(s==='-'||s==='—')return 0;return pnum(s)}
 function fxArmar(){
  const S=fx.datos.sup||{},I=fx.datos.inf||{};const F={};
@@ -1230,8 +1241,9 @@ function fxRevision(){
  const est=g=>{const l=pend.filter(a=>a.g===g);return l.some(a=>a.nivel==='error')?'🔴':l.length?'🟡':'✅'};
  const gs=[...new Set(pGalpones().concat(Object.keys(fx.filas).map(Number)))];
  $('fxBody').innerHTML=`${fx.fechaHoja?`<div class="palert">📅 La hoja dice fecha ${fmtF(fx.fechaHoja)} y elegiste ${fmtF(fx.f)}. <button class="btn sm" id="fxUsaF">Usar ${fmtF(fx.fechaHoja)}</button></div>`:''}
+ <div class="palert" style="background:#e3f4e8;border-color:#9fd3b0;color:#15652f">✔ El parte ya se llenó con lo leído de la foto. Revisa solo las alertas y toca <b>Guardar parte</b>.</div>
  <div class="card"><div class="semaf"><div class="r"><b>${nE+tE}</b>por corregir</div><div class="a"><b>${nD}</b>por confirmar</div><div class="v"><b>${gs.filter(g=>est(g)==='✅').length}</b>galpones OK</div></div></div>
- <div class="card"><h2>🧮 Totales de la hoja</h2>${T.map(t=>`<div class="ftot ${t.ok===false?'bad':''}"><span>${t.ok===false?'🔴':t.ok?'✅':'⚪'} ${t.n}</span><span>${t.hoja==null?'sin total escrito':'hoja '+f1(t.hoja,2).replace(/,00$/,'')} · suma ${f1(t.suma,2).replace(/,00$/,'')}</span></div>`).join('')}${tE?'<div class="hint">Un total que no coincide indica que algún número de esa columna está mal leído o mal escrito. Revisa las consultas y los galpones de abajo.</div>':''}</div>
+ <div class="card"><h2>🧮 Totales de la hoja</h2>${T.map(t=>`<div class="ftot ${t.ok===false?'bad':''}"><span>${t.ok===false?'🔴':t.ok?'✅':'⚪'} ${t.n}</span><span>${t.hoja==null?'sin total escrito':'hoja '+fN(t.hoja)} · suma ${fN(t.suma)}</span></div>`).join('')}${tE?'<div class="hint">Un total que no coincide indica que algún número de esa columna está mal leído o mal escrito. Revisa las consultas y los galpones de abajo.</div>':''}</div>
  <div class="card"><h2>❓ Consultas (${pend.length})</h2>${pend.length?pend.map((a,i)=>fxConsulta(a,i)).join(''):'<div class="hint" style="font-size:16px">✅ No hay consultas pendientes.</div>'}</div>
  <div class="card"><h2>🐔 Galpones</h2>${gs.map(g=>{const r=fx.filas[g]||{g,mort:{}};const m=Object.entries(r.mort||{}).map(([c,v])=>c+' '+v).join(' · ');return`<button class="fxg" data-g="${g}"><span class="st">${est(g)}</span><span style="flex:1;text-align:left"><b>Galpón ${g}</b>${r.cod?' · Galponero '+esc(r.cod):''}<br><small>M ${r.mman??'—'} · V ${r.venta??'—'} · ${esc(r.dieta||'—')} · Sacos ${r.sacos??'—'} · Jabas ${r.jabas??'—'} · Saldo ${r.js??'—'} · B ${r.bl??'—'} · Q ${r.gu??'—'} · C ${r.cr??'—'} · Mg ${r.ma??'—'} · DY ${r.dy??'—'}</small><br><small>☠️ ${r.cant??'—'}: ${esc(m||'sin causas')}${r.obs?' · '+esc(r.obs):''}</small></span><span>✏️</span></button>`}).join('')}</div>
  <div class="row"><button class="btn sm" onclick="fxPaso(0)">📷 Ver / cambiar fotos</button><button class="btn sm" id="fxVerFotos">🔍 Ver fotos</button></div>`;
@@ -1242,7 +1254,7 @@ function fxRevision(){
   if(a.campo.startsWith('m:')){const c=a.campo.slice(2);const n=fxN(v);if(n)r.mort[c]=n;else delete r.mort[c]}else if(a.campo==='obs')r.obs=v;else if(a.campo==='dieta'||a.campo==='cod')r[a.campo]=a.campo==='dieta'?v.toUpperCase():v;else r[a.campo]=fxN(v);
   fxRevision()});
  $('fxBody').querySelectorAll('.fxg').forEach(b=>b.onclick=()=>fxEditar(+b.dataset.g));
- $('fxVerFotos').onclick=()=>{const l=FXPASOS.map(p=>fx.fotos[p.k]).filter(Boolean);if(l.length)verFoto(0,l)};
+ $('fxVerFotos').onclick=()=>{const l=fxPasos().map(p=>fx.fotos[p.k]).filter(Boolean);if(l.length)verFoto(0,l)};
  $('fxGuardar').onclick=e=>{if(nE+tE&&!e.target.dataset.arm){e.target.dataset.arm=1;e.target.textContent='Toca otra vez para guardar igual';setTimeout(()=>{if(e.target)delete e.target.dataset.arm},3000);return}fxGuardar()};
 }
 function fxValor(a){const r=fx.filas[a.g]||{};if(a.campo.startsWith('m:'))return r.mort&&r.mort[a.campo.slice(2)]||'';if(a.campo==='obs')return r.obs||'';const v=r[a.campo];return v==null?'':v}
@@ -1261,15 +1273,16 @@ async function fxGuardar(){
   const counts={};Object.entries(r.mort||{}).forEach(([c,v])=>{const nm=fxCausaNombre(c);counts[nm]=(counts[nm]||0)+v});const ga=fxGatos(r.obs);if(ga)counts['Gato']=(counts['Gato']||0)+ga;
   if(Object.keys(counts).length){const nr={id,fecha:f,galpon:g,counts,hora:new Date().toTimeString().slice(0,5),usuario:cur.u,nombre:cur.nombre,texto:'Parte con fotos'+(r.obs?' · Obs: '+r.obs:'')};regs.push(nr);encolar({op:'up',r:nr})}});
  saveProd();saveRegs();Object.keys(prod[f].g).forEach(g=>encolar({op:'prod',fila:filaBD(f,+g)}));
- try{const l=(await IDB.get(f))||[];FXPASOS.forEach(p=>{if(fx.fotos[p.k])l.push(fx.fotos[p.k])});fotosMem[f]=l;await IDB.set(f,l)}catch(e){}
- fx.guardado=true;$('fx').classList.add('hidden');fx=null;$('pFecha').value=f;exito('Parte guardado · '+n+' galpones');renderPrd()}
+ try{const l=(await IDB.get(f))||[];fxPasos().forEach(p=>{if(fx.fotos[p.k])l.push(fx.fotos[p.k])});fotosMem[f]=l;await IDB.set(f,l)}catch(e){}
+ const auto=fx.auto;fx.guardado=true;$('fx').classList.add('hidden');fx=null;$('pFecha').value=f;exito((auto?'✔ Todo cuadra · ':'')+'Parte guardado · '+n+' galpones');renderPrd()}
 $('pFotoParte').onclick=fxAbrir;
 
 /* ---------- DISTRIBUCIÓN DE ALIMENTO POR COMEDERO ---------- */
-const ALI_Z=['Tanque','Medio','Fondo'];
+const ALI_Z=['Tanque','Medio','Fondo'],ALI_N=[4,5,6];
 let aliG=null,aliModo=load('aliModo','gr');
-function aliCfg(g){cfg.aliG=cfg.aliG||{};if(!cfg.aliG[g])cfg.aliG[g]={jxf:cfg.aliJxf||'',cuadros:Array(9).fill('')};if(!cfg.aliG[g].aves)cfg.aliG[g].aves=Array(9).fill('');return cfg.aliG[g]}
+function aliCfg(g){cfg.aliG=cfg.aliG||{};let c=cfg.aliG[g];if(!c||!Array.isArray(c.q))c=cfg.aliG[g]={gr:(c&&c.gr)||'',q:Array.from({length:9},()=>({4:'',5:'',6:''}))};return c}
 function aliUltimo(g){const fs=Object.keys(prod).filter(f=>prod[f].g&&prod[f].g[g]).sort();if(!fs.length)return null;const f=fs[fs.length-1];return{f,o:pcalc(f,g)}}
+function aliCuadro(q){let j=0,a=0;ALI_N.forEach(n=>{const v=pnum(q[n])||0;j+=v;a+=v*n});return{j,a}}
 function renderAli(){
  $('aGalChips').innerHTML=pGalpones().map(g=>`<button data-g="${g}" class="${g===aliG?'on':''}">${g}</button>`).join('');
  $('aGalChips').querySelectorAll('button').forEach(b=>b.onclick=()=>aliElegir(+b.dataset.g));
@@ -1277,48 +1290,58 @@ function renderAli(){
  $('aSacosBox').classList.toggle('hidden',aliModo!=='sacos');
  if(aliG==null){$('aDatos').classList.add('hidden');$('aRes').innerHTML='<div class="hint" style="font-size:17px">Elige un galpón para empezar.</div>';return}
  $('aDatos').classList.remove('hidden');aliCalc()}
-function aliElegir(g){aliG=g;const c=aliCfg(g);const u=aliUltimo(g);
- $('aAves').value=u&&u.o.neto?Math.round(u.o.neto):'';$('aSacos').value=u&&u.o.sacos!=null?u.o.sacos:'';$('aGr').value=c.gr||cfg.aliGr||'';
- $('aFuente').textContent=u?'Aves y sacos tomados del parte del '+fmtF(u.f)+'. Puedes cambiarlos.':'No hay parte registrado de este galpón: escribe las aves y los sacos.';
- $('aJxf').value=c.jxf;renderCuadros();renderAli()}
-function renderCuadros(){const c=aliCfg(aliG);const def=aliDefJ();
- $('aCuad').innerHTML='<div class="acz acz-h"><b></b><span>Jaulas con aves</span><span>Aves (si las contaste)</span></div>'+ALI_Z.map((z,zi)=>`<div class="aczona">${z}</div>`+[0,1,2].map(k=>{const i=zi*3+k;return`<div class="acz"><b>Cuadro ${k+1}</b><input data-i="${i}" data-t="j" inputmode="numeric" value="${c.cuadros[i]}" placeholder="${def||'jaulas'}"><input data-i="${i}" data-t="a" inputmode="numeric" value="${c.aves[i]}" placeholder="auto"></div>`}).join('')).join('');
- $('aCuad').querySelectorAll('input').forEach(inp=>inp.oninput=()=>{(inp.dataset.t==='j'?c.cuadros:c.aves)[+inp.dataset.i]=inp.value.trim();saveCfg();aliCalc()})}
-function aliDefJ(){const j=pnum($('aJxf').value);return j?j*8:null} // 4 filas x 2 pisos
+function aliElegir(g){aliG=g;const c=aliCfg(g);const u=aliUltimo(g);aliG_parte=u;
+ $('aSacos').value=u&&u.o.sacos!=null?u.o.sacos:'';$('aGr').value=c.gr||cfg.aliGr||'';renderCuadros();renderAli()}
+let aliG_parte=null;
+function renderCuadros(){const c=aliCfg(aliG);
+ $('aCuad').innerHTML='<div class="acz4 acz-h"><b></b><span>Jaulas con 4</span><span>Jaulas con 5</span><span>Jaulas con 6</span><span>Gallinas</span></div>'+ALI_Z.map((z,zi)=>`<div class="aczona">${z}</div>`+[0,1,2].map(k=>{const i=zi*3+k,q=c.q[i];return`<div class="acz4"><b>Cuadro ${k+1}</b>${ALI_N.map(n=>`<input data-i="${i}" data-n="${n}" inputmode="numeric" value="${q[n]}" placeholder="0">`).join('')}<span class="acaves" id="acA${i}"></span></div>`}).join('')).join('');
+ $('aCuad').querySelectorAll('input').forEach(inp=>inp.oninput=()=>{c.q[+inp.dataset.i][inp.dataset.n]=inp.value.trim();saveCfg();aliCalc()})}
+$('aCopiar').onclick=()=>{if(aliG==null)return;const c=aliCfg(aliG);const q0=c.q[0];if(!ALI_N.some(n=>pnum(q0[n]))){toast('Primero llena el Tanque, cuadro 1');return}c.q=c.q.map(()=>({...q0}));saveCfg();renderCuadros();aliCalc();toast('Copiado a los 9 cuadros: ajusta los que sean distintos')};
+$('aLimpiar').onclick=e=>twoTap(e.target,()=>{const c=aliCfg(aliG);c.q=Array.from({length:9},()=>({4:'',5:'',6:''}));saveCfg();renderCuadros();aliCalc()},'¿Limpiar todo?');
 function aliCalc(){
- if(aliG==null)return;const aves=pnum($('aAves').value),def=aliDefJ(),c=aliCfg(aliG);
- const jc=c.cuadros.map(x=>{const n=pnum(x);return n!=null?n:def});
- const R=$('aRes');
- if(!aves){R.innerHTML='<div class="palert">Escribe el número de aves del galpón.</div>';return}
- if(jc.some(x=>x==null)){R.innerHTML='<div class="palert">Escribe las jaulas por fila (o las jaulas con aves de cada cuadro).</div>';return}
- const J=jc.reduce((a,b)=>a+b,0);if(!J){R.innerHTML='<div class="palert">El total de jaulas es 0.</div>';return}
- const ac=c.aves.map(x=>pnum(x));const avDad=ac.reduce((a,x)=>a+(x||0),0);const jSin=jc.reduce((a,j,i)=>a+(ac[i]==null?j:0),0);
- if(avDad>aves){R.innerHTML='<div class="palert">Las aves anotadas por cuadro ('+f1(avDad)+') son más que las aves del galpón ('+f1(aves)+').</div>';return}
- const apj=jSin?(aves-avDad)/jSin:0;const avC=jc.map((j,i)=>ac[i]!=null?ac[i]:j*apj);
+ if(aliG==null)return;const c=aliCfg(aliG),R=$('aRes'),KS=+cfg.kgSaco||40;
+ const cq=c.q.map(aliCuadro);cq.forEach((x,i)=>{const e=$('acA'+i);if(e)e.textContent=x.a?f1(x.a):'—'});
+ const J=cq.reduce((s,x)=>s+x.j,0),aves=cq.reduce((s,x)=>s+x.a,0);
+ const avParte=aliG_parte&&aliG_parte.o.neto?Math.round(aliG_parte.o.neto):null;
+ $('aAvesTot').innerHTML=aves?`<div class="pres"><div><b>${f1(aves)}</b><span>gallinas en jaulas</span></div><div><b>${f1(J)}</b><span>jaulas con gallinas</span></div><div><b>${avParte?f1(avParte):'—'}</b><span>aves según el parte${aliG_parte?' ('+fmtF(aliG_parte.f).slice(0,5)+')':''}</span></div></div>`:'';
+ const vacios=cq.map((x,i)=>x.a?null:ALI_Z[Math.floor(i/3)]+' '+(i%3+1)).filter(Boolean);
+ if(!aves){R.innerHTML='<div class="palert">Escribe en cada cuadro cuántas jaulas tienen 4, 5 y 6 gallinas.</div>';return}
  const gMeta=pnum($('aGr').value);if(gMeta){c.gr=gMeta;cfg.aliGr=gMeta;saveCfg()}
  let kg,difMeta=null;
- if(aliModo==='gr'){if(!gMeta){R.innerHTML='<div class="palert">Escribe cuántos gramos debe comer cada ave.</div>';return}kg=aves*gMeta/1000}
- else{const s=pnum($('aSacos').value);if(!s){R.innerHTML='<div class="palert">Escribe los sacos de alimento del día.</div>';return}kg=s*(+cfg.kgSaco||40);if(gMeta)difMeta=kg-aves*gMeta/1000}
+ if(aliModo==='gr'){if(!gMeta){R.innerHTML='<div class="palert">Escribe cuántos gramos debe comer cada gallina.</div>';return}kg=aves*gMeta/1000}
+ else{const s=pnum($('aSacos').value);if(!s){R.innerHTML='<div class="palert">Escribe los sacos de alimento del día.</div>';return}kg=s*KS;if(gMeta)difMeta=kg-aves*gMeta/1000}
  const rep=+$('aRep').value||1,balde=pnum($('aBalde').value);cfg.aliBalde=balde||'';cfg.aliRep=rep;saveCfg();
- const grAve=kg*1000/aves,sacos=kg/(+cfg.kgSaco||40);
- const fmtKg=x=>x.toFixed(x<10?2:1).replace('.',',')+' kg';const bal=x=>balde?(x/balde).toFixed(1).replace('.',',')+' baldes':'';
- const cuad=jc.map((j,i)=>({z:ALI_Z[Math.floor(i/3)],k:i%3+1,j,aves:avC[i],kg:avC[i]*grAve/1000,com:avC[i]*grAve/1000/8,real:ac[i]!=null}));
- const unif=cuad.every(x=>Math.abs(x.com-cuad[0].com)<0.005);
-const apjT=aves/J;const warn=[];if(difMeta!=null&&Math.abs(difMeta)>=1)warn.push((difMeta>0?'Sobran ':'Faltan ')+Math.abs(difMeta).toFixed(1)+' kg ('+(Math.abs(difMeta)/(+cfg.kgSaco||40)).toFixed(2)+' sacos) para la meta de '+gMeta+' g por ave. Con estos sacos cada ave recibe '+grAve.toFixed(0)+' g.');cuad.forEach(x=>{const a=x.j?x.aves/x.j:0;if(x.j&&(a<3||a>8))warn.push(x.z+' cuadro '+x.k+': '+a.toFixed(1)+' aves por jaula, revisa sus datos.')});if(apjT<3||apjT>8)warn.push('Darían '+apjT.toFixed(1).replace('.',',')+' aves por jaula: revisa el número de jaulas o de aves.');if(grAve<85||grAve>135)warn.push('Equivale a '+grAve.toFixed(0)+' g por ave: revisa los sacos o los gramos.');
+ const grAve=kg*1000/aves,sacos=kg/KS;
+ const K=x=>x.toFixed(1).replace('.',',');const bal=x=>balde?(x/balde).toFixed(1).replace('.',',')+' baldes':'';
+ const cuad=cq.map((x,i)=>({z:ALI_Z[Math.floor(i/3)],k:i%3+1,j:x.j,aves:x.a,kg:x.a*grAve/1000,com:x.a*grAve/1000/8,apj:x.j?x.a/x.j:0}));
+ const warn=[];
+ if(vacios.length)warn.push('Sin datos en: '+vacios.join(', ')+'. Esos cuadros no recibirán alimento; si tienen gallinas, llénalos.');
+ if(avParte&&Math.abs(aves-avParte)/avParte>0.02)warn.push('Las gallinas contadas por jaula ('+f1(aves)+') difieren de las aves del parte ('+f1(avParte)+') en '+f1(Math.abs(aves-avParte))+'. Revisa los cuadros.');
+ if(difMeta!=null&&Math.abs(difMeta)>=1)warn.push((difMeta>0?'Sobran ':'Faltan ')+Math.abs(difMeta).toFixed(1)+' kg ('+(Math.abs(difMeta)/KS).toFixed(2)+' sacos) para la meta de '+gMeta+' g por gallina. Con estos sacos cada gallina recibe '+grAve.toFixed(0)+' g.');
+ if(grAve<85||grAve>135)warn.push('Equivale a '+grAve.toFixed(0)+' g por gallina: revisa los sacos o los gramos.');
+ const enSaco=x=>{const r=x/KS;const F=[[1/4,'¼'],[1/3,'⅓'],[1/2,'½'],[2/3,'⅔'],[3/4,'¾'],[1,'1']];let m=F[0];F.forEach(f=>{if(Math.abs(f[0]-r)<Math.abs(m[0]-r))m=f});const d=x-m[0]*KS;return(Math.abs(d)<0.3?'':(d>0?'un poco más de ':'un poco menos de '))+m[1]+(m[1]==='1'?' saco':' de saco')};
+ let resto=0,abiertos=0;const TOL=0.5;const plan=cuad.map(x=>{let n=0;while(resto+TOL<x.kg){resto+=KS;n++}resto=Math.max(0,resto-x.kg);abiertos+=n;return{...x,abrir:n,queda:resto}});
+ const llenos=cuad.filter(x=>x.aves);const unif=llenos.every(x=>Math.abs(x.com-llenos[0].com)<0.05);const com=unif?llenos[0].com:kg/(llenos.length*8);
+ const sacEnt=Math.max(1,Math.ceil((kg-0.5)/KS)),sobra=sacEnt*KS-kg;
  R.innerHTML=`${warn.map(w=>`<div class="palert">⚠️ ${esc(w)}</div>`).join('')}
- <div class="card" style="text-align:center"><div class="hint" style="font-size:17px">${unif?'Echar en CADA comedero':'Promedio por comedero'}${rep>1?' (total del día)':''}</div>
- <div style="font-size:52px;font-weight:900;color:var(--pri);line-height:1.1">${fmtKg(unif?cuad[0].com:kg/72)}</div>
- ${balde?`<div style="font-size:22px;font-weight:800">= ${bal(unif?cuad[0].com:kg/72)}</div>`:''}
- ${rep>1?`<div style="font-size:20px;font-weight:800;color:var(--ok);margin-top:6px">${rep} repartos: ${fmtKg((unif?cuad[0].com:kg/72)/rep)} cada vez${balde?' · '+bal((unif?cuad[0].com:kg/72)/rep):''}</div>`:''}</div>
- <div class="card"><div class="pres"><div><b>${f1(kg)}</b><span>kg del día</span></div><div><b>${frac(+sacos.toFixed(2))}</b><span>sacos de 40 kg</span></div><div><b>${grAve.toFixed(0)}</b><span>g por ave</span></div><div><b>${f1(J)}</b><span>jaulas con aves</span></div><div><b>${apjT.toFixed(1).replace('.',',')}</b><span>aves por jaula</span></div><div><b>72</b><span>comederos</span></div></div></div>
- <div class="card"><h2>Por cuadro (8 comederos cada uno)</h2><div class="scroll"><table><tr><th>Zona</th><th>Cuadro</th><th>Jaulas</th><th>Aves</th><th>Kg cuadro</th><th>Sacos</th><th>Kg por comedero</th>${balde?'<th>Baldes por comedero</th>':''}</tr>
- ${cuad.map(x=>`<tr><td>${x.z}</td><td>${x.k}</td><td>${x.j}</td><td>${f1(x.aves)}${x.real?' ✔':''}</td><td>${x.kg.toFixed(1)}</td><td>${(x.kg/(+cfg.kgSaco||40)).toFixed(2)}</td><td><b>${x.com.toFixed(2)}</b></td>${balde?`<td>${(x.com/balde).toFixed(1)}</td>`:''}</tr>`).join('')}
- <tr class="tot"><td colspan="2">Total</td><td>${J}</td><td>${f1(aves)}</td><td>${kg.toFixed(1)}</td><td>${sacos.toFixed(2)}</td><td></td>${balde?'<td></td>':''}</tr></table></div>
- <div class="hint">Comedero = una fila de jaulas en un piso (4 filas × 2 pisos = 8 por cuadro). Cada cuadro recibe sus aves × gramos por ave, así ninguna zona recibe de más. Aves con ✔ = contadas; las demás se estiman con las jaulas.</div></div>`;
+ <div class="card" style="text-align:center">
+  <div class="hint" style="font-size:17px">Sacos de ${KS} kg que necesitas hoy</div>
+  <div style="font-size:52px;font-weight:900;color:var(--pri);line-height:1.1">${sacEnt} sacos</div>
+  <div style="font-size:17px;font-weight:700;color:var(--mu)">${f1(kg)} kg · ${grAve.toFixed(0)} g por gallina${sobra>=0.05?' · del último saco sobran '+K(sobra)+' kg':''}</div>
+  <div style="border-top:2px dashed var(--line);margin:12px 0 8px"></div>
+  <div class="hint" style="font-size:17px">${unif?'Echar en CADA comedero':'Por comedero (varía según el cuadro, mira el plan)'}${rep>1?' · total del día':''}</div>
+  <div style="font-size:44px;font-weight:900;color:var(--pri);line-height:1.1">${unif?'':'≈ '}${K(com)} kg</div>
+  <div style="font-size:18px;font-weight:800">${enSaco(com)}${balde?' · '+bal(com):''}</div>
+  ${rep>1?`<div style="font-size:20px;font-weight:800;color:var(--ok);margin-top:8px">${rep} repartos: ${unif?'':'≈ '}${K(com/rep)} kg por comedero cada vez</div>`:''}</div>
+ <div class="card"><h2>📦 Plan de reparto de sacos</h2>
+  <div class="hint" style="font-size:16px;margin-bottom:8px">Recorre los cuadros en este orden. En cada cuadro <b>abre</b> los sacos indicados, echa los kg en cada uno de sus 8 comederos y lleva lo que sobra al siguiente cuadro.</div>
+  <table class="plan"><tr><th>Cuadro</th><th>Abrir<br>sacos</th><th>Por<br>comedero</th><th>Pasa al<br>siguiente</th></tr>
+  ${plan.map(x=>`<tr><td><b style="white-space:nowrap">${x.z} ${x.k}</b><br><small>${f1(x.aves)} gallinas${x.j?' · '+x.apj.toFixed(1).replace('.',',')+'/jaula':''}</small></td><td class="ab">${x.abrir}</td><td>${x.aves?`<b>${K(x.com)} kg</b>${balde?`<br><small>${(x.com/balde).toFixed(1).replace('.',',')} baldes</small>`:''}${rep>1?`<br><small>${K(x.com/rep)} kg × ${rep}</small>`:''}`:'—'}</td><td>${x.queda>=0.05?K(x.queda)+' kg':'—'}</td></tr>`).join('')}
+  <tr class="tot"><td>Total</td><td class="ab">${abiertos}</td><td>${f1(kg)} kg</td><td>${plan[plan.length-1].queda>=0.05?K(plan[plan.length-1].queda)+' kg sobran':'—'}</td></tr></table>
+  <div class="hint">Comedero = una fila de jaulas en un piso (4 filas × 2 pisos = 8 por cuadro). Cada cuadro recibe sus gallinas × ${grAve.toFixed(0)} g, así un cuadro con jaulas de 4 gallinas recibe menos que uno con jaulas de 6.</div></div>`;
 }
 document.querySelectorAll('#aModo button').forEach(b=>b.onclick=()=>{aliModo=b.dataset.m;store('aliModo',aliModo);renderAli()});
-['aAves','aSacos','aGr','aBalde','aRep'].forEach(id=>$(id).oninput=aliCalc);$('aRep').onchange=aliCalc;
-$('aJxf').oninput=()=>{if(aliG==null)return;const c=aliCfg(aliG);c.jxf=$('aJxf').value.trim();cfg.aliJxf=c.jxf;saveCfg();renderCuadros();aliCalc()};
+['aSacos','aGr','aBalde'].forEach(id=>$(id).oninput=aliCalc);$('aRep').onchange=aliCalc;
 $('aBalde').value=cfg.aliBalde||'';$('aRep').value=String(cfg.aliRep||1);
 
 function codigoDe(n){const c=cfg.causas.find(x=>x.n===n);return c&&c.c?c.c:n}
