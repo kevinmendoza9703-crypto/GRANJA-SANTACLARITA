@@ -141,6 +141,23 @@ tr.tot td{font-weight:900;background:#faf1ec}
 .pit.al{border-color:#f0c94b;background:#fffaeb}
 .pfotos{display:flex;gap:8px;overflow-x:auto;margin-top:10px}
 .pfotos img{height:84px;border-radius:10px;border:2px solid var(--line)}
+#fi{position:fixed;inset:0;z-index:25;background:var(--bg);display:flex;flex-direction:column}
+.fitop{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:8px;text-align:center;margin-bottom:12px}.fitop div{background:#fff;border-radius:14px;padding:10px 4px;box-shadow:0 1px 4px rgba(0,0,0,.1)}.fitop b{display:block;font-size:26px;line-height:1.1}.fitop span{font-size:12px;color:var(--mu);font-weight:700}
+.fitop .big{background:var(--pri);color:#fff}.fitop .big b{font-size:40px}.fitop .big span{color:#f3d6da}
+.fimapa{display:flex;flex-direction:column;gap:8px}.fizona{display:grid;grid-template-columns:.8fr repeat(3,minmax(0,1fr));gap:6px;align-items:stretch}
+.fizn{background:#1b5e3a;color:#fff;border-radius:12px;font-weight:900;font-size:15px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:4px}.fizn small{font-size:11px;font-weight:700;opacity:.85}
+.ficel{background:#fff;border:3px solid #1b5e3a;border-radius:12px;text-align:center;padding:6px 2px;display:flex;flex-direction:column;align-items:center}.ficel small{font-size:11px;color:var(--mu);font-weight:700}.ficel b{font-size:28px;line-height:1.05;color:var(--pri)}.ficel span{font-size:10px;color:var(--mu);font-weight:700}.ficel em{font-style:normal;font-size:12px;font-weight:800;background:#ffd27a;border-radius:8px;padding:1px 6px;margin-top:3px}
+#nec{position:fixed;inset:0;z-index:27;background:var(--bg);display:flex;flex-direction:column}
+.necest{text-align:center;font-size:20px;font-weight:800;color:#1b5e3a}
+.necdot{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--no);animation:pulse 1.1s infinite;vertical-align:middle}
+.necoido{text-align:center;font-size:18px;color:var(--mu);margin-top:6px;min-height:24px}
+.necult{text-align:center;font-size:30px;font-weight:900;color:var(--pri);min-height:40px;margin-top:6px}
+.necult.flash{animation:flash .6s}
+@keyframes flash{0%{background:#ffd27a;border-radius:12px}100%{background:transparent}}
+.nectot{text-align:center;font-size:18px;margin-bottom:8px}.nectot b{font-size:34px;color:#1b5e3a}
+.necrow{display:grid;grid-template-columns:1fr 46px 56px 46px;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid #eee;font-size:19px}
+.necrow b{text-align:center;font-size:26px}.necrow button{height:46px;border-radius:12px;border:0;background:#e6dfd8;font-size:24px;font-weight:800}
+.necc button{font-size:15px;padding:8px 10px}
 #fx{position:fixed;inset:0;z-index:26;background:var(--bg);display:flex;flex-direction:column}
 .fxsvg{width:100%;max-width:420px;display:block;margin:4px auto}
 .fxtips{margin:10px 0 0;padding-left:4px;list-style:none;font-size:17px;line-height:1.7}
@@ -196,6 +213,16 @@ tr.tot td{font-weight:900;background:#faf1ec}
 .pcfg b{font-size:12px;color:var(--mu);text-align:center}
 /* inicio, pesaje y levante */
 .plan{font-size:15px}.plan th{font-size:13px;line-height:1.2}.plan td{padding:8px 4px}.plan .ab{font-size:26px;font-weight:900;color:var(--pri);text-align:center}
+.acard{background:#faf7f4;border:2px solid var(--line);border-radius:14px;padding:10px;margin-top:8px}
+.acth{display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin-bottom:6px}.acth b{font-size:18px}.acres{font-size:14px;color:var(--mu)}.acres b{color:var(--pri);font-size:17px}
+.acrow{display:grid;grid-template-columns:1fr 1.3fr;gap:8px;align-items:center;margin-top:6px;font-size:15px;font-weight:700}.acrow small{font-weight:600;color:var(--mu)}
+.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.seg button{min-height:46px;border-radius:10px;border:2px solid var(--line);background:#fff;font-size:20px;font-weight:900}.seg button.on{background:var(--pri);border-color:var(--pri);color:#fff}
+.acotr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.acotr label{margin:0;font-size:12px}.acotr input{min-height:42px;text-align:center;font-size:18px;font-weight:800;padding:4px}
+.azona{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 4px;border-bottom:1px solid #eee}.azona b{font-size:20px}.azona small{color:var(--mu);font-size:14px}.azs{text-align:center}.azs b{display:block;font-size:30px;color:var(--pri);line-height:1}.azs small{font-size:12px}
+.acuad{border:2px solid var(--line);border-radius:14px;padding:10px;margin-top:8px;background:#fff}.acq1{display:flex;justify-content:space-between;align-items:baseline;gap:6px}.acq1 b{font-size:18px}.acq1 small{color:var(--mu);font-size:13px;text-align:right}
+.acq2{display:grid;grid-template-columns:.8fr .9fr 1.3fr;gap:6px;margin-top:8px;text-align:center}.acq2 div{background:#f7f1ec;border-radius:10px;padding:6px 2px}.acq2 span{display:block;font-size:12px;color:var(--mu);font-weight:700}.acq2 b{display:block;font-size:26px;line-height:1.1}.acq2 small{font-size:12px;color:var(--mu)}
+.acq2 .hl{background:var(--pri);color:#fff}.acq2 .hl span,.acq2 .hl small{color:#f3d6da}.acq2 .hl b{font-size:30px}
+.acq3{font-size:14px;color:var(--mu);margin-top:6px;text-align:center}
 .acz4{display:grid;grid-template-columns:1fr .8fr .8fr .8fr .8fr;gap:5px;align-items:center;margin-top:6px}.acz4 b{font-size:14px}.acz4 input{min-height:46px;text-align:center;font-size:19px;font-weight:800;padding:4px}
 .acz4.acz-h span{font-size:11px;color:var(--mu);font-weight:700;text-align:center;line-height:1.15}.acaves{text-align:center;font-weight:900;color:var(--pri);font-size:16px}
 .acz{display:grid;grid-template-columns:.8fr 1fr 1fr;gap:6px;align-items:center;margin-top:6px}.acz b{font-size:15px}.acz input{min-height:44px;text-align:center;font-size:18px;font-weight:800;padding:6px}
@@ -272,6 +299,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <div class="row" style="margin-top:8px"><button class="btn" id="pendNo">Descartar</button><button class="btn ok" id="pendSi">✔ Guardar todos</button></div>
  </div>
 
+ <button class="btn w" id="necBtn" style="min-height:72px;font-size:20px;margin-bottom:12px;background:#1b5e3a;color:#fff">🔁 Modo necropsia<br><small style="font-weight:600;font-size:14px">dicta gallina por gallina y la app va sumando</small></button>
  <button class="btn w" id="manualBtn">✍️ Registrar sin voz (con botones)</button>
 
  <div class="card hidden" id="formCard">
@@ -302,6 +330,26 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <button class="btn sm" id="confMano">Corregir con botones</button>
  </div>
 </div>
+<div id="fi" class="hidden" role="dialog" aria-modal="true">
+ <div class="pedh" style="background:#1b5e3a"><button class="btn sm" id="fiCerrar">✖ Cerrar</button><div><div class="pedt" id="fiTit"></div><div class="peds" id="fiSub"></div></div><span style="width:60px"></span></div>
+ <div class="pedb" id="fiBody"></div>
+ <div class="pedf" id="fiPie"></div>
+</div>
+<div id="nec" class="hidden" role="dialog" aria-modal="true">
+ <div class="pedh" style="background:#1b5e3a"><button class="btn sm" id="necFin">✔ Terminar</button><div><div class="pedt" id="necGal"></div><div class="peds">Modo necropsia · <span id="necFecha"></span></div></div><button class="btn sm" id="necPausa">⏸ Pausar</button></div>
+ <div class="pedb">
+  <div class="necest" id="necEst"></div>
+  <div class="necoido" id="necOido"></div>
+  <div class="necult" id="necUlt"></div>
+  <div class="card" style="margin-top:10px"><div id="necTot" class="nectot"></div><div id="necLista"></div>
+   <button class="btn w" id="necDeshacer" style="margin-top:10px">↶ Deshacer la última</button></div>
+  <div class="zlbl" style="text-align:left">Sumar tocando (si hay mucho ruido)</div>
+  <div class="chips necc" id="necCausas"></div>
+  <div class="zlbl" style="text-align:left;margin-top:12px">Cambiar de galpón</div>
+  <div class="chips" id="necGals"></div>
+  <div class="hint" style="font-size:15px;margin-top:12px">Di <b>“galpón 20 picaje”</b>; para las siguientes gallinas basta con la casuística: <b>“peritonitis”</b>, <b>“picaje”</b>… También: <b>“2 prolapsos”</b>, <b>“deshacer”</b>, <b>“pausa”</b>, <b>“terminar”</b>. Cada gallina se guarda al momento.</div>
+ </div>
+</div>
 <div id="exito" class="hidden"><div class="ic">✔</div><div class="tt">GUARDADO</div><div class="dd" id="exitoTxt"></div></div>
 
 <!-- INICIO -->
@@ -316,6 +364,16 @@ tr.tot td{font-weight:900;background:#faf1ec}
  <button class="btn w" style="margin-top:14px" onclick="irA('ini')">🏠 Cambiar de granja</button>
 </section>
 
+<!-- RUTA DE ALIMENTO -->
+<section id="t-ruta" class="hidden">
+ <div class="fechabar">🧭 <span id="rFechaTxt"></span></div>
+ <div class="card"><h2>Ruta de alimento</h2>
+  <div class="hint" style="font-size:16px">Recorre los galpones y entrega a cada galponero su instrucción: muéstrale la ficha, léela en voz alta o envíala por WhatsApp. Se calcula con las aves del último parte.</div>
+  <label style="margin-top:10px">Gramos por gallina (meta general)</label><input id="rGr" inputmode="decimal" style="font-size:24px;font-weight:900;text-align:center">
+  <div class="pres" id="rResumen" style="margin-top:12px"></div></div>
+ <div id="rLista"></div>
+</section>
+
 <!-- ALIMENTO POR COMEDERO -->
 <section id="t-ali" class="hidden">
  <div class="card"><h2>🌾 Alimento por comedero</h2>
@@ -328,9 +386,10 @@ tr.tot td{font-weight:900;background:#faf1ec}
    <div class="row tipo" id="aModo"><button class="btn" data-m="gr">Según gramos por gallina<br><small>recomendado</small></button><button class="btn" data-m="sacos">Según sacos del día<br><small>compara con la meta</small></button></div>
    <div id="aSacosBox" class="hidden"><label style="margin-top:12px">Sacos de 40 kg del día</label><input id="aSacos" inputmode="decimal"></div>
   </div>
-  <div class="card"><h2>3. Gallinas por jaula en cada cuadro</h2>
-   <div class="hint" style="font-size:16px">En cada cuadro escribe <b>cuántas jaulas</b> tienen 4, 5 y 6 gallinas. La app suma las gallinas del cuadro.</div>
-   <div class="row" style="margin-top:8px"><button class="btn sm" id="aCopiar">Copiar Tanque 1 a todos los cuadros</button><button class="btn sm" id="aLimpiar">Limpiar</button></div>
+  <div class="card"><h2>3. Patas y gallinas de cada cuadro</h2>
+   <div class="hint" style="font-size:16px">Indica las jaulas que tiene cada pata. Marca las <b>patas</b> del cuadro y las <b>gallinas por jaula</b> que tiene la mayoría. Si algunas jaulas tienen otra cantidad, escribe cuántas.</div>
+   <div class="acrow" style="margin-top:10px"><span>Jaulas por pata<br><small>(contando los 2 pisos)</small></span><input id="aJxp" inputmode="numeric" style="min-height:46px;text-align:center;font-size:20px;font-weight:900"></div>
+   <div class="row" style="margin-top:8px"><button class="btn sm" id="aCopiar">Copiar Tanque 1 a todos</button><button class="btn sm" id="aLimpiar">Reiniciar</button></div>
    <div id="aCuad"></div>
    <div id="aAvesTot" style="margin-top:12px"></div>
   </div>
@@ -493,7 +552,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <input type="file" id="bkFile" accept=".json" class="hidden">
   <button class="btn danger w" id="bkDel" style="margin-top:10px">Borrar todos los registros</button>
  </div>
- <div class="hint" style="text-align:center">Granja Santa Clarita v3.5 · Kevin Mendoza Astocaza</div>
+ <div class="hint" style="text-align:center">Granja Santa Clarita v3.8 · Kevin Mendoza Astocaza</div>
 </section>
 
 </main>
@@ -786,7 +845,7 @@ if(window.speechSynthesis){elegirVoz();try{speechSynthesis.onvoiceschanged=elegi
 function hablar(txt,cb){
  if(!cfg.tts||!window.speechSynthesis){if(cb)cb();return}
  let hecho=false;const fin=()=>{if(hecho)return;hecho=true;if(cb)setTimeout(cb,400)};
- try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);if(vozES){u.voice=vozES;u.lang=vozES.lang}else u.lang='es-PE';u.rate=+cfg.vel||0.95;u.pitch=1;u.onend=fin;u.onerror=fin;speechSynthesis.speak(u)}catch(e){fin();return}
+ try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);if(vozES){u.voice=vozES;u.lang=vozES.lang}else u.lang='es-PE';u.rate=+cfg.vel||0.95;u.volume=1;u.pitch=1;u.onend=fin;u.onerror=fin;speechSynthesis.speak(u)}catch(e){fin();return}
  setTimeout(fin,2500+txt.length*110);
 }
 function describir(g){const c=Object.entries(g.counts);return 'Galpón '+(g.galpon??'sin número')+'. '+c.map(([k,v])=>k+': '+v).join('. ')+(c.length?'. Total: '+sumCounts(g.counts)+(sumCounts(g.counts)===1?' muerta':' muertas'):'')}
@@ -881,6 +940,61 @@ function escuchar(){
  try{rec.start()}catch(e){$('estado').textContent='No se pudo iniciar el micrófono: '+e.message}
 }
 $('mic').onclick=escuchar;
+
+/* ---------- MODO NECROPSIA: suma gallina por gallina ---------- */
+let nec=null; // {g, activo, rec, hist:[], escuchando}
+function necFecha(){return isAdmin()?($('fFecha').value||hoy()):hoy()}
+function necReg(f,g){const id='nec|'+f+'|'+g+'|'+cur.u;let r=regs.find(x=>x.id===id);if(!r){r={id,fecha:f,galpon:+g,counts:{},hora:new Date().toTimeString().slice(0,5),usuario:cur.u,nombre:cur.nombre,texto:'Necropsia (suma por gallina)'};regs.push(r)}return r}
+function necSumar(g,causa,n){const f=necFecha();const r=necReg(f,g);r.counts[causa]=(r.counts[causa]||0)+n;if(r.counts[causa]<=0)delete r.counts[causa];
+ if(!Object.keys(r.counts).length){regs=regs.filter(x=>x!==r);saveRegs();encolar({op:'del',id:r.id})}else{r.hora=new Date().toTimeString().slice(0,5);saveRegs();encolar({op:'up',r})}
+ return r.counts[causa]||0}
+function necAbrir(){
+ if(!SR){toast('Este navegador no permite dictado. Puedes sumar tocando las casuísticas.')}
+ nec={g:form.galpon||null,activo:false,hist:[],ult:''};$('nec').classList.remove('hidden');necRender();if(SR)necIniciar()}
+function necRender(){
+ const f=necFecha(),g=nec.g;$('necGal').textContent=g?'GALPÓN '+g:'Di el número de galpón';$('necFecha').textContent=fmtF(f);
+ $('necEst').innerHTML=nec.activo?'<span class="necdot"></span> Escuchando… di la casuística':'⏸ En pausa';$('necPausa').textContent=nec.activo?'⏸ Pausar':'▶ Seguir';
+ $('necOido').textContent=nec.ult||'Ej.: “galpón 20 picaje”, luego solo “peritonitis”, “picaje”…';
+ const r=g?regs.find(x=>x.id==='nec|'+f+'|'+g+'|'+cur.u):null;const c=r?r.counts:{};const tot=Object.values(c).reduce((a,b)=>a+b,0);
+ $('necTot').innerHTML=g?`<b>${tot}</b> gallina${tot===1?'':'s'} revisada${tot===1?'':'s'} en el galpón ${g}`:'';
+ $('necLista').innerHTML=g?(Object.keys(c).length?Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="necrow"><span>${esc(k)}</span><button data-c="${esc(k)}" data-d="-1">−</button><b>${v}</b><button data-c="${esc(k)}" data-d="1">+</button></div>`).join(''):'<div class="hint" style="font-size:17px;text-align:center">Todavía no hay gallinas en este galpón.</div>'):'';
+ $('necLista').querySelectorAll('button').forEach(b=>b.onclick=()=>{const v=necSumar(g,b.dataset.c,+b.dataset.d);nec.hist.push({g,c:b.dataset.c,n:+b.dataset.d});necRender()});
+ $('necCausas').innerHTML=g?causaNames().map(n=>`<button data-c="${esc(n)}">${esc(n)}</button>`).join(''):'';
+ $('necCausas').querySelectorAll('button').forEach(b=>b.onclick=()=>{const v=necAgregar(g,b.dataset.c,1,false);if(!nec.activo)necHablar(b.dataset.c+', van '+v)});
+ $('necGals').innerHTML=galList().map(x=>`<button data-g="${x}" class="${x===g?'on':''}">${x}</button>`).join('');
+ $('necGals').querySelectorAll('button').forEach(b=>b.onclick=()=>{nec.g=+b.dataset.g;necRender()});
+ $('necDeshacer').disabled=!nec.hist.length;
+}
+function necAgregar(g,causa,n,voz){const v=necSumar(g,causa,n);nec.hist.push({g,c:causa,n});try{navigator.vibrate&&navigator.vibrate(60)}catch(e){}
+ const el=$('necUlt');el.textContent='+'+n+' '+causa+' → '+v;el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');necRender();return v}
+function necDeshacer(hablarlo){const h=nec.hist.pop();if(!h){if(hablarlo)necHablar('No hay nada que deshacer');return'No hay nada que deshacer'}const v=necSumar(h.g,h.c,-h.n);$('necUlt').textContent='↶ Se quitó '+h.n+' '+h.c;necRender();const m='Quitado. '+h.c+', quedan '+v;if(hablarlo)necHablar(m);return m}
+function necProcesar(texto){
+ nec.ult='“'+texto+'”';const t=' '+norm(texto)+' ';
+ if(/ (deshacer|borrar|borra|anular|anula|quitar|quita|me equivoque|error) /.test(t)){return necDeshacer(false)}
+ if(/ (terminar|termina|finalizar|salir|listo termine) /.test(t)){necCerrar();return 'Necropsia terminada'}
+ if(/ (pausa|pausar) /.test(t)){nec.activo=false;necRender();return 'En pausa'}
+ const r=interpretar(texto);if(!r.grupos.length){necRender();return 'No entendí'}
+ const dichos=[];
+ let cambio=false;r.grupos.forEach(gr=>{if(gr.galpon!=null&&gr.galpon!==nec.g){nec.g=gr.galpon;cambio=true}const g=nec.g;if(!g)return;Object.entries(gr.counts).forEach(([c,n])=>{const v=necAgregar(g,c,n,true);dichos.push((n>1?'más '+n+', ':'')+c+', van '+v)})});
+ if(!nec.g){necRender();return 'Diga el número de galpón'}
+ if(!dichos.length){necRender();return 'Galpón '+nec.g+'. Diga la casuística'}
+ necRender();return(cambio?'Galpón '+nec.g+'. ':'')+dichos.join('. ')}
+function necIniciar(){if(!nec||!SR)return;nec.activo=true;necRender();necEscuchar()}
+function necEscuchar(){
+ if(!nec||!nec.activo)return;try{speechSynthesis.cancel()}catch(e){}
+ const rc=new SR();nec.rec=rc;rc.lang='es-PE';rc.interimResults=true;rc.continuous=false;let fin='';
+ rc.onresult=e=>{let it='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)fin+=e.results[i][0].transcript+' ';else it+=e.results[i][0].transcript}$('necOido').textContent='“'+(fin+it).trim()+'”'};
+ rc.onerror=e=>{if(e.error==='not-allowed'||e.error==='audio-capture'){nec.activo=false;necRender();toast('Activa el permiso del micrófono')}};
+ rc.onend=()=>{if(!nec)return;const f=fin.trim();
+  if(f){const resp=necProcesar(f);if(nec&&nec.activo)necHablar(resp,()=>setTimeout(necEscuchar,150));else if(resp)necHablar(resp)}
+  else if(nec.activo)setTimeout(necEscuchar,200)};
+ try{rc.start()}catch(e){setTimeout(necEscuchar,500)}}
+function necHablar(txt,cb){const t=cfg.tts;cfg.tts=true;hablar(txt,cb);cfg.tts=t}
+function necCerrar(){if(!nec)return;nec.activo=false;try{nec.rec&&nec.rec.abort()}catch(e){}try{speechSynthesis.cancel()}catch(e){}const f=necFecha();const n=regs.filter(r=>r.id.startsWith('nec|'+f+'|')).reduce((a,r)=>a+sumCounts(r.counts),0);nec=null;$('nec').classList.add('hidden');renderReg();if(n)toast('Necropsia guardada: '+n+' gallinas hoy')}
+$('necBtn').onclick=necAbrir;
+$('necPausa').onclick=()=>{if(!nec)return;if(nec.activo){nec.activo=false;try{nec.rec&&nec.rec.abort()}catch(e){}necRender()}else necIniciar()};
+$('necDeshacer').onclick=()=>{if(nec)necDeshacer(!nec.activo)};
+$('necFin').onclick=necCerrar;
 
 /* ---------- historial ---------- */
 function renderHis(){
@@ -1277,12 +1391,14 @@ async function fxGuardar(){
  const auto=fx.auto;fx.guardado=true;$('fx').classList.add('hidden');fx=null;$('pFecha').value=f;exito((auto?'✔ Todo cuadra · ':'')+'Parte guardado · '+n+' galpones');renderPrd()}
 $('pFotoParte').onclick=fxAbrir;
 
-/* ---------- DISTRIBUCIÓN DE ALIMENTO POR COMEDERO ---------- */
-const ALI_Z=['Tanque','Medio','Fondo'],ALI_N=[4,5,6];
-let aliG=null,aliModo=load('aliModo','gr');
-function aliCfg(g){cfg.aliG=cfg.aliG||{};let c=cfg.aliG[g];if(!c||!Array.isArray(c.q))c=cfg.aliG[g]={gr:(c&&c.gr)||'',q:Array.from({length:9},()=>({4:'',5:'',6:''}))};return c}
+/* ---------- DISTRIBUCIÓN DE ALIMENTO: por zona, por cuadro y por comedero ---------- */
+const ALI_Z=['Tanque','Medio','Fondo'],ALI_N=[4,5,6],ALI_COM=8;
+function aliJxp(){return +cfg.aliJxp||10}
+let aliG=null,aliModo=load('aliModo','gr'),aliG_parte=null;
+function aliNuevoQ(){return{p:10,b:6,o4:'',o5:'',o6:''}}
+function aliCfg(g){cfg.aliG=cfg.aliG||{};let c=cfg.aliG[g];if(!c||!Array.isArray(c.q)||!c.q[0]||c.q[0].p===undefined)c=cfg.aliG[g]={gr:(c&&c.gr)||'',q:Array.from({length:9},aliNuevoQ)};return c}
 function aliUltimo(g){const fs=Object.keys(prod).filter(f=>prod[f].g&&prod[f].g[g]).sort();if(!fs.length)return null;const f=fs[fs.length-1];return{f,o:pcalc(f,g)}}
-function aliCuadro(q){let j=0,a=0;ALI_N.forEach(n=>{const v=pnum(q[n])||0;j+=v;a+=v*n});return{j,a}}
+function aliCuadro(q){const J=(+q.p||0)*aliJxp();let otras=0,a=0;ALI_N.forEach(n=>{if(n===+q.b)return;const v=pnum(q['o'+n])||0;otras+=v;a+=v*n});const base=J-otras;return{J,base,ok:base>=0,a:a+Math.max(0,base)*(+q.b||0)}}
 function renderAli(){
  $('aGalChips').innerHTML=pGalpones().map(g=>`<button data-g="${g}" class="${g===aliG?'on':''}">${g}</button>`).join('');
  $('aGalChips').querySelectorAll('button').forEach(b=>b.onclick=()=>aliElegir(+b.dataset.g));
@@ -1290,59 +1406,109 @@ function renderAli(){
  $('aSacosBox').classList.toggle('hidden',aliModo!=='sacos');
  if(aliG==null){$('aDatos').classList.add('hidden');$('aRes').innerHTML='<div class="hint" style="font-size:17px">Elige un galpón para empezar.</div>';return}
  $('aDatos').classList.remove('hidden');aliCalc()}
-function aliElegir(g){aliG=g;const c=aliCfg(g);const u=aliUltimo(g);aliG_parte=u;
- $('aSacos').value=u&&u.o.sacos!=null?u.o.sacos:'';$('aGr').value=c.gr||cfg.aliGr||'';renderCuadros();renderAli()}
-let aliG_parte=null;
+function aliElegir(g){aliG=g;const c=aliCfg(g);aliG_parte=aliUltimo(g);
+ $('aSacos').value=aliG_parte&&aliG_parte.o.sacos!=null?aliG_parte.o.sacos:'';$('aGr').value=c.gr||cfg.aliGr||'';renderCuadros();renderAli()}
 function renderCuadros(){const c=aliCfg(aliG);
- $('aCuad').innerHTML='<div class="acz4 acz-h"><b></b><span>Jaulas con 4</span><span>Jaulas con 5</span><span>Jaulas con 6</span><span>Gallinas</span></div>'+ALI_Z.map((z,zi)=>`<div class="aczona">${z}</div>`+[0,1,2].map(k=>{const i=zi*3+k,q=c.q[i];return`<div class="acz4"><b>Cuadro ${k+1}</b>${ALI_N.map(n=>`<input data-i="${i}" data-n="${n}" inputmode="numeric" value="${q[n]}" placeholder="0">`).join('')}<span class="acaves" id="acA${i}"></span></div>`}).join('')).join('');
- $('aCuad').querySelectorAll('input').forEach(inp=>inp.oninput=()=>{c.q[+inp.dataset.i][inp.dataset.n]=inp.value.trim();saveCfg();aliCalc()})}
-$('aCopiar').onclick=()=>{if(aliG==null)return;const c=aliCfg(aliG);const q0=c.q[0];if(!ALI_N.some(n=>pnum(q0[n]))){toast('Primero llena el Tanque, cuadro 1');return}c.q=c.q.map(()=>({...q0}));saveCfg();renderCuadros();aliCalc();toast('Copiado a los 9 cuadros: ajusta los que sean distintos')};
-$('aLimpiar').onclick=e=>twoTap(e.target,()=>{const c=aliCfg(aliG);c.q=Array.from({length:9},()=>({4:'',5:'',6:''}));saveCfg();renderCuadros();aliCalc()},'¿Limpiar todo?');
+ $('aCuad').innerHTML=ALI_Z.map((z,zi)=>`<div class="aczona">${z}</div>`+[0,1,2].map(k=>{const i=zi*3+k,q=c.q[i];const otras=ALI_N.filter(n=>n!==+q.b);
+  return`<div class="acard" data-i="${i}"><div class="acth"><b>Cuadro ${k+1}</b><span class="acres" id="acA${i}"></span></div>
+  <div class="acrow"><span>Patas</span><div class="seg">${[8,9,10].map(n=>`<button data-k="p" data-v="${n}" class="${+q.p===n?'on':''}">${n}</button>`).join('')}</div></div>
+  <div class="acrow"><span>Gallinas por jaula<br><small>(la mayoría)</small></span><div class="seg">${ALI_N.map(n=>`<button data-k="b" data-v="${n}" class="${+q.b===n?'on':''}">${n}</button>`).join('')}</div></div>
+  <div class="acrow"><span>Jaulas con otra cantidad</span><div class="acotr">${otras.map(n=>`<label>con ${n}<input data-k="o${n}" inputmode="numeric" value="${q['o'+n]}" placeholder="0"></label>`).join('')}</div></div></div>`}).join('')).join('');
+ $('aCuad').querySelectorAll('.acard').forEach(card=>{const q=c.q[+card.dataset.i];
+  card.querySelectorAll('button').forEach(b=>b.onclick=()=>{q[b.dataset.k]=+b.dataset.v;saveCfg();renderCuadros();aliCalc()});
+  card.querySelectorAll('input').forEach(inp=>inp.oninput=()=>{q[inp.dataset.k]=inp.value.trim();saveCfg();aliCalc()})});
+ aliCalc()}
+$('aCopiar').onclick=()=>{if(aliG==null)return;const c=aliCfg(aliG);const q0=c.q[0];c.q=c.q.map(()=>({...q0}));saveCfg();renderCuadros();toast('Copiado a los 9 cuadros: ajusta los que sean distintos')};
+$('aLimpiar').onclick=e=>twoTap(e.target,()=>{const c=aliCfg(aliG);c.q=Array.from({length:9},aliNuevoQ);saveCfg();renderCuadros()},'¿Reiniciar todo?');
 function aliCalc(){
  if(aliG==null)return;const c=aliCfg(aliG),R=$('aRes'),KS=+cfg.kgSaco||40;
- const cq=c.q.map(aliCuadro);cq.forEach((x,i)=>{const e=$('acA'+i);if(e)e.textContent=x.a?f1(x.a):'—'});
- const J=cq.reduce((s,x)=>s+x.j,0),aves=cq.reduce((s,x)=>s+x.a,0);
+ const cq=c.q.map(aliCuadro);cq.forEach((x,i)=>{const e=$('acA'+i);if(e)e.innerHTML=x.ok?`${x.J} jaulas · <b>${f1(x.a)}</b> gallinas`:'<b style="color:var(--no)">Revisa: más jaulas que las de las patas</b>'});
+ const J=cq.reduce((s,x)=>s+x.J,0),aves=cq.reduce((s,x)=>s+x.a,0);
  const avParte=aliG_parte&&aliG_parte.o.neto?Math.round(aliG_parte.o.neto):null;
- $('aAvesTot').innerHTML=aves?`<div class="pres"><div><b>${f1(aves)}</b><span>gallinas en jaulas</span></div><div><b>${f1(J)}</b><span>jaulas con gallinas</span></div><div><b>${avParte?f1(avParte):'—'}</b><span>aves según el parte${aliG_parte?' ('+fmtF(aliG_parte.f).slice(0,5)+')':''}</span></div></div>`:'';
- const vacios=cq.map((x,i)=>x.a?null:ALI_Z[Math.floor(i/3)]+' '+(i%3+1)).filter(Boolean);
- if(!aves){R.innerHTML='<div class="palert">Escribe en cada cuadro cuántas jaulas tienen 4, 5 y 6 gallinas.</div>';return}
+ $('aAvesTot').innerHTML=`<div class="pres"><div><b>${f1(aves)}</b><span>gallinas (por jaulas)</span></div><div><b>${f1(J)}</b><span>jaulas</span></div><div><b>${avParte?f1(avParte):'—'}</b><span>aves según el parte${aliG_parte?' ('+fmtF(aliG_parte.f).slice(0,5)+')':''}</span></div></div>`;
+ if(cq.some(x=>!x.ok)){R.innerHTML='<div class="palert">Hay un cuadro con más jaulas anotadas que las que tienen sus patas. Corrígelo.</div>';return}
+ if(!aves){R.innerHTML='<div class="palert">Marca las patas y las gallinas por jaula de cada cuadro.</div>';return}
  const gMeta=pnum($('aGr').value);if(gMeta){c.gr=gMeta;cfg.aliGr=gMeta;saveCfg()}
  let kg,difMeta=null;
  if(aliModo==='gr'){if(!gMeta){R.innerHTML='<div class="palert">Escribe cuántos gramos debe comer cada gallina.</div>';return}kg=aves*gMeta/1000}
  else{const s=pnum($('aSacos').value);if(!s){R.innerHTML='<div class="palert">Escribe los sacos de alimento del día.</div>';return}kg=s*KS;if(gMeta)difMeta=kg-aves*gMeta/1000}
  const rep=+$('aRep').value||1,balde=pnum($('aBalde').value);cfg.aliBalde=balde||'';cfg.aliRep=rep;saveCfg();
- const grAve=kg*1000/aves,sacos=kg/KS;
- const K=x=>x.toFixed(1).replace('.',',');const bal=x=>balde?(x/balde).toFixed(1).replace('.',',')+' baldes':'';
- const cuad=cq.map((x,i)=>({z:ALI_Z[Math.floor(i/3)],k:i%3+1,j:x.j,aves:x.a,kg:x.a*grAve/1000,com:x.a*grAve/1000/8,apj:x.j?x.a/x.j:0}));
- const warn=[];
- if(vacios.length)warn.push('Sin datos en: '+vacios.join(', ')+'. Esos cuadros no recibirán alimento; si tienen gallinas, llénalos.');
- if(avParte&&Math.abs(aves-avParte)/avParte>0.02)warn.push('Las gallinas contadas por jaula ('+f1(aves)+') difieren de las aves del parte ('+f1(avParte)+') en '+f1(Math.abs(aves-avParte))+'. Revisa los cuadros.');
- if(difMeta!=null&&Math.abs(difMeta)>=1)warn.push((difMeta>0?'Sobran ':'Faltan ')+Math.abs(difMeta).toFixed(1)+' kg ('+(Math.abs(difMeta)/KS).toFixed(2)+' sacos) para la meta de '+gMeta+' g por gallina. Con estos sacos cada gallina recibe '+grAve.toFixed(0)+' g.');
- if(grAve<85||grAve>135)warn.push('Equivale a '+grAve.toFixed(0)+' g por gallina: revisa los sacos o los gramos.');
+ const gpa=kg*1000/aves;
+ const K=x=>x.toFixed(1).replace('.',',');const S2=x=>(x/KS).toFixed(2).replace('.',',');const bal=x=>balde?(x/balde).toFixed(1).replace('.',',')+' baldes':'';
  const enSaco=x=>{const r=x/KS;const F=[[1/4,'¼'],[1/3,'⅓'],[1/2,'½'],[2/3,'⅔'],[3/4,'¾'],[1,'1']];let m=F[0];F.forEach(f=>{if(Math.abs(f[0]-r)<Math.abs(m[0]-r))m=f});const d=x-m[0]*KS;return(Math.abs(d)<0.3?'':(d>0?'un poco más de ':'un poco menos de '))+m[1]+(m[1]==='1'?' saco':' de saco')};
- let resto=0,abiertos=0;const TOL=0.5;const plan=cuad.map(x=>{let n=0;while(resto+TOL<x.kg){resto+=KS;n++}resto=Math.max(0,resto-x.kg);abiertos+=n;return{...x,abrir:n,queda:resto}});
- const llenos=cuad.filter(x=>x.aves);const unif=llenos.every(x=>Math.abs(x.com-llenos[0].com)<0.05);const com=unif?llenos[0].com:kg/(llenos.length*8);
+ const cuad=cq.map((x,i)=>({zi:Math.floor(i/3),z:ALI_Z[Math.floor(i/3)],k:i%3+1,p:c.q[i].p,J:x.J,aves:x.a,kg:x.a*gpa/1000,com:x.a*gpa/1000/ALI_COM,jxc:x.J/ALI_COM}));
+ let resto=0,abiertos=0;const TOL=0.5;cuad.forEach(x=>{let n=0;while(resto+TOL<x.kg){resto+=KS;n++}resto=Math.max(0,resto-x.kg);abiertos+=n;x.abrir=n;x.queda=resto});
+ const zonas=ALI_Z.map((z,zi)=>{const l=cuad.filter(x=>x.zi===zi);const k=l.reduce((a,x)=>a+x.kg,0);return{z,aves:l.reduce((a,x)=>a+x.aves,0),kg:k,abrir:l.reduce((a,x)=>a+x.abrir,0),l}});
+ const warn=[];
+ if(avParte&&Math.abs(aves-avParte)/avParte>0.02)warn.push('Las gallinas calculadas por jaulas ('+f1(aves)+') difieren de las aves del parte ('+f1(avParte)+') en '+f1(Math.abs(aves-avParte))+'. Revisa patas y gallinas por jaula.');
+ if(difMeta!=null&&Math.abs(difMeta)>=1)warn.push((difMeta>0?'Sobran ':'Faltan ')+K(Math.abs(difMeta))+' kg ('+S2(Math.abs(difMeta))+' sacos) para la meta de '+gMeta+' g por gallina. Con estos sacos cada gallina recibe '+gpa.toFixed(0)+' g.');
+ if(gpa<85||gpa>135)warn.push('Equivale a '+gpa.toFixed(0)+' g por gallina: revisa los sacos o los gramos.');
  const sacEnt=Math.max(1,Math.ceil((kg-0.5)/KS)),sobra=sacEnt*KS-kg;
  R.innerHTML=`${warn.map(w=>`<div class="palert">⚠️ ${esc(w)}</div>`).join('')}
  <div class="card" style="text-align:center">
-  <div class="hint" style="font-size:17px">Sacos de ${KS} kg que necesitas hoy</div>
+  <div class="hint" style="font-size:17px">Galpón ${aliG} · ${gpa.toFixed(0)} g por gallina</div>
   <div style="font-size:52px;font-weight:900;color:var(--pri);line-height:1.1">${sacEnt} sacos</div>
-  <div style="font-size:17px;font-weight:700;color:var(--mu)">${f1(kg)} kg · ${grAve.toFixed(0)} g por gallina${sobra>=0.05?' · del último saco sobran '+K(sobra)+' kg':''}</div>
-  <div style="border-top:2px dashed var(--line);margin:12px 0 8px"></div>
-  <div class="hint" style="font-size:17px">${unif?'Echar en CADA comedero':'Por comedero (varía según el cuadro, mira el plan)'}${rep>1?' · total del día':''}</div>
-  <div style="font-size:44px;font-weight:900;color:var(--pri);line-height:1.1">${unif?'':'≈ '}${K(com)} kg</div>
-  <div style="font-size:18px;font-weight:800">${enSaco(com)}${balde?' · '+bal(com):''}</div>
-  ${rep>1?`<div style="font-size:20px;font-weight:800;color:var(--ok);margin-top:8px">${rep} repartos: ${unif?'':'≈ '}${K(com/rep)} kg por comedero cada vez</div>`:''}</div>
- <div class="card"><h2>📦 Plan de reparto de sacos</h2>
-  <div class="hint" style="font-size:16px;margin-bottom:8px">Recorre los cuadros en este orden. En cada cuadro <b>abre</b> los sacos indicados, echa los kg en cada uno de sus 8 comederos y lleva lo que sobra al siguiente cuadro.</div>
-  <table class="plan"><tr><th>Cuadro</th><th>Abrir<br>sacos</th><th>Por<br>comedero</th><th>Pasa al<br>siguiente</th></tr>
-  ${plan.map(x=>`<tr><td><b style="white-space:nowrap">${x.z} ${x.k}</b><br><small>${f1(x.aves)} gallinas${x.j?' · '+x.apj.toFixed(1).replace('.',',')+'/jaula':''}</small></td><td class="ab">${x.abrir}</td><td>${x.aves?`<b>${K(x.com)} kg</b>${balde?`<br><small>${(x.com/balde).toFixed(1).replace('.',',')} baldes</small>`:''}${rep>1?`<br><small>${K(x.com/rep)} kg × ${rep}</small>`:''}`:'—'}</td><td>${x.queda>=0.05?K(x.queda)+' kg':'—'}</td></tr>`).join('')}
-  <tr class="tot"><td>Total</td><td class="ab">${abiertos}</td><td>${f1(kg)} kg</td><td>${plan[plan.length-1].queda>=0.05?K(plan[plan.length-1].queda)+' kg sobran':'—'}</td></tr></table>
-  <div class="hint">Comedero = una fila de jaulas en un piso (4 filas × 2 pisos = 8 por cuadro). Cada cuadro recibe sus gallinas × ${grAve.toFixed(0)} g, así un cuadro con jaulas de 4 gallinas recibe menos que uno con jaulas de 6.</div></div>`;
+  <div style="font-size:17px;font-weight:700;color:var(--mu)">de ${KS} kg · ${f1(kg)} kg para ${f1(aves)} gallinas${sobra>=0.05?' · sobran '+K(sobra)+' kg del último saco':''}</div></div>
+ <div class="card"><h2>1️⃣ Por zona</h2>${zonas.map(z=>`<div class="azona"><div><b>${z.z}</b><br><small>${f1(z.aves)} gallinas · ${K(z.kg)} kg (${S2(z.kg)} sacos)</small></div><div class="azs"><b>${z.abrir}</b><small>sacos a abrir</small></div></div>`).join('')}</div>
+ <div class="card"><h2>2️⃣ Por cuadro y 3️⃣ por comedero</h2>
+  <div class="hint" style="font-size:16px;margin-bottom:6px">Ve en orden. En cada cuadro <b>abre</b> los sacos indicados, echa los kg en cada uno de sus <b>8 comederos</b> y lleva lo que sobra al siguiente cuadro.</div>
+  ${zonas.map(z=>`<div class="aczona">${z.z}</div>`+z.l.map(x=>`<div class="acuad">
+   <div class="acq1"><b>Cuadro ${x.k}</b><small>${x.p} patas · ${x.J} jaulas · ${f1(x.aves)} gallinas</small></div>
+   <div class="acq2"><div><span>Abrir</span><b>${x.abrir}</b><small>sacos</small></div><div><span>Cuadro</span><b>${K(x.kg)}</b><small>kg</small></div><div class="hl"><span>Cada comedero</span><b>${K(x.com)}</b><small>kg${balde?' · '+bal(x.com):''}</small></div></div>
+   <div class="acq3">${enSaco(x.com)} por comedero${rep>1?` · ${rep} repartos de ${K(x.com/rep)} kg`:''}${x.queda>=0.05?` · pasa <b>${K(x.queda)} kg</b> al siguiente cuadro`:''}</div></div>`).join('')).join('')}
+  <div class="hint">Comedero = una fila de jaulas en un piso (4 filas × 2 pisos = 8 por cuadro; ${aliJxp()} jaulas por pata). Cada cuadro recibe sus gallinas × ${gpa.toFixed(0)} g, así un cuadro con menos patas o jaulas de 4 gallinas recibe menos.</div></div>`;
 }
 document.querySelectorAll('#aModo button').forEach(b=>b.onclick=()=>{aliModo=b.dataset.m;store('aliModo',aliModo);renderAli()});
 ['aSacos','aGr','aBalde'].forEach(id=>$(id).oninput=aliCalc);$('aRep').onchange=aliCalc;
-$('aBalde').value=cfg.aliBalde||'';$('aRep').value=String(cfg.aliRep||1);
+$('aBalde').value=cfg.aliBalde||'';$('aRep').value=String(cfg.aliRep||1);$('aJxp').value=aliJxp();
+$('aJxp').oninput=()=>{const v=pnum($('aJxp').value);if(v){cfg.aliJxp=v;saveCfg();aliCalc()}};
+
+/* ---------- RUTA DE ALIMENTO: instrucciones para cada galponero ---------- */
+let fiG=null;
+function rutaLog(){return load('aliLog',{})}
+function rutaPlan(g){
+ const c=aliCfg(g),KS=+cfg.kgSaco||40,u=aliUltimo(g);
+ const cq=c.q.map(aliCuadro);const avCfg=cq.reduce((s,x)=>s+(x.ok?x.a:0),0);const config=avCfg>0&&cq.every(x=>x.ok);
+ const avParte=u&&u.o.neto?Math.round(u.o.neto):null;const aves=avParte||(config?avCfg:null);
+ const gpa=pnum(c.gr)||pnum(cfg.aliGr)||(u&&u.o.gr?Math.round(u.o.gr):null);
+ if(!aves||!gpa)return{g,falta:!aves?'aves':'gramos',u};
+ const kg=aves*gpa/1000;
+ // reparto: si los cuadros están configurados se reparte según sus gallinas; si no, en partes iguales
+ const pesos=config?cq.map(x=>x.a/avCfg):Array(9).fill(1/9);
+ const cuad=pesos.map((w,i)=>({zi:Math.floor(i/3),z:ALI_Z[Math.floor(i/3)],k:i%3+1,aves:aves*w,kg:kg*w,com:kg*w/ALI_COM,p:c.q[i].p}));
+ let resto=0;cuad.forEach(x=>{let n=0;while(resto+0.5<x.kg){resto+=KS;n++}resto=Math.max(0,resto-x.kg);x.abrir=n;x.queda=resto});
+ const zonas=ALI_Z.map((z,zi)=>{const l=cuad.filter(x=>x.zi===zi);return{z,kg:l.reduce((a,x)=>a+x.kg,0),abrir:l.reduce((a,x)=>a+x.abrir,0),l}});
+ return{g,aves,avParte,avCfg,config,gpa,kg,sac:Math.max(1,Math.ceil((kg-0.5)/KS)),cuad,zonas,u,cod:(u&&u.o.cod)||pcfg(g).cod||'',KS}}
+function rutaTexto(P){const K=x=>x.toFixed(1).replace('.',',');
+ return`🐔 GRANJA SANTA CLARITA · ${fmtF(hoy())}\nGalpón ${P.g}${P.cod?' · Galponero '+P.cod:''}\nAves: ${f1(P.aves)} · ${P.gpa} g por gallina\nTOTAL: ${P.sac} sacos de ${P.KS} kg (${f1(P.kg)} kg)\n`+P.zonas.map(z=>`\n▶ ${z.z.toUpperCase()} (${z.abrir} sacos)\n`+z.l.map(x=>`  Cuadro ${x.k}: abrir ${x.abrir} saco${x.abrir===1?'':'s'} · ${K(x.com)} kg por comedero`).join('\n')).join('\n')+`\n\nEchar lo mismo en los 8 comederos de cada cuadro. Lo que sobra pasa al siguiente cuadro.`}
+function rutaVoz(P){const K=x=>{const r=Math.round(x*10)/10;return Number.isInteger(r)?String(r):String(r).replace('.',' coma ')};
+ return`Galpón ${P.g}. ${Math.round(P.aves)} gallinas, ${P.gpa} gramos por gallina. Total ${P.sac} sacos. `+P.zonas.map(z=>`${z.z}. `+z.l.map(x=>`Cuadro ${x.k}: abrir ${x.abrir} saco${x.abrir===1?'':'s'}, ${K(x.com)} kilos por comedero.`).join(' ')).join(' ')+' Lo mismo en los ocho comederos de cada cuadro.'}
+function renderRuta(){
+ const f=hoy(),log=rutaLog()[f]||{};$('rFechaTxt').textContent=fechaLarga(f);$('rGr').value=cfg.aliGr||'';
+ let tot={s:0,n:0,ok:0},html='',ult=null;
+ pGalpones().forEach(g=>{const P=rutaPlan(g),pc=pcfg(g),L=log[g];tot.n++;if(L)tot.ok++;if(P.sac)tot.s+=P.sac;
+  const grp=pc.lote||'';if(grp!==ult){html+=`<div class="pgrp">${esc(grp)}</div>`;ult=grp}
+  html+=`<button class="pit ${L?'ok':P.falta?'al':''}" data-g="${g}"><span class="st">${L?'✅':P.falta?'⚠️':'🧭'}</span><span style="flex:1"><span class="pg">Galpón ${g}</span><br><span class="pl">${P.cod?'Galponero '+esc(P.cod)+' · ':''}${P.aves?f1(P.aves)+' aves':'sin aves'}${L?' · indicado '+L.h:''}</span></span><span class="pv">${P.falta?(P.falta==='aves'?'Falta parte':'Falta g/ave'):P.sac+' sacos'}<br><span class="pl">${P.falta?'':P.zonas?('prom. '+(P.kg/72).toFixed(1).replace('.',',')+' kg/com.'):''}</span></span></button>`});
+ $('rResumen').innerHTML=`<div><b>${tot.ok}/${tot.n}</b><span>galponeros indicados</span></div><div><b>${tot.s}</b><span>sacos en total</span></div><div><b>${cfg.aliGr||'—'}</b><span>g por gallina</span></div>`;
+ $('rLista').innerHTML=html;$('rLista').querySelectorAll('.pit').forEach(b=>b.onclick=()=>fichaAbrir(+b.dataset.g))}
+$('rGr').oninput=()=>{const v=pnum($('rGr').value);if(v){cfg.aliGr=v;saveCfg();renderRuta()}};
+function fichaAbrir(g){fiG=g;const P=rutaPlan(g);const K=x=>x.toFixed(1).replace('.',',');const L=(rutaLog()[hoy()]||{})[g];
+ $('fiTit').textContent='GALPÓN '+g;$('fiSub').textContent=(P.cod?'Galponero '+P.cod+' · ':'')+fmtF(hoy());
+ if(P.falta){$('fiBody').innerHTML=`<div class="card"><div class="palert">${P.falta==='aves'?'Este galpón no tiene aves registradas: llena el parte de producción o configura sus cuadros.':'Falta indicar los gramos por gallina (meta).'}</div><button class="btn w" onclick="fichaAjustar()">⚙️ Configurar este galpón</button></div>`;$('fiPie').innerHTML='';$('fi').classList.remove('hidden');return}
+ $('fiBody').innerHTML=`<div class="fitop"><div><b>${f1(P.aves)}</b><span>gallinas${P.avParte?' (parte '+fmtF(P.u.f).slice(0,5)+')':''}</span></div><div><b>${P.gpa}</b><span>g por gallina</span></div><div class="big"><b>${P.sac}</b><span>sacos de ${P.KS} kg</span></div></div>
+ <div class="fimapa">${P.zonas.map(z=>`<div class="fizona"><div class="fizn">${z.z}<small>${z.abrir} sacos</small></div>${z.l.map(x=>`<div class="ficel"><small>Cuadro ${x.k}</small><b>${K(x.com)}</b><span>kg / comedero</span><em>abrir ${x.abrir}</em></div>`).join('')}</div>`).join('')}</div>
+ <div class="hint" style="text-align:center;font-size:15px">Cada número es lo que va en <b>cada uno de los 8 comederos</b> del cuadro.${P.config?'':' <b>Reparto en partes iguales</b>: configura patas y gallinas por jaula para que sea exacto.'}</div>
+ ${!P.config?'':(P.avParte&&Math.abs(P.avCfg-P.avParte)/P.avParte>0.05?`<div class="palert">Las jaulas configuradas dan ${f1(P.avCfg)} gallinas y el parte ${f1(P.avParte)}. Se usó el parte y se repartió según los cuadros.</div>`:'')}
+ ${L?`<div class="palert" style="background:#e3f4e8;border-color:#9fd3b0;color:#15652f">✅ Indicado hoy a las ${L.h} por ${esc(L.por)}</div>`:''}
+ <button class="btn sm w" onclick="fichaAjustar()" style="margin-top:8px">⚙️ Ajustar patas y gallinas de este galpón</button>`;
+ $('fiPie').innerHTML=`<div class="row"><button class="btn" id="fiVoz">🔊 Leer</button><button class="btn" id="fiWa" style="background:#25d366;color:#fff">📲 WhatsApp</button></div><button class="btn ok w" id="fiOk" style="margin-top:8px;min-height:60px;font-size:19px">${L?'✔ Volver a marcar indicado':'✔ Marcar como indicado'}</button>`;
+ $('fiVoz').onclick=()=>{const t=cfg.tts;cfg.tts=true;hablar(rutaVoz(P));cfg.tts=t};
+ $('fiWa').onclick=()=>{const t=rutaTexto(P);const a=document.createElement('a');a.href='https://wa.me/?text='+encodeURIComponent(t);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()};
+ $('fiOk').onclick=()=>{const all=rutaLog();all[hoy()]=all[hoy()]||{};all[hoy()][g]={h:new Date().toTimeString().slice(0,5),por:cur.nombre,sac:P.sac,kg:+P.kg.toFixed(1),gpa:P.gpa};store('aliLog',all);try{speechSynthesis.cancel()}catch(e){}
+  exito('Galpón '+g+' indicado');const gs=pGalpones();const sig=gs.slice(gs.indexOf(g)+1).find(x=>!(all[hoy()]||{})[x]);if(sig!=null)fichaAbrir(sig);else{$('fi').classList.add('hidden');renderRuta()}};
+ $('fi').classList.remove('hidden')}
+function fichaAjustar(){const g=fiG;$('fi').classList.add('hidden');irA('ali');aliElegir(g)}
+$('fiCerrar').onclick=()=>{try{speechSynthesis.cancel()}catch(e){}$('fi').classList.add('hidden');renderRuta()};
 
 function codigoDe(n){const c=cfg.causas.find(x=>x.n===n);return c&&c.c?c.c:n}
 function mortCodigos(f,g){const o={};regs.filter(r=>r.fecha===f&&+r.galpon===+g).forEach(r=>Object.entries(r.counts).forEach(([k,v])=>{const c=codigoDe(k);o[c]=(o[c]||0)+v}));return o}
@@ -1402,10 +1568,10 @@ function borrarLev(f,g){if(lev[f]&&lev[f].g&&lev[f].g[g]){delete lev[f].g[g];sav
 function admVis(){document.querySelectorAll('.adm').forEach(b=>b.classList.toggle('hidden',!isAdmin()))}
 
 /* ---------- GRANJAS, MÓDULOS, ACCESOS E INICIO ---------- */
-const TABS=['ini','gra','reg','prd','ali','lev','pes','his','rep','aju'];
+const TABS=['ini','gra','reg','prd','ali','ruta','lev','pes','his','rep','aju'];
 const GRANJAS={
  prod:{n:'Granja de Producción',i:'🥚',d:'Mortalidad, parte diario, pesaje y reportes',
-  mods:[{k:'prod',t:'prd',i:'📝',n:'Parte diario',d:'Producción, alimento y fotos del parte',nav:1},{k:'mort',t:'reg',i:'🎤',n:'Mortalidad',d:'Casuística por voz',nav:1},{k:'pesP',t:'pes',i:'⚖️',n:'Pesaje',d:'Tanque · Medio · Fondo',nav:1},{k:'prod',t:'ali',i:'🌾',n:'Alimento por comedero',d:'Cuánto echar en cada comedero'},{k:'mort',t:'his',i:'📋',n:'Historial',d:'Mortalidad registrada'},{k:'rep',t:'rep',i:'📊',n:'Reportes',d:'Excel y sistema'}]},
+  mods:[{k:'prod',t:'prd',i:'📝',n:'Parte diario',d:'Producción, alimento y fotos del parte',nav:1},{k:'mort',t:'reg',i:'🎤',n:'Mortalidad',d:'Casuística por voz',nav:1},{k:'pesP',t:'pes',i:'⚖️',n:'Pesaje',d:'Tanque · Medio · Fondo',nav:1},{k:'prod',t:'ruta',i:'🧭',n:'Ruta de alimento',d:'Instrucción para cada galponero'},{k:'prod',t:'ali',i:'🌾',n:'Alimento por comedero',d:'Configurar cuadros y calcular'},{k:'mort',t:'his',i:'📋',n:'Historial',d:'Mortalidad registrada'},{k:'rep',t:'rep',i:'📊',n:'Reportes',d:'Excel y sistema'}]},
  lev:{n:'Granja de Levante',i:'🐣',d:'Alimento, agua, mortalidad y pesaje de pollitas',
   mods:[{k:'lev',t:'lev',i:'📝',n:'Registro diario',d:'Alimento, agua y mortalidad',nav:1},{k:'pesL',t:'pes',i:'⚖️',n:'Pesaje',d:'Pollitas · zonas A a H',nav:1},{k:'rep',t:'rep',i:'📊',n:'Reportes',d:'Excel y sistema',nav:1}]}};
 const MODS=[{k:'prod',g:'prod',i:'📝',n:'Producción · Parte diario'},{k:'mort',g:'prod',i:'🎤',n:'Producción · Mortalidad'},{k:'pesP',g:'prod',i:'⚖️',n:'Producción · Pesaje'},{k:'lev',g:'lev',i:'📝',n:'Levante · Registro diario'},{k:'pesL',g:'lev',i:'⚖️',n:'Levante · Pesaje'},{k:'rep',g:'',i:'📊',n:'Reportes y exportación'}];
@@ -1425,7 +1591,7 @@ function irA(t){
  renderNav(t);admVis();
  const G=granja&&t!=='ini'&&t!=='aju'?GRANJAS[granja]:null;
  $('hdrSub').textContent=G?G.i+' '+G.n:'';$('hdrSub').style.display=G?'block':'none';
- ({ini:renderIni,gra:renderGra,reg:renderReg,prd:renderPrd,ali:renderAli,lev:renderLev,pes:renderPes,his:renderHis,rep:renderRep,aju:renderAju}[t]||(()=>{}))();
+ ({ini:renderIni,gra:renderGra,reg:renderReg,prd:renderPrd,ali:renderAli,ruta:renderRuta,lev:renderLev,pes:renderPes,his:renderHis,rep:renderRep,aju:renderAju}[t]||(()=>{}))();
  window.scrollTo(0,0);
 }
 function renderNav(t){
@@ -1661,7 +1827,7 @@ $('bkDel').onclick=e=>twoTap(e.target,()=>{regs=[];saveRegs();toast('Registros b
 
 /* ---------- sincronización con Google Sheets ---------- */
 let cola=load('cola',[]),sincronizando=false,syncErr='';
-function encolar(op){if(op.op==='pes'){cola=cola.filter(o=>!(o.op==='pes'&&o.p&&o.p.id===op.p.id))}if(op.op==='prod'||op.op==='lev'){cola=cola.filter(o=>!(o.op===op.op&&o.fila&&o.fila.clave===op.fila.clave))}cola.push(op);store('cola',cola);sincronizar()}
+function encolar(op){if(op.op==='up'&&op.r){cola=cola.filter(o=>!(o.op==='up'&&o.r&&o.r.id===op.r.id))}if(op.op==='pes'){cola=cola.filter(o=>!(o.op==='pes'&&o.p&&o.p.id===op.p.id))}if(op.op==='prod'||op.op==='lev'){cola=cola.filter(o=>!(o.op===op.op&&o.fila&&o.fila.clave===op.fila.clave))}cola.push(op);store('cola',cola);sincronizar()}
 async function gsPost(body){const r=await fetch(cfg.gsUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({key:cfg.gsKey||''},body)),redirect:'follow'});const j=await r.json();if(!j.ok)throw new Error(j.error||'Error del servidor');return j}
 async function sincronizar(){
  if(!cfg.gsUrl||sincronizando||!cola.length){updSync();return}
@@ -1705,7 +1871,7 @@ function adminsActivos(){return cfg.usuarios.filter(x=>x.rol==='admin'&&x.activo
 function showLogin(){const setup=!cfg.usuarios.length;$('login').classList.remove('hidden');$('lgSetup').classList.toggle('hidden',!setup);$('lgNormal').classList.toggle('hidden',setup);$('lgErr').textContent='';$('uBox').classList.add('hidden');setTimeout(()=>{try{(setup?$('suP'):$('lgU')).focus()}catch(e){}},100)}
 function iniciarSesion(){const u=findU(load('ses',''));if(u&&u.activo)entrar(u,true);else showLogin()}
 function entrar(u,silencioso){cur=u;store('ses',u.u);$('login').classList.add('hidden');$('lgP').value='';$('lgU').value='';aplicarPermisos();if(!silencioso)toast('Bienvenido, '+u.nombre)}
-function salir(){cerrarConf();cur=null;store('ses','');form={galpon:null,counts:{},editId:null};pendientes=[];renderPend();TABS.forEach(t=>$('t-'+t).classList.add('hidden'));['pEd','lEd','zEd','zRes'].forEach(i=>$(i).classList.add('hidden'));document.querySelector('nav').innerHTML='';document.querySelector('nav').style.display='none';$('hdrSub').style.display='none';showLogin()}
+function salir(){cerrarConf();if(nec)necCerrar();cur=null;store('ses','');form={galpon:null,counts:{},editId:null};pendientes=[];renderPend();TABS.forEach(t=>$('t-'+t).classList.add('hidden'));['pEd','lEd','zEd','zRes'].forEach(i=>$(i).classList.add('hidden'));document.querySelector('nav').innerHTML='';document.querySelector('nav').style.display='none';$('hdrSub').style.display='none';showLogin()}
 function aplicarPermisos(){
  $('uBox').classList.remove('hidden');$('uChip').textContent=cur.nombre.split(' ')[0]+(isAdmin()?' · Admin':'');ajNav();$('fUser').value=cur.nombre;
  renderNav();
