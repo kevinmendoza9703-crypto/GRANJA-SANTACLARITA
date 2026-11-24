@@ -411,7 +411,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <input type="file" id="bkFile" accept=".json" class="hidden">
   <button class="btn danger w" id="bkDel" style="margin-top:10px">Borrar todos los registros</button>
  </div>
- <div class="hint" style="text-align:center">Granja Santa Clarita v2.1 · Kevin Mendoza Astocaza</div>
+ <div class="hint" style="text-align:center">Granja Santa Clarita v2.2 · Kevin Mendoza Astocaza</div>
 </section>
 
 </main>
@@ -503,7 +503,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
 </div>
 <div id="fotoV" class="hidden"><div class="fvb"><button class="btn sm" id="fvCerrar">✖ Cerrar</button><button class="btn sm" id="fvMenos">－</button><button class="btn sm" id="fvMas">＋</button><button class="btn sm" id="fvGirar">⟳ Girar</button><button class="btn sm danger" id="fvBorrar">Borrar</button></div><div class="fvs" id="fvS"><img id="fvImg" alt="Foto del parte"></div></div>
 <div id="login" class="overlay hidden"><div class="lbox">
- <div class="logo"><div>🐔</div><b>Granja Santa Clarita</b></div>
+ <div class="logo"><div><img src="icon-192.png" alt="" style="width:96px;height:96px;border-radius:22px;box-shadow:0 4px 14px rgba(0,0,0,.3)"></div><b>Granja Santa Clarita</b></div>
  <div class="card" id="lgNormal">
   <h2>Iniciar sesión</h2>
   <label>Usuario</label><input id="lgU" autocomplete="username" autocapitalize="none">
@@ -552,16 +552,19 @@ const DEF_CAUSAS=[
  {c:'DIG',n:'Digestivo',s:'digestivo, digestiva, enteritis, diarrea'},
  {c:'P.CR',n:'P. crónico',s:'cronico, cronica, cronicos, cronicas, p cronico, pe cronico, pollo cronico'},
  {c:'AST',n:'Ascitis',s:'ascitis, asitis'},
- {c:'OTR',n:'Otras causas',s:'otras causas, otros, otras, otra, desconocida, sin causa'},
- {c:'CG',n:'CG (por confirmar)',s:'cg, c g, ce ge, cege'}
+ {c:'OTR',n:'Otras causas',s:'otras causas, otros, otras, otra, desconocida'},
+ {c:'CG',n:'Gato',s:'gato, gatos, comida por gato, cg, c g, ce ge, cege'},
+ {c:'NI',n:'No indica',s:'no indica, no indica mortalidad, sin causa, no se sabe'}
 ];
 const DEF_PGAL=[[19,'2158',28,'P1',96],[23,'2156',28,'P1',96],[25,'2219',28,'P1',96],[17,'2109',35,'P1+SAL',95],[18,'2112',35,'P1+SAL',95],[20,'2140',35,'P1',95],[28,'',60,'P2',89],[29,'2340',60,'P2',89],[30,'2347',60,'P2',89],[31,'2137',60,'P2',89],[13,'2091',69,'P2',86],[14,'2151',69,'P2',86],[21,'2318',69,'P2',86],[24,'2314',69,'P2',86],[12,'3352',77,'P3',81],[16,'2208',77,'P3',81],[22,'2024',77,'P3',81],[26,'2179',77,'P3',81],[15,'2214',85,'DV',77],[32,'',85,'DV',77],[33,'2326',85,'DV',77],[34,'2059',85,'DV',77]].map(([g,lote,edad,dieta,tabla])=>({g,lote,edad,ref:'2026-11-22',dieta,tabla}));
 let cfg=load('cfg',null)||{galpones:'11-34',causas:DEF_CAUSAS.map(c=>({...c})),aves:{},tts:true,auto:true,usuarios:[]};
 if(!Array.isArray(cfg.usuarios))cfg.usuarios=[];
-if(cfg.causasVer!==2){cfg.causas=DEF_CAUSAS.map(c=>({...c}));cfg.causasVer=2}
+if(!cfg.causasVer||cfg.causasVer<2){cfg.causas=DEF_CAUSAS.map(c=>({...c}));cfg.causasVer=3}
+if(cfg.causasVer===2){cfg.causas.forEach(c=>{if(c.c==='CG'&&/por confirmar/i.test(c.n)){c.n='Gato';c.s='gato, gatos, comida por gato, cg, c g, ce ge, cege'}if(c.c==='OTR')c.s=String(c.s).replace(/,\s*sin causa/,'')});if(!cfg.causas.some(c=>c.c==='NI'))cfg.causas.push({c:'NI',n:'No indica',s:'no indica, no indica mortalidad, sin causa, no se sabe'});cfg.causasVer=3}
 if(!Array.isArray(cfg.pgal))cfg.pgal=DEF_PGAL.map(x=>({...x}));if(!cfg.kgSaco)cfg.kgSaco=40;if(!cfg.hxj)cfg.hxj=360;
 try{localStorage.setItem('mortgalpon_cfg',JSON.stringify(cfg))}catch(e){}
 let regs=load('regs',[]);
+regs.forEach(r=>{if(r.counts&&r.counts['CG (por confirmar)']){r.counts['Gato']=(r.counts['Gato']||0)+r.counts['CG (por confirmar)'];delete r.counts['CG (por confirmar)']}});
 function saveCfg(){store('cfg',cfg)}function saveRegs(){store('regs',regs)}
 
 /* ---------- utilidades ---------- */
@@ -921,8 +924,7 @@ function pcalc(f,g,over,depth){
  if(o.gr!=null&&(o.gr<85||o.gr>135))A.push('Gramos por ave fuera de lo normal ('+o.gr.toFixed(0)+' g)');
  if(o.sfin!=null&&o.sfin<0)A.push('El saldo de sacos queda negativo');
  if(o.mort!=null&&o.mort>0.15)A.push('Mortalidad alta ('+o.mort.toFixed(2)+'%)');
- if(mman!=null&&mreg>0&&mman!==mreg)A.push('Muertas ('+mman+') no coincide con la casuística registrada ('+mreg+')');
- if(mman!=null&&mman>0&&mreg===0)A.push('Falta registrar la casuística de las '+mman+' muertas');
+ if(mman!=null&&mreg>mman)A.push('La casuística registrada ('+mreg+') es mayor que las muertas ('+mman+')');
  o.alertas=A;o.completo=!!row&&o.saldo!=null&&o.sacos!=null&&o.jabas!=null;
  return o;
 }
@@ -1042,35 +1044,36 @@ $('fvBorrar').onclick=e=>twoTap(e.target,async()=>{const f=$('pFecha').value||ho
 /* exportación */
 function codigoDe(n){const c=cfg.causas.find(x=>x.n===n);return c&&c.c?c.c:n}
 function mortCodigos(f,g){const o={};regs.filter(r=>r.fecha===f&&+r.galpon===+g).forEach(r=>Object.entries(r.counts).forEach(([k,v])=>{const c=codigoDe(k);o[c]=(o[c]||0)+v}));return o}
+function mortParte(f,g){const m=mortCodigos(f,g);const s=Object.values(m).reduce((a,b)=>a+b,0);const mu=pcalc(f,g).muertas;if(mu>s)m.NI=(m.NI||0)+(mu-s);return m}
 function codigosTodos(extra){const l=cfg.causas.map(c=>c.c||c.n);(extra||[]).forEach(c=>{if(!l.includes(c))l.push(c)});return l}
 const BDCOLS=['Fecha','Lote','Galpón','Edad (sem)','Saldo','Muertas','Venta','Neto','Dieta','Sacos','Kg','Gr x ave','Jabas','Blanco','Guiñado','Cremoso','Margarita','Doble yema','Prod. huevos','Prod. neta','% postura','% tabla','Dif. %','Sacos saldo inicial','Sacos ingreso','Sacos saldo final','Registrado por'];
 function filaBD(f,g){const o=pcalc(f,g);const r=(prod[f]&&prod[f].g&&prod[f].g[g])||{};
- return{clave:f+'|'+g,fecha:f,galpon:+g,datos:r,mort:mortCodigos(f,g),v:[f,o.lote,+g,o.edad,o.saldo,o.muertas,o.venta,o.neto,o.dieta,o.sacos,o.kg,o.gr!=null?+o.gr.toFixed(1):null,o.jabas,o.bl,o.gu,o.cr,o.ma,o.dy,o.huevos,o.neta,o.pct!=null?+(o.pct/100).toFixed(4):null,o.tabla!=null?o.tabla/100:null,o.dif!=null?+(o.dif/100).toFixed(4):null,o.sini,o.ing,o.sfin,o.por]}}
+ return{clave:f+'|'+g,fecha:f,galpon:+g,datos:r,mort:mortParte(f,g),v:[f,o.lote,+g,o.edad,o.saldo,o.muertas,o.venta,o.neto,o.dieta,o.sacos,o.kg,o.gr!=null?+o.gr.toFixed(1):null,o.jabas,o.bl,o.gu,o.cr,o.ma,o.dy,o.huevos,o.neta,o.pct!=null?+(o.pct/100).toFixed(4):null,o.tabla!=null?o.tabla/100:null,o.dif!=null?+(o.dif/100).toFixed(4):null,o.sini,o.ing,o.sfin,o.por]}}
 function serial(f){return dnum(f)-dnum('1899-12-30')}
 const PCT=new Set([20,21,22]);
 function celdasBD(f,g,cods){const fb=filaBD(f,g);return fb.v.map((x,i)=>i===0?{v:serial(f),s:7}:PCT.has(i)&&x!=null?{v:x,s:5}:i===11&&x!=null?{v:x,s:6}:x).concat(cods.map(c=>fb.mort[c]||0))}
 function exportParteDia(){
  const f=$('pFecha').value||hoy();const gs=pGalpones().filter(g=>pcalc(f,g).existe||muertasReg(f,g));if(!gs.length){toast('No hay datos para '+fmtF(f));return}
- const extra=[];gs.forEach(g=>Object.keys(mortCodigos(f,g)).forEach(c=>extra.push(c)));const cods=codigosTodos(extra);
+ const extra=[];gs.forEach(g=>Object.keys(mortParte(f,g)).forEach(c=>extra.push(c)));const cods=codigosTodos(extra);
  const tit={c:['GRANJA SANTA CLARITA — PARTE DIARIO DE PRODUCCIÓN'],s:3},per={c:[fechaLarga(f).replace('Hoy, ','')+'  ·  Exportado por '+cur.nombre]};
  const r1=[tit,per,{c:BDCOLS.slice(1,26),s:1}];const T=Array(25).fill(0);
  gs.forEach(g=>{const c=celdasBD(f,g,[]).slice(1,26);c.forEach((x,i)=>{const n=x&&typeof x==='object'?x.v:x;if(typeof n==='number'&&[3,4,5,6,8,9,11,12,13,14,15,16,17,18,22,23,24].includes(i))T[i]+=n});r1.push({c})});
  const t=T.map((x,i)=>[3,4,5,6,8,9,11,12,13,14,15,16,17,18,22,23,24].includes(i)?+x.toFixed(2):'');t[0]='TOTAL';t[19]=T[6]?{v:+(T[18]/T[6]).toFixed(4),s:5}:'';t[10]=T[6]?{v:+(T[9]*1000/T[6]).toFixed(1),s:6}:'';r1.push({c:t,s:2});
  r1.push({c:[]},{c:['% mortalidad del día',T[3]?{v:+(T[4]/T[3]).toFixed(5),s:4}:'']});
- const r2=[tit,per,{c:['Galpón',...cods,'Total causas','Muertas parte','Control'],s:1}];const TC={};
- gs.forEach(g=>{const m=mortCodigos(f,g);const s=Object.values(m).reduce((a,b)=>a+b,0);const mu=pcalc(f,g).muertas;cods.forEach(c=>TC[c]=(TC[c]||0)+(m[c]||0));r2.push({c:[g,...cods.map(c=>m[c]||''),s,mu,s===mu?'OK':'REVISAR']})});
+ const r2=[tit,per,{c:['Galpón',...cods,'Total causas','Muertas parte','Control','Observación'],s:1}];const TC={};
+ gs.forEach(g=>{const m=mortParte(f,g);const s=Object.values(m).reduce((a,b)=>a+b,0);const mu=pcalc(f,g).muertas;cods.forEach(c=>TC[c]=(TC[c]||0)+(m[c]||0));r2.push({c:[g,...cods.map(c=>m[c]||''),s,mu,s===mu?'OK':'REVISAR',[m.NI?'No indica mortalidad':'',m.CG?m.CG+' gato':''].filter(Boolean).join(' · ')]})});
  r2.push({c:['TOTAL',...cods.map(c=>TC[c]||0),Object.values(TC).reduce((a,b)=>a+b,0)],s:2});
  const r3=[tit,per,{c:['Galpón','Saldo inicial','Ingreso','Consumo','Saldo final'],s:1}];
  gs.forEach(g=>{const o=pcalc(f,g);r3.push({c:[g,o.sini,o.ing,o.sacos,o.sfin]})});
  const r4=[{c:BDCOLS.concat(cods),s:1}];gs.forEach(g=>r4.push({c:celdasBD(f,g,cods)}));
- descargarXlsx('Parte_SantaClarita_'+f+'.xlsx',[['Producción',sheetXml(r1,[8,8,8,9,8,6,9,9,7,8,8,7,7,8,8,9,8,10,10,9,8,8,10,9,9])],['Mortalidad',sheetXml(r2,[8,...cods.map(()=>6),11,11,10])],['Sacos alimento',sheetXml(r3,[9,12,10,10,12])],['BD_Sistema',sheetXml(r4,BDCOLS.map(()=>11).concat(cods.map(()=>6)),1)]]);
+ descargarXlsx('Parte_SantaClarita_'+f+'.xlsx',[['Producción',sheetXml(r1,[8,8,8,9,8,6,9,9,7,8,8,7,7,8,8,9,8,10,10,9,8,8,10,9,9])],['Mortalidad',sheetXml(r2,[8,...cods.map(()=>6),11,11,10,24])],['Sacos alimento',sheetXml(r3,[9,12,10,10,12])],['BD_Sistema',sheetXml(r4,BDCOLS.map(()=>11).concat(cods.map(()=>6)),1)]]);
 }
 $('pXlsx').onclick=exportParteDia;
 function exportarBD(){
  const[a,b]=rango();const fechas=new Set();Object.keys(prod).forEach(f=>{if(f>=a&&f<=b)fechas.add(f)});regs.forEach(r=>{if(r.fecha>=a&&r.fecha<=b)fechas.add(r.fecha)});
  const fs=[...fechas].sort();const lp=[];Object.keys(lev).filter(f=>f>=a&&f<=b).sort().forEach(f=>Object.keys(lev[f].g||{}).map(Number).sort((x,y)=>x-y).forEach(g=>lp.push([f,g])));const pz=pes.filter(p=>p.fecha>=a&&p.fecha<=b).sort((x,y)=>x.fecha.localeCompare(y.fecha)||x.galpon-y.galpon);if(!fs.length&&!lp.length&&!pz.length){toast('No hay datos en el rango');return}
  const pares=[];fs.forEach(f=>{const gs=new Set(pGalpones().filter(g=>pcalc(f,g).existe));regs.filter(r=>r.fecha===f).forEach(r=>gs.add(+r.galpon));[...gs].sort((x,y)=>x-y).forEach(g=>pares.push([f,g]))});
- const extra=[];pares.forEach(([f,g])=>Object.keys(mortCodigos(f,g)).forEach(c=>extra.push(c)));const cods=codigosTodos(extra);
+ const extra=[];pares.forEach(([f,g])=>Object.keys(mortParte(f,g)).forEach(c=>extra.push(c)));const cods=codigosTodos(extra);
  const r=[{c:BDCOLS.concat(cods),s:1}];pares.forEach(([f,g])=>r.push({c:celdasBD(f,g,cods)}));
  const leg=[{c:['Código','Casuística'],s:1}].concat(cfg.causas.map(c=>({c:[c.c||'',c.n]})));
  descargarXlsx('BD_SistemaProduccion_'+a+(a!==b?'_al_'+b:'')+'.xlsx',[['BD_Sistema',sheetXml(r,BDCOLS.map(()=>11).concat(cods.map(()=>6)),1)],...(lp.length?[hojaLev(lp)]:[]),...(pz.length?hojasPes(pz):[]),['Leyenda casuística',sheetXml(leg,[10,28],1)]]);
