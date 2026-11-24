@@ -193,12 +193,15 @@ tr.tot td{font-weight:900;background:#faf1ec}
 .zaves button{width:62px;height:56px;border-radius:12px;border:2px solid var(--line);background:#fff;font-size:24px;font-weight:900}
 .zaves button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
 .zpeso{font-size:52px;font-weight:900;line-height:1.1;margin-top:4px;border:3px solid var(--pri);border-radius:14px;padding:4px;background:#fffdf7;min-height:68px}
+.zpesos{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}
+.zpesos button{border:2px solid var(--ok);background:#f3fbf5;border-radius:10px;padding:4px 10px;font-size:18px;font-weight:800;min-height:44px}
+.zpesos button small{display:block;font-size:11px;color:var(--mu);font-weight:700}
 .zprom{font-size:20px;font-weight:800;color:var(--ok);margin-top:6px;min-height:26px}
 .kpad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}
 .kpad button{min-height:58px;border-radius:14px;border:0;background:#fff;font-size:28px;font-weight:800;box-shadow:0 1px 3px rgba(0,0,0,.15)}
 .kpad button.del{background:#fde0e0;color:#a11}
 .zgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:6px}
-.zgrid button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:6px 2px;font-size:13px;font-weight:700;min-height:52px;line-height:1.15}
+.zgrid button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:6px 2px;font-size:12px;font-weight:700;min-height:52px;line-height:1.15}
 .zgrid button b{display:block;font-size:16px}
 .zgrid button.ok{border-color:var(--ok);background:#f3fbf5}
 .zgrid button.on{border-color:var(--pri);box-shadow:0 0 0 2px var(--pri)}
@@ -292,7 +295,11 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <input type="date" id="zFecha">
   <div class="row" style="margin-top:14px">
    <label>Jaulas por zona<input id="zJxz" inputmode="numeric"></label>
-   <label>Peso estándar (kg)<input id="zStd" inputmode="decimal" placeholder="opcional"></label>
+   <label>Aves por jaula<input id="zMax" inputmode="numeric" placeholder="sin límite"></label>
+  </div>
+  <div class="hint">Se anota el peso de <b>cada ave</b>. Al llegar a las “aves por jaula”, pasa sola a la siguiente jaula.</div>
+  <div class="row" style="margin-top:10px">
+   <label>Peso estándar de la tabla (kg)<input id="zStd" inputmode="decimal" placeholder="opcional"></label>
   </div>
   <div id="zErr" class="err"></div>
   <button class="btn ok w" id="zEmpezar" style="min-height:64px;font-size:21px">▶ Empezar pesaje</button>
@@ -411,7 +418,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <input type="file" id="bkFile" accept=".json" class="hidden">
   <button class="btn danger w" id="bkDel" style="margin-top:10px">Borrar todos los registros</button>
  </div>
- <div class="hint" style="text-align:center">Granja Santa Clarita v2.2 · Kevin Mendoza Astocaza</div>
+ <div class="hint" style="text-align:center">Granja Santa Clarita v2.3 · Kevin Mendoza Astocaza</div>
 </section>
 
 </main>
@@ -420,16 +427,16 @@ tr.tot td{font-weight:900;background:#faf1ec}
  <div class="zonas" id="zZonas"></div>
  <div class="pedb" style="padding-top:8px">
   <div class="zjaula"><div class="zjt" id="zJTit"></div>
-   <div class="zlbl">Aves en la jaula</div>
-   <div class="zaves" id="zAves"></div>
-   <div class="zlbl">Peso total de la jaula (kg)</div>
+   <div class="zlbl" id="zAveLbl"></div>
    <div class="zpeso" id="zPeso">0</div>
-   <div class="zprom" id="zProm"></div>
    <div id="zWarn"></div>
+   <div class="zpesos" id="zPesos"></div>
+   <div class="zprom" id="zProm"></div>
   </div>
   <div class="kpad" id="zPad"></div>
-  <div class="row" style="margin-top:10px"><button class="btn" id="zAnt">◀ Anterior</button><button class="btn ok" id="zSig" style="flex:2">Siguiente ▶</button></div>
-  <div class="zlbl" style="margin-top:14px">Jaulas de esta zona (toca para corregir)</div>
+  <button class="btn ok w" id="zAnotar" style="margin-top:10px;min-height:64px;font-size:21px">✔ Anotar peso</button>
+  <div class="row" style="margin-top:10px"><button class="btn" id="zAnt">◀ Jaula anterior</button><button class="btn p" id="zSig">Jaula siguiente ▶</button></div>
+  <div class="zlbl" style="margin-top:14px">Jaulas de esta zona (toca para ir a una jaula)</div>
   <div class="zgrid" id="zGrid"></div>
   <button class="btn sm" id="zMasJ" style="margin-top:8px">+ Agregar jaula a esta zona</button>
  </div>
@@ -1107,101 +1114,106 @@ function renderIni(){
 }
 function puedeDia(k,f){if(isAdmin())return true;if(!acceso(k))return false;const d=dnum(hoy())-dnum(f);return d>=0&&d<=1}
 
-/* ---------- PESAJE ---------- */
+/* ---------- PESAJE (peso individual de cada ave) ---------- */
 let pes=load('pes',[]);function savePes(){store('pes',pes)}
 const ZONAS={prod:['Tanque','Medio','Fondo'],lev:['A','B','C','D','E','F','G','H']};
 const RANGO={prod:[1.0,3.0],lev:[0.03,2.2]};
 let zT='prod',zCur=null,zZ=0,zJ=0,zBuf='',zConf=false;
-document.querySelectorAll('.tipo .btn').forEach(b=>b.onclick=()=>{zT=b.dataset.tipo;$('zJxz').value=zT==='prod'?(cfg.jxz||10):1;renderPesSetup()});
-function renderPes(){if(!$('zFecha').value)$('zFecha').value=hoy();if(!$('zJxz').value)$('zJxz').value=zT==='prod'?(cfg.jxz||10):1;renderPesSetup();renderPesLista()}
+function defJxz(t){return t==='prod'?(cfg.jxz||10):(cfg.jxzL||1)}
+function defMax(t){return t==='prod'?(cfg.maxAvesP??6):(cfg.maxAvesL??'')}
+document.querySelectorAll('.tipo .btn').forEach(b=>b.onclick=()=>{zT=b.dataset.tipo;$('zJxz').value=defJxz(zT);$('zMax').value=defMax(zT);renderPesSetup()});
+function renderPes(){if(!$('zFecha').value)$('zFecha').value=hoy();if(!$('zJxz').value)$('zJxz').value=defJxz(zT);if($('zMax').value==='')$('zMax').value=defMax(zT);renderPesSetup();renderPesLista()}
 function renderPesSetup(){
  document.querySelectorAll('.tipo .btn').forEach(b=>b.classList.toggle('on',b.dataset.tipo===zT));
  const gs=(zT==='prod'?cfg.pgal:cfg.lgal||[]).map(x=>x.g).filter(g=>g!=='');
  $('zGalChips').innerHTML=gs.map(g=>`<button data-g="${g}">${g}</button>`).join('');
  $('zGalChips').querySelectorAll('button').forEach(b=>b.onclick=()=>{$('zGal').value=b.dataset.g;$('zErr').textContent=''});
 }
+function pesosJ(j){return Array.isArray(j.pesos)?j.pesos:(j.kg>0&&j.aves>0?Array(j.aves).fill(j.kg/j.aves):[])}
 function statsPes(p){
- const o={zonas:[],n:0,tot:0,aves:0,kg:0,proms:[]};
- ZONAS[p.tipo].forEach(z=>{const all=p.zonas[z]||[];const js=all.filter(j=>j.kg>0&&j.aves>0);const a=js.reduce((s,j)=>s+j.aves,0),k=js.reduce((s,j)=>s+j.kg,0);
-  o.zonas.push({z,j:js.length,t:all.length,aves:a,kg:k,prom:a?k/a:null});js.forEach(j=>o.proms.push(j.kg/j.aves));o.aves+=a;o.kg+=k;o.n+=js.length;o.tot+=all.length});
- o.prom=o.aves?o.kg/o.aves:null;
- if(o.proms.length>1){const m=o.proms.reduce((a,b)=>a+b,0)/o.proms.length;const sd=Math.sqrt(o.proms.reduce((a,b)=>a+(b-m)**2,0)/(o.proms.length-1));o.cv=sd/m*100;o.unif=o.proms.filter(x=>Math.abs(x-o.prom)<=0.1*o.prom).length/o.proms.length*100;o.min=Math.min(...o.proms);o.max=Math.max(...o.proms)}
+ const o={zonas:[],n:0,jp:0,tot:0,kg:0,all:[]};
+ ZONAS[p.tipo].forEach(z=>{const js=p.zonas[z]||[];const w=[];let jp=0;js.forEach(j=>{const ps=pesosJ(j);if(ps.length)jp++;ps.forEach(x=>w.push(x))});
+  const k=w.reduce((a,b)=>a+b,0);o.zonas.push({z,j:jp,t:js.length,aves:w.length,kg:k,prom:w.length?k/w.length:null});o.all.push(...w);o.kg+=k;o.jp+=jp;o.tot+=js.length});
+ o.n=o.all.length;o.prom=o.n?o.kg/o.n:null;
+ if(o.n>1){const m=o.prom;const sd=Math.sqrt(o.all.reduce((a,b)=>a+(b-m)**2,0)/(o.n-1));o.cv=sd/m*100;o.unif=o.all.filter(x=>Math.abs(x-m)<=0.1*m).length/o.n*100;o.min=Math.min(...o.all);o.max=Math.max(...o.all)}
  o.difStd=o.prom&&p.std?(o.prom-p.std)/p.std*100:null;
  return o}
 function renderPesLista(){
  const l=[...pes].sort((a,b)=>b.fecha.localeCompare(a.fecha)||(b.upd||'').localeCompare(a.upd||'')).slice(0,40);
- $('zLista').innerHTML=l.length?l.map(p=>{const s=statsPes(p);return`<button class="pit ${s.n===s.tot?'ok':''}" data-id="${p.id}"><span class="st">${p.tipo==='prod'?'🥚':'🐣'}</span><span style="flex:1"><span class="pg">Galpón ${p.galpon}</span><br><span class="pl">${fmtF(p.fecha)} · ${p.tipo==='prod'?'Producción':'Levante'} · ${s.n}/${s.tot} jaulas</span></span><span class="pv">${s.prom?s.prom.toFixed(3)+' kg':'—'}<br><span class="pl">por ave</span></span></button>`}).join(''):'<div class="hint">Todavía no hay pesajes.</div>';
- $('zLista').querySelectorAll('.pit').forEach(b=>b.onclick=()=>{const p=pes.find(x=>x.id===b.dataset.id);const s=statsPes(p);if(s.n<s.tot&&puedeDia('pes',p.fecha))abrirZ(p);else verRes(p)});
+ $('zLista').innerHTML=l.length?l.map(p=>{const s=statsPes(p);return`<button class="pit ${s.jp===s.tot?'ok':''}" data-id="${p.id}"><span class="st">${p.tipo==='prod'?'🥚':'🐣'}</span><span style="flex:1"><span class="pg">Galpón ${p.galpon}</span><br><span class="pl">${fmtF(p.fecha)} · ${p.tipo==='prod'?'Producción':'Levante'} · ${s.n} aves · ${s.jp}/${s.tot} jaulas</span></span><span class="pv">${s.prom?s.prom.toFixed(3)+' kg':'—'}<br><span class="pl">promedio</span></span></button>`}).join(''):'<div class="hint">Todavía no hay pesajes.</div>';
+ $('zLista').querySelectorAll('.pit').forEach(b=>b.onclick=()=>{const p=pes.find(x=>x.id===b.dataset.id);const s=statsPes(p);if(s.jp<s.tot&&puedeDia('pes',p.fecha))abrirZ(p);else verRes(p)});
 }
 $('zEmpezar').onclick=()=>{
- const g=parseInt($('zGal').value),f=$('zFecha').value||hoy(),jx=Math.max(1,Math.min(30,parseInt($('zJxz').value)||(zT==='prod'?10:1)));
+ const g=parseInt($('zGal').value),f=$('zFecha').value||hoy(),jx=Math.max(1,Math.min(40,parseInt($('zJxz').value)||defJxz(zT)));const mx=parseInt($('zMax').value)||0;
  if(!g){$('zErr').textContent='Escribe el número de galpón';return}
  if(!puedeDia('pes',f)){$('zErr').textContent='Solo puedes registrar pesajes de hoy o ayer';return}
- $('zErr').textContent='';if(zT==='prod'){cfg.jxz=jx;saveCfg()}
+ $('zErr').textContent='';if(zT==='prod'){cfg.jxz=jx;cfg.maxAvesP=mx||''}else{cfg.jxzL=jx;cfg.maxAvesL=mx||''}saveCfg();
  let p=pes.find(x=>x.tipo===zT&&+x.galpon===g&&x.fecha===f);
- if(!p){const pc=zT==='prod'?pcfg(g):lgcfg(g);const z={};ZONAS[zT].forEach(n=>z[n]=Array.from({length:jx},()=>({aves:null,kg:null})));
-  p={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),tipo:zT,galpon:g,fecha:f,edad:edadEn(pc,f),lote:pc.lote||'',std:pnum($('zStd').value),zonas:z,por:cur.nombre,usuario:cur.u,upd:new Date().toISOString()};pes.push(p);savePes()}
+ if(!p){const pc=zT==='prod'?pcfg(g):lgcfg(g);const z={};ZONAS[zT].forEach(n=>z[n]=Array.from({length:jx},()=>({pesos:[]})));
+  p={id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),tipo:zT,galpon:g,fecha:f,edad:edadEn(pc,f),lote:pc.lote||'',std:pnum($('zStd').value),maxAves:mx,zonas:z,por:cur.nombre,usuario:cur.u,upd:new Date().toISOString()};pes.push(p);savePes()}
  abrirZ(p)};
 function zJaulas(){return zCur.zonas[ZONAS[zCur.tipo][zZ]]}
-function abrirZ(p){zCur=p;zZ=0;zJ=0;const zs=ZONAS[p.tipo];outer:for(let i=0;i<zs.length;i++){const js=p.zonas[zs[i]];for(let j=0;j<js.length;j++)if(!(js[j].kg>0)){zZ=i;zJ=j;break outer}}
+function zJ_(){const j=zJaulas()[zJ];if(!Array.isArray(j.pesos))j.pesos=pesosJ(j).map(x=>+x.toFixed(3));return j}
+function abrirZ(p){zCur=p;zZ=0;zJ=0;const zs=ZONAS[p.tipo];outer:for(let i=0;i<zs.length;i++){const js=p.zonas[zs[i]];for(let j=0;j<js.length;j++)if(!pesosJ(js[j]).length){zZ=i;zJ=j;break outer}}
  $('zTit').textContent='GALPÓN '+p.galpon;$('zSub').textContent=(p.tipo==='prod'?'Producción':'Levante')+' · '+fmtF(p.fecha)+(p.edad!==''?' · '+p.edad+' sem':'');
- cargarJ();$('zEd').classList.remove('hidden')}
-function avesDef(){const js=zJaulas();for(let j=zJ-1;j>=0;j--)if(js[j].aves)return js[j].aves;return zCur.tipo==='prod'?(cfg.avesProd||5):(cfg.avesLev||10)}
-function cargarJ(){const j=zJaulas()[zJ];if(!j.aves)j.aves=avesDef();zBuf=j.kg>0?String(+j.kg.toFixed(3)):'';zConf=false;renderZ()}
+ zBuf='';zConf=false;renderZ();$('zEd').classList.remove('hidden')}
 function guardarZ(){zCur.upd=new Date().toISOString();savePes()}
 function renderZ(){
- const zs=ZONAS[zCur.tipo],js=zJaulas(),j=js[zJ],R=RANGO[zCur.tipo];
- $('zZonas').innerHTML=zs.map((z,i)=>{const a=zCur.zonas[z];const d=a.filter(x=>x.kg>0).length;return`<button data-i="${i}" class="${i===zZ?'on':''} ${d===a.length?'ok':''}">${z}<small>${d}/${a.length}</small></button>`}).join('');
- $('zZonas').querySelectorAll('button').forEach(b=>b.onclick=()=>{zZ=+b.dataset.i;zJ=0;const a=zJaulas();const k=a.findIndex(x=>!(x.kg>0));zJ=k<0?0:k;cargarJ()});
+ const zs=ZONAS[zCur.tipo],js=zJaulas(),j=zJ_(),R=RANGO[zCur.tipo];const ave=zCur.tipo==='prod'?'Gallina':'Pollita';
+ $('zZonas').innerHTML=zs.map((z,i)=>{const a=zCur.zonas[z];const d=a.filter(x=>pesosJ(x).length).length;return`<button data-i="${i}" class="${i===zZ?'on':''} ${d===a.length?'ok':''}">${zCur.tipo==='prod'?z:'Zona '+z}<small>${d}/${a.length} jaulas</small></button>`}).join('');
+ $('zZonas').querySelectorAll('button').forEach(b=>b.onclick=()=>{zZ=+b.dataset.i;const k=zJaulas().findIndex(x=>!pesosJ(x).length);zJ=k<0?0:k;zBuf='';zConf=false;renderZ()});
  $('zJTit').textContent=(zCur.tipo==='prod'?'Zona ':'Zona ')+zs[zZ]+' · Jaula '+(zJ+1)+' de '+js.length;
- $('zAves').innerHTML=zCur.tipo==='prod'?[4,5,6,7].concat([4,5,6,7].includes(j.aves)?[]:[j.aves]).map(n=>`<button data-n="${n}" class="${j.aves===n?'on':''}">${n}</button>`).join(''):`<button data-d="-1">−</button><button class="on" style="width:80px">${j.aves}</button><button data-d="1">+</button>`;
- $('zAves').querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{j.aves=Math.max(1,j.aves+ +b.dataset.d);if(zCur.tipo==='prod')cfg.avesProd=j.aves;else cfg.avesLev=j.aves;guardarZ();renderZ()});
- $('zAves').querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{j.aves=+b.dataset.n;cfg.avesProd=j.aves;guardarZ();renderZ()});
+ $('zAveLbl').textContent=ave+' '+(j.pesos.length+1)+(zCur.maxAves?' de '+zCur.maxAves:'')+' — peso en kg';
  $('zPeso').textContent=zBuf||'0';
- const kg=pnum(zBuf);const pr=kg&&j.aves?kg/j.aves:null;
- $('zProm').textContent=pr?'= '+pr.toFixed(3)+' kg por ave':'';
- const fuera=pr!=null&&(pr<R[0]||pr>R[1]);
- $('zWarn').innerHTML=fuera?`<div class="palert">⚠️ ${pr.toFixed(3)} kg por ave parece raro. ¿Revisaste el punto decimal? Toca “Siguiente” otra vez para confirmar.</div>`:'';
- $('zGrid').innerHTML=js.map((x,i)=>`<button data-i="${i}" class="${x.kg>0?'ok':''} ${i===zJ?'on':''}">J${i+1}<b>${x.kg>0?(x.kg/x.aves).toFixed(2):'—'}</b></button>`).join('');
- $('zGrid').querySelectorAll('button').forEach(b=>b.onclick=()=>{zJ=+b.dataset.i;cargarJ()});
+ const v=pnum(zBuf);const fuera=v!=null&&v>0&&(v<R[0]||v>R[1]);
+ $('zWarn').innerHTML=fuera?`<div class="palert">⚠️ ${v} kg parece raro para una ${ave.toLowerCase()}. ¿Revisaste el punto decimal? Toca “Anotar” otra vez para confirmar.</div>`:'';
+ $('zPesos').innerHTML=j.pesos.map((x,i)=>`<button data-i="${i}" title="Toca para corregir"><small>${i+1}</small>${(+x).toFixed(3)}</button>`).join('');
+ $('zPesos').querySelectorAll('button').forEach(b=>b.onclick=()=>{const x=j.pesos.splice(+b.dataset.i,1)[0];zBuf=String(+(+x).toFixed(3));zConf=false;guardarZ();renderZ();toast('Corrige el peso y toca Anotar')});
+ const n=j.pesos.length,pr=n?j.pesos.reduce((a,b)=>a+b,0)/n:null;
+ $('zProm').textContent=n?`Jaula ${zJ+1}: ${n} ${n===1?ave.toLowerCase():ave.toLowerCase()+'s'} · promedio ${pr.toFixed(3)} kg`:'';
+ $('zGrid').innerHTML=js.map((x,i)=>{const ps=pesosJ(x);return`<button data-i="${i}" class="${ps.length?'ok':''} ${i===zJ?'on':''}">J${i+1}<b>${ps.length?(ps.reduce((a,b)=>a+b,0)/ps.length).toFixed(2):'—'}</b>${ps.length?ps.length+' aves':''}</button>`}).join('');
+ $('zGrid').querySelectorAll('button').forEach(b=>b.onclick=()=>{zJ=+b.dataset.i;zBuf='';zConf=false;renderZ()});
+ $('zAnotar').textContent='✔ Anotar peso de '+ave.toLowerCase()+' '+(n+1);
 }
 $('zPad').innerHTML=['7','8','9','4','5','6','1','2','3','.','0','⌫'].map(k=>`<button class="${k==='⌫'?'del':''}" data-k="${k}">${k}</button>`).join('');
 $('zPad').querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=b.dataset.k;
- if(k==='⌫')zBuf=zBuf.slice(0,-1);else if(k==='.'){if(!zBuf.includes('.'))zBuf=(zBuf||'0')+'.'}else{const dec=zBuf.split('.')[1];if(zBuf.length<7&&!(dec&&dec.length>=3))zBuf=zBuf==='0'?k:zBuf+k}
- const j=zJaulas()[zJ];j.kg=pnum(zBuf)||null;zConf=false;guardarZ();renderZ()});
+ if(k==='⌫')zBuf=zBuf.slice(0,-1);else if(k==='.'){if(!zBuf.includes('.'))zBuf=(zBuf||'0')+'.'}else{const dec=zBuf.split('.')[1];if(zBuf.length<6&&!(dec&&dec.length>=3))zBuf=zBuf==='0'?k:zBuf+k}
+ zConf=false;renderZ()});
 function zMover(d){const zs=ZONAS[zCur.tipo];let z=zZ,j=zJ+d;
- if(j>=zCur.zonas[zs[z]].length){if(z<zs.length-1){z++;j=0;toast('Zona '+zs[z])}else return false}
+ if(j>=zCur.zonas[zs[z]].length){if(z<zs.length-1){z++;j=0;toast(zCur.tipo==='prod'?'Zona '+zs[z]:'Zona '+zs[z])}else return false}
  if(j<0){if(z>0){z--;j=zCur.zonas[zs[z]].length-1}else j=0}
- zZ=z;zJ=j;cargarJ();return true}
-$('zSig').onclick=()=>{const j=zJaulas()[zJ],R=RANGO[zCur.tipo];const pr=j.kg&&j.aves?j.kg/j.aves:null;
- if(pr!=null&&(pr<R[0]||pr>R[1])&&!zConf){zConf=true;try{navigator.vibrate&&navigator.vibrate(200)}catch(e){}return}
- if(!zMover(1)){guardarZ();verRes(zCur)}};
+ zZ=z;zJ=j;zBuf='';zConf=false;renderZ();return true}
+$('zAnotar').onclick=()=>{const v=pnum(zBuf),R=RANGO[zCur.tipo];
+ if(!v||v<=0){toast('Escribe el peso con el teclado');return}
+ if((v<R[0]||v>R[1])&&!zConf){zConf=true;try{navigator.vibrate&&navigator.vibrate(200)}catch(e){}return}
+ const j=zJ_();j.pesos.push(+v.toFixed(3));zBuf='';zConf=false;guardarZ();try{navigator.vibrate&&navigator.vibrate(40)}catch(e){}
+ if(zCur.maxAves&&j.pesos.length>=zCur.maxAves){toast('Jaula '+(zJ+1)+' completa ✔');if(!zMover(1)){verRes(zCur);return}}else renderZ()};
+$('zSig').onclick=()=>{if(zBuf){toast('Primero toca “Anotar” o borra el número');return}if(!zMover(1)){guardarZ();verRes(zCur)}};
 $('zAnt').onclick=()=>zMover(-1);
-$('zMasJ').onclick=()=>{zJaulas().push({aves:avesDef(),kg:null});zJ=zJaulas().length-1;guardarZ();cargarJ()};
+$('zMasJ').onclick=()=>{zJaulas().push({pesos:[]});zJ=zJaulas().length-1;zBuf='';guardarZ();renderZ()};
 $('zSalir').onclick=()=>{guardarZ();encolar({op:'pes',p:zCur});$('zEd').classList.add('hidden');renderPes()};
 $('zFin').onclick=()=>{guardarZ();verRes(zCur)};
 let zVer=null;
 function verRes(p){
- zVer=p;$('zEd').classList.add('hidden');const s=statsPes(p);encolar({op:'pes',p});
+ zVer=p;$('zEd').classList.add('hidden');const s=statsPes(p);encolar({op:'pes',p});const ave=p.tipo==='prod'?'gallinas':'pollitas';
  $('zResSub').textContent='Galpón '+p.galpon+' · '+(p.tipo==='prod'?'Producción':'Levante')+' · '+fmtF(p.fecha);
- $('zResBody').innerHTML=`<div class="card" style="text-align:center"><div class="hint" style="font-size:17px">Peso promedio por ave</div><div style="font-size:56px;font-weight:900;color:var(--pri);line-height:1.1">${s.prom?s.prom.toFixed(3):'—'} <span style="font-size:26px">kg</span></div>${s.difStd!=null?`<div style="font-size:19px;font-weight:800;color:${s.difStd<0?'var(--no)':'var(--ok)'}">${s.difStd>0?'+':''}${s.difStd.toFixed(1)}% vs estándar (${p.std} kg)</div>`:''}</div>
- <div class="card"><h2>Por zona</h2>${s.zonas.map(z=>`<div class="rz"><span><b style="font-size:20px;color:var(--tx)">${p.tipo==='prod'?'':'Zona '}${z.z}</b><br><span class="hint">${z.j} jaula(s) · ${z.aves} aves · ${z.kg.toFixed(2)} kg</span></span><b>${z.prom?z.prom.toFixed(3):'—'}</b></div>`).join('')}</div>
- <div class="card"><div class="pres"><div><b>${s.unif!=null?s.unif.toFixed(0)+'%':'—'}</b><span>uniformidad*</span></div><div><b>${s.cv!=null?s.cv.toFixed(1)+'%':'—'}</b><span>CV</span></div><div><b>${s.aves}</b><span>aves pesadas</span></div></div>
- <div class="hint">* % de jaulas cuyo promedio está a ±10% del promedio general. Mín ${s.min?s.min.toFixed(3):'—'} · Máx ${s.max?s.max.toFixed(3):'—'} kg/ave. ${s.n<s.tot?'<b>Faltan '+(s.tot-s.n)+' jaulas por pesar.</b>':''}</div></div>`;
+ $('zResBody').innerHTML=`<div class="card" style="text-align:center"><div class="hint" style="font-size:17px">Peso promedio (${s.n} ${ave})</div><div style="font-size:56px;font-weight:900;color:var(--pri);line-height:1.1">${s.prom?s.prom.toFixed(3):'—'} <span style="font-size:26px">kg</span></div>${s.difStd!=null?`<div style="font-size:19px;font-weight:800;color:${s.difStd<0?'var(--no)':'var(--ok)'}">${s.difStd>0?'+':''}${s.difStd.toFixed(1)}% vs estándar (${p.std} kg)</div>`:''}</div>
+ <div class="card"><div class="pres"><div><b>${s.unif!=null?s.unif.toFixed(0)+'%':'—'}</b><span>uniformidad</span></div><div><b>${s.cv!=null?s.cv.toFixed(1)+'%':'—'}</b><span>CV</span></div><div><b>${s.n}</b><span>${ave}</span></div></div>
+ <div class="hint">Uniformidad = % de aves con peso a ±10% del promedio. Mínimo ${s.min?s.min.toFixed(3):'—'} kg · Máximo ${s.max?s.max.toFixed(3):'—'} kg. ${s.jp<s.tot?'<b>Faltan '+(s.tot-s.jp)+' jaulas por pesar.</b>':''}</div></div>
+ <div class="card"><h2>Por zona</h2>${s.zonas.map(z=>`<div class="rz"><span><b style="font-size:20px;color:var(--tx)">${p.tipo==='prod'?'':'Zona '}${z.z}</b><br><span class="hint">${z.j} jaula(s) · ${z.aves} ${ave}</span></span><b>${z.prom?z.prom.toFixed(3):'—'}</b></div>`).join('')}</div>`;
  $('zResEdit').classList.toggle('hidden',!puedeDia('pes',p.fecha));$('zResDel').classList.toggle('hidden',!(isAdmin()||p.usuario===cur.u));
  $('zRes').classList.remove('hidden')}
 $('zResCerrar').onclick=()=>{$('zRes').classList.add('hidden');renderPes()};
 $('zResEdit').onclick=()=>{$('zRes').classList.add('hidden');abrirZ(zVer)};
 $('zResDel').onclick=e=>twoTap(e.target,()=>{pes=pes.filter(x=>x!==zVer);savePes();encolar({op:'pesdel',id:zVer.id});$('zRes').classList.add('hidden');renderPes();toast('Pesaje eliminado')},'¿Eliminar?');
-function filasPes(p){const s=statsPes(p);return[p.fecha,p.tipo==='prod'?'Producción':'Levante',p.galpon,p.lote||'',p.edad,s.n,s.aves,+s.kg.toFixed(3),s.prom!=null?+s.prom.toFixed(3):null,p.std||null,s.unif!=null?+(s.unif/100).toFixed(3):null,s.cv!=null?+(s.cv/100).toFixed(3):null,...s.zonas.map(z=>z.prom!=null?+z.prom.toFixed(3):null),p.por||'']}
 function hojasPes(lista){
- const zP=ZONAS.prod,zL=ZONAS.lev;const cab=['Fecha','Tipo','Galpón','Lote','Edad (sem)','Jaulas','Aves','Kg total','Prom. kg/ave','Estándar kg','Uniformidad','CV'];
+ const zP=ZONAS.prod,zL=ZONAS.lev;const cab=['Fecha','Tipo','Galpón','Lote','Edad (sem)','Jaulas pesadas','Aves pesadas','Peso prom. kg','Peso mín. kg','Peso máx. kg','Estándar kg','Uniformidad','CV'];
  const res=[{c:cab.concat(zP.map(z=>'Prom '+z),zL.map(z=>'Prom zona '+z),['Registrado por']),s:1}];
- lista.forEach(p=>{const f=filasPes(p);const zon=f.slice(12,-1);const zp=p.tipo==='prod'?zon:zP.map(()=>null),zl=p.tipo==='lev'?zon:zL.map(()=>null);
-  res.push({c:[{v:serial(p.fecha),s:7},...f.slice(1,10),f[10]!=null?{v:f[10],s:5}:null,f[11]!=null?{v:f[11],s:5}:null,...zp,...zl,f[f.length-1]]})});
- const det=[{c:['Fecha','Tipo','Galpón','Zona','Jaula','Aves','Kg','Kg/ave'],s:1}];
- lista.forEach(p=>ZONAS[p.tipo].forEach(z=>(p.zonas[z]||[]).forEach((j,i)=>{if(j.kg>0)det.push({c:[{v:serial(p.fecha),s:7},p.tipo==='prod'?'Producción':'Levante',p.galpon,z,i+1,j.aves,j.kg,+(j.kg/j.aves).toFixed(3)]})})));
- return[['Pesajes',sheetXml(res,cab.map(()=>11).concat(zP.map(()=>11),zL.map(()=>10),[16]),1)],['Pesajes detalle',sheetXml(det,[11,11,8,9,7,7,8,9],1)]]}
+ lista.forEach(p=>{const s=statsPes(p);const zon=s.zonas.map(z=>z.prom!=null?+z.prom.toFixed(3):null);const zp=p.tipo==='prod'?zon:zP.map(()=>null),zl=p.tipo==='lev'?zon:zL.map(()=>null);
+  res.push({c:[{v:serial(p.fecha),s:7},p.tipo==='prod'?'Producción':'Levante',p.galpon,p.lote||'',p.edad,s.jp,s.n,s.prom!=null?+s.prom.toFixed(3):null,s.min!=null?+s.min.toFixed(3):null,s.max!=null?+s.max.toFixed(3):null,p.std||null,s.unif!=null?{v:+(s.unif/100).toFixed(3),s:5}:null,s.cv!=null?{v:+(s.cv/100).toFixed(3),s:5}:null,...zp,...zl,p.por||'']})});
+ const det=[{c:['Fecha','Tipo','Galpón','Zona','Jaula','N° ave','Peso kg'],s:1}];
+ lista.forEach(p=>ZONAS[p.tipo].forEach(z=>(p.zonas[z]||[]).forEach((j,i)=>pesosJ(j).forEach((w,k)=>det.push({c:[{v:serial(p.fecha),s:7},p.tipo==='prod'?'Producción':'Levante',p.galpon,z,i+1,k+1,+(+w).toFixed(3)]})))));
+ return[['Pesajes',sheetXml(res,cab.map(()=>11).concat(zP.map(()=>11),zL.map(()=>10),[16]),1)],['Pesajes detalle',sheetXml(det,[11,11,8,9,7,7,9],1)]]}
 $('zResXlsx').onclick=()=>descargarXlsx('Pesaje_G'+zVer.galpon+'_'+zVer.fecha+'.xlsx',hojasPes([zVer]));
 
 /* ---------- LEVANTE ---------- */
@@ -1298,7 +1310,7 @@ $('cVel').onchange=e=>{cfg.vel=+e.target.value;saveCfg()};
 $('cProbar').onclick=()=>{const t=cfg.tts;cfg.tts=true;hablar('Entendí. Galpón 15. Prolapso: 3. Picaje: 2. Total: 5 muertas. ¿Es correcto?');cfg.tts=t};
 $('bkExp').onclick=()=>{const b=new Blob([JSON.stringify({cfg,regs,prod,lev,pes},null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='respaldo_SantaClarita_'+hoy()+'.json';document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),1000)};
 $('bkImp').onclick=()=>$('bkFile').click();
-$('bkFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const o=JSON.parse(rd.result);if(o.cfg){['galpones','causas','causasVer','aves','tts','auto','vel','gsUrl','gsKey','pgal','kgSaco','hxj','lgal','hidU','jxz'].forEach(k=>{if(k in o.cfg)cfg[k]=o.cfg[k]});(o.cfg.usuarios||[]).forEach(x=>{if(x&&x.u&&!findU(x.u))cfg.usuarios.push(x)})}if(Array.isArray(o.regs)){const ids=new Set(regs.map(r=>r.id));o.regs.forEach(r=>{if(!ids.has(r.id))regs.push(r)})}if(o.prod&&typeof o.prod==='object'){Object.entries(o.prod).forEach(([f,d])=>{if(!d||!d.g)return;prod[f]=prod[f]||{g:{}};Object.entries(d.g).forEach(([g,r])=>{const l=prod[f].g[g];if(!l||(r.upd||'')>=(l.upd||''))prod[f].g[g]=r})});saveProd()}
+$('bkFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const o=JSON.parse(rd.result);if(o.cfg){['galpones','causas','causasVer','aves','tts','auto','vel','gsUrl','gsKey','pgal','kgSaco','hxj','lgal','hidU','jxz','jxzL','maxAvesP','maxAvesL'].forEach(k=>{if(k in o.cfg)cfg[k]=o.cfg[k]});(o.cfg.usuarios||[]).forEach(x=>{if(x&&x.u&&!findU(x.u))cfg.usuarios.push(x)})}if(Array.isArray(o.regs)){const ids=new Set(regs.map(r=>r.id));o.regs.forEach(r=>{if(!ids.has(r.id))regs.push(r)})}if(o.prod&&typeof o.prod==='object'){Object.entries(o.prod).forEach(([f,d])=>{if(!d||!d.g)return;prod[f]=prod[f]||{g:{}};Object.entries(d.g).forEach(([g,r])=>{const l=prod[f].g[g];if(!l||(r.upd||'')>=(l.upd||''))prod[f].g[g]=r})});saveProd()}
  if(o.lev&&typeof o.lev==='object'){Object.entries(o.lev).forEach(([f,d])=>{if(!d||!d.g)return;lev[f]=lev[f]||{g:{}};Object.entries(d.g).forEach(([g,r])=>{const l=lev[f].g[g];if(!l||(r.upd||'')>=(l.upd||''))lev[f].g[g]=r})});saveLev()}
  if(Array.isArray(o.pes)){o.pes.forEach(p=>{const i=pes.findIndex(x=>x.id===p.id);if(i<0)pes.push(p);else if((p.upd||'')>=(pes[i].upd||''))pes[i]=p});savePes()}
  saveCfg();saveRegs();renderAju();toast('Respaldo importado')}catch(err){toast('Archivo no válido')}};rd.readAsText(f);e.target.value=''};
