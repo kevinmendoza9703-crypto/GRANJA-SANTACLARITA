@@ -15,7 +15,7 @@
 html,body{margin:0;padding:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.4}
 header{background:var(--pri);color:#fff;padding:10px 14px;position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;gap:8px}
 header h1{margin:0;font-size:19px}
-header .sub{display:none}
+header .sub{display:none;font-size:13px;font-weight:700;opacity:.9}
 .uch{display:flex;gap:6px;align-items:center}
 .uch span{font-size:15px;font-weight:600;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .uch button{background:rgba(255,255,255,.2);color:#fff;border:0;border-radius:10px;padding:10px 12px;font-size:15px;font-weight:600;min-height:44px}
@@ -141,6 +141,25 @@ tr.tot td{font-weight:900;background:#faf1ec}
 .pit.al{border-color:#f0c94b;background:#fffaeb}
 .pfotos{display:flex;gap:8px;overflow-x:auto;margin-top:10px}
 .pfotos img{height:84px;border-radius:10px;border:2px solid var(--line)}
+#fx{position:fixed;inset:0;z-index:26;background:var(--bg);display:flex;flex-direction:column}
+.fxsvg{width:100%;max-width:420px;display:block;margin:4px auto}
+.fxtips{margin:10px 0 0;padding-left:4px;list-style:none;font-size:17px;line-height:1.7}
+.fxprev{width:100%;border-radius:12px;margin-top:10px;border:2px solid var(--line)}
+.fxpasos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px;text-align:center;font-size:14px;font-weight:700}
+.fxpasos div{background:#f7f1ec;border-radius:12px;padding:10px 4px}.fxpasos b{display:block;font-size:24px;color:var(--pri)}
+.fxspin{width:56px;height:56px;border:6px solid #eee;border-top-color:var(--pri);border-radius:50%;margin:0 auto;animation:gira 1s linear infinite}
+@keyframes gira{to{transform:rotate(360deg)}}
+.semaf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;text-align:center;font-size:14px;font-weight:700}
+.semaf div{border-radius:12px;padding:10px 4px}.semaf b{display:block;font-size:30px}
+.semaf .r{background:#fde0e0;color:#a11}.semaf .a{background:#fff3cd;color:#6b4a00}.semaf .v{background:#e3f4e8;color:#15652f}
+.ftot{display:flex;justify-content:space-between;gap:8px;padding:9px 2px;border-bottom:1px solid #eee;font-size:16px;font-weight:600}.ftot span:last-child{text-align:right;color:var(--mu)}
+.ftot.bad{background:#fde0e0;border-radius:8px;padding:9px 8px}.ftot.bad span:last-child{color:#a11;font-weight:800}
+.fxq{border-radius:12px;padding:10px 12px;margin-bottom:10px;border:2px solid #f0c94b;background:#fffaeb}.fxq.error{border-color:#e57373;background:#fdecec}
+.fxqh{font-size:17px}.fxqm{font-size:16px;margin:4px 0 8px}
+.fxqa{display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:center}.fxqa input{min-height:46px;font-size:20px;font-weight:800;text-align:center}
+.fxg{display:flex;align-items:center;gap:10px;width:100%;background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px;font-family:inherit;color:var(--tx);font-size:16px}
+.fxg .st{font-size:24px}.fxg small{color:var(--mu);font-size:13px}
+.fecods{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.fecods label{font-size:13px;margin:0}.fecods input{min-height:42px;padding:4px;text-align:center;font-size:17px}
 #pEd{position:fixed;inset:0;z-index:24;background:var(--bg);display:flex;flex-direction:column}
 .pedh{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--pri);color:#fff;padding:10px 12px}
 .pedh .btn{background:rgba(255,255,255,.2);color:#fff}
@@ -161,6 +180,9 @@ tr.tot td{font-weight:900;background:#faf1ec}
 .pcalc b{font-size:22px}
 .pcalc .big{grid-column:1/-1;text-align:center;border-color:var(--pri)}
 .pcalc .big b{font-size:34px;color:var(--pri)}
+.pitw{display:flex;gap:6px;align-items:stretch}.pitw .pit{flex:1;margin-bottom:8px}.pdel{border:2px solid #f3b4b4;background:#fde0e0;color:#a11;border-radius:14px;font-size:22px;width:56px;margin-bottom:8px}
+.pdet{margin-top:14px;background:#fff;border-radius:12px;padding:10px 12px;border:2px dashed var(--line)}
+.pdet summary{font-size:15px;font-weight:700;color:var(--mu)}
 .palert{background:#fff3cd;border:2px solid #f0c94b;color:#6b4a00;border-radius:12px;padding:10px 12px;font-size:16px;font-weight:700;margin-top:8px}
 #fotoV{position:fixed;inset:0;z-index:35;background:#111;display:flex;flex-direction:column}
 .fvb{display:flex;gap:6px;padding:8px;flex-wrap:wrap;background:#222}
@@ -168,8 +190,20 @@ tr.tot td{font-weight:900;background:#faf1ec}
 .fvs img{display:block;width:100%;height:auto}
 .pcfg{display:grid;grid-template-columns:.7fr 1fr .8fr 1fr .8fr auto;gap:4px;margin-bottom:4px;align-items:center}
 .pcfg input{padding:6px;font-size:15px;min-height:42px;text-align:center}
+.pcfg7{display:grid;grid-template-columns:.65fr .9fr .9fr .6fr .8fr .6fr auto;gap:4px;margin-bottom:4px;align-items:center}
+.pcfg7 input{padding:5px 2px;font-size:14px;min-height:42px;text-align:center}
+.pcfg7 b{font-size:11px;color:var(--mu);text-align:center}
 .pcfg b{font-size:12px;color:var(--mu);text-align:center}
 /* inicio, pesaje y levante */
+.acz{display:grid;grid-template-columns:.8fr 1fr 1fr;gap:6px;align-items:center;margin-top:6px}.acz b{font-size:15px}.acz input{min-height:44px;text-align:center;font-size:18px;font-weight:800;padding:6px}
+.acz-h span{font-size:12px;color:var(--mu);font-weight:700;text-align:center}.aczona{font-weight:900;color:var(--pri);margin-top:12px;font-size:16px}
+.chips button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.gtiles{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.gtile{border:0;border-radius:22px;padding:26px 16px;text-align:center;font-family:inherit;color:#fff;min-height:190px;box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.gtile.prod{background:linear-gradient(160deg,#8a2433,#5e1721)}.gtile.lev{background:linear-gradient(160deg,#2e7d4f,#1b5e3a)}
+.gtile i{display:block;font-style:normal;font-size:64px;line-height:1.1}
+.gtile b{display:block;font-size:26px;margin-top:8px}
+.gtile span{display:block;font-size:15px;opacity:.9;margin-top:4px}
 .tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .tile{background:#fff;border:2px solid var(--line);border-radius:18px;padding:18px 10px;text-align:center;font-family:inherit;color:var(--tx);min-height:130px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .tile i{display:block;font-style:normal;font-size:46px;line-height:1.1}
@@ -270,14 +304,46 @@ tr.tot td{font-weight:900;background:#faf1ec}
 <!-- INICIO -->
 <section id="t-ini" class="hidden">
  <div class="card" style="text-align:center"><div style="font-size:22px;font-weight:900;color:var(--pri)" id="iniHola"></div><div class="hint" id="iniFecha" style="font-size:17px"></div></div>
- <div class="tiles" id="iniTiles"></div>
+ <div class="gtiles" id="iniTiles"></div>
+</section>
+
+<section id="t-gra" class="hidden">
+ <div class="card" style="text-align:center"><div style="font-size:24px;font-weight:900;color:var(--pri)" id="graTit"></div><div class="hint" id="graFecha" style="font-size:17px"></div></div>
+ <div class="tiles" id="graTiles"></div>
+ <button class="btn w" style="margin-top:14px" onclick="irA('ini')">🏠 Cambiar de granja</button>
+</section>
+
+<!-- ALIMENTO POR COMEDERO -->
+<section id="t-ali" class="hidden">
+ <div class="card"><h2>🌾 Alimento por comedero</h2>
+  <label>1. Galpón</label><div class="chips" id="aGalChips"></div>
+ </div>
+ <div id="aDatos" class="hidden">
+  <div class="card">
+   <label>2. Aves en el galpón</label><input id="aAves" inputmode="numeric">
+   <div class="hint" id="aFuente"></div>
+   <label style="margin-top:12px">3. Gramos que debe comer cada ave (meta)</label><input id="aGr" inputmode="decimal" placeholder="Ej.: 110" style="font-size:26px;font-weight:900;text-align:center">
+   <label style="margin-top:12px">¿Cómo calcular el total del día?</label>
+   <div class="row tipo" id="aModo"><button class="btn" data-m="gr">Según gramos por ave<br><small>recomendado</small></button><button class="btn" data-m="sacos">Según sacos del día<br><small>compara con la meta</small></button></div>
+   <div id="aSacosBox" class="hidden"><label style="margin-top:12px">Sacos de 40 kg del día</label><input id="aSacos" inputmode="decimal"></div>
+  </div>
+  <div class="card"><h2>Jaulas del galpón</h2>
+   <div class="hint">3 zonas × 3 cuadros. Cada cuadro tiene 4 filas × 2 pisos = 8 comederos.</div>
+   <label style="margin-top:8px">Jaulas por fila (si es igual en todo el galpón)</label><input id="aJxf" inputmode="numeric">
+   <div class="hint">Si un cuadro tiene jaulas vacías, escribe sus jaulas con aves. Si contaste las aves de un cuadro, anótalas: es lo más exacto.</div>
+   <div id="aCuad"></div>
+  </div>
+  <div class="card"><div class="row"><label>Kg de tu balde lleno (opcional)<input id="aBalde" inputmode="decimal"></label><label>Repartos al día<select id="aRep"><option>1</option><option>2</option><option>3</option></select></label></div></div>
+ </div>
+ <div id="aRes"></div>
 </section>
 
 <!-- LEVANTE -->
 <section id="t-lev" class="hidden">
  <div class="fechabar">📅 <span id="lFechaTxt"></span><input type="date" id="lFecha" aria-label="Fecha"></div>
  <div class="card"><h2>🐣 Levante — registro diario</h2><div class="pres" id="lResumen"></div>
-  <button class="btn ok w" id="lXlsx" style="margin-top:12px">⬇ Excel del día</button></div>
+  <button class="btn ok w" id="lXlsx" style="margin-top:12px">⬇ Excel del día</button>
+  <button class="btn danger w adm" id="lDelDia" style="margin-top:10px">🗑 Eliminar el registro de esta fecha</button></div>
  <div class="hint" style="margin:0 4px 8px;font-size:16px">Toca un galpón para registrar alimento, mortalidad y agua.</div>
  <div id="lLista"></div>
 </section>
@@ -285,13 +351,13 @@ tr.tot td{font-weight:900;background:#faf1ec}
 <!-- PESAJE -->
 <section id="t-pes" class="hidden">
  <div class="card">
-  <h2>⚖️ Nuevo pesaje</h2>
-  <label>1. ¿Qué aves vas a pesar?</label>
-  <div class="row tipo"><button class="btn" data-tipo="prod">🥚 Producción<br><small>Tanque · Medio · Fondo</small></button><button class="btn" data-tipo="lev">🐣 Levante<br><small>Zonas A a H</small></button></div>
-  <label style="margin-top:14px">2. Número de galpón</label>
+  <h2 id="zTipoTit">⚖️ Nuevo pesaje</h2>
+  <div id="zTipoBox" class="hidden"><label>¿Qué aves vas a pesar?</label>
+  <div class="row tipo"><button class="btn" data-tipo="prod">🥚 Producción<br><small>Tanque · Medio · Fondo</small></button><button class="btn" data-tipo="lev">🐣 Levante<br><small>Zonas A a H</small></button></div></div>
+  <label>1. Número de galpón</label>
   <input id="zGal" inputmode="numeric" placeholder="Ej.: 19" style="font-size:28px;font-weight:900;text-align:center">
   <div class="chips" id="zGalChips"></div>
-  <label style="margin-top:14px">3. Fecha del pesaje</label>
+  <label style="margin-top:14px">2. Fecha del pesaje</label>
   <input type="date" id="zFecha">
   <div class="row" style="margin-top:14px">
    <label>Jaulas por zona<input id="zJxz" inputmode="numeric"></label>
@@ -310,12 +376,14 @@ tr.tot td{font-weight:900;background:#faf1ec}
 <!-- PRODUCCIÓN -->
 <section id="t-prd" class="hidden">
  <div class="fechabar">📅 <span id="pFechaTxt"></span><input type="date" id="pFecha" aria-label="Fecha del parte"></div>
+ <button class="btn ok w" id="pFotoParte" style="min-height:76px;font-size:22px;margin-bottom:14px">📷 Cargar parte con fotos</button>
  <div class="card">
   <h2>Parte de producción</h2>
   <div class="pres" id="pResumen"></div>
   <div class="row" style="margin-top:12px"><button class="btn" id="pFotoBtn">📷 Foto del parte</button><button class="btn ok" id="pXlsx">⬇ Excel del día</button></div>
   <input type="file" id="pFotoIn" accept="image/*" capture="environment" class="hidden">
   <div id="pFotos" class="pfotos"></div>
+  <button class="btn danger w adm" id="pDelDia" style="margin-top:12px">🗑 Eliminar el parte de esta fecha</button>
  </div>
  <div class="hint" style="margin:0 4px 8px;font-size:16px">Toca un galpón para llenar sus datos. Los cálculos se hacen solos.</div>
  <div id="pLista"></div>
@@ -343,6 +411,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
    <button class="btn" id="rHoy">Hoy</button><button class="btn" id="rSem">7 días</button><button class="btn" id="rMes">Este mes</button>
   </div>
  </div>
+ <div id="repProd">
  <div class="card">
   <h2>Casuística por galpón</h2>
   <div class="scroll" id="repTabla"></div>
@@ -353,7 +422,12 @@ tr.tot td{font-weight:900;background:#faf1ec}
  </div>
  <button class="btn ok w" id="btnXlsx">⬇ Excel de mortalidad</button>
  <button class="btn p w" id="btnBD" style="margin-top:10px">⬇ Exportar para el Sistema de Producción</button>
- <div class="hint" style="text-align:center">Una fila por fecha y galpón con producción, alimento y casuística por código.</div>
+ <div class="hint" style="text-align:center">Una fila por fecha y galpón: muertas, venta, dieta, sacos, jabas, saldo, blanco, quiñado, cremoso, margarita, doble Y. y casuística por código.</div>
+ </div>
+ <div id="repLev" class="hidden">
+  <div class="card"><h2>🐣 Granja de Levante</h2><div class="hint" style="font-size:16px">Registro diario (alimento, agua, mortalidad) y pesajes de pollitas del rango elegido.</div></div>
+  <button class="btn p w" id="btnLevBD">⬇ Exportar levante para el Sistema</button>
+ </div>
 </section>
 
 <!-- AJUSTES -->
@@ -377,7 +451,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <h2>🥚 Producción: galpones y lotes</h2>
   <div class="hint" style="margin:0 0 8px">El orden es el del parte. La edad sube sola cada semana.</div>
   <div class="row" style="margin-bottom:10px"><label>Kg por saco<input id="cKgS" inputmode="decimal"></label><label>Huevos por jaba<input id="cHxj" inputmode="numeric"></label></div>
-  <div class="pcfg"><b>Galpón</b><b>Lote</b><b>Edad (sem)</b><b>Dieta</b><b>% tabla</b><b></b></div>
+  <div class="pcfg7"><b>Galpón</b><b>Lote</b><b>Galponero</b><b>Edad</b><b>Dieta</b><b>% tabla</b><b></b></div>
   <div id="cPgal"></div>
   <button class="btn sm" id="cPgalAdd" style="margin-top:6px">+ Agregar galpón</button>
  </div>
@@ -418,7 +492,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <input type="file" id="bkFile" accept=".json" class="hidden">
   <button class="btn danger w" id="bkDel" style="margin-top:10px">Borrar todos los registros</button>
  </div>
- <div class="hint" style="text-align:center">Granja Santa Clarita v2.3 · Kevin Mendoza Astocaza</div>
+ <div class="hint" style="text-align:center">Granja Santa Clarita v3.2 · Kevin Mendoza Astocaza</div>
 </section>
 
 </main>
@@ -471,9 +545,17 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <div class="pcalc" id="leCalc"></div>
   <div id="leAlert"></div>
   <button class="btn w" id="lePesar" style="margin-top:14px">⚖️ Pesar pollitas de este galpón</button>
+  <button class="btn danger w adm" id="leDel" style="margin-top:10px">🗑 Eliminar los datos de este galpón (esta fecha)</button>
  </div>
  <div class="pedf"><button class="btn ok w" id="leGuardar">✔ Guardar y siguiente galpón</button></div>
 </div>
+<div id="fx" class="hidden" role="dialog" aria-modal="true">
+ <div class="pedh"><button class="btn sm" id="fxCerrar">✖ Salir</button><div><div class="pedt">PARTE CON FOTOS</div><div class="peds" id="fxSub"></div></div><span style="width:60px"></span></div>
+ <div class="pedb" id="fxBody"></div>
+ <div class="pedf" id="fxPie"></div>
+</div>
+<input type="file" id="fxCam" accept="image/*" capture="environment" class="hidden">
+<input type="file" id="fxGal" accept="image/*" class="hidden">
 <div id="pEd" class="hidden" role="dialog" aria-modal="true">
  <div class="pedh"><button class="btn sm" id="peCerrar">✖ Cerrar</button><div><div class="pedt" id="peTit"></div><div class="peds" id="peSub"></div></div><button class="btn sm" id="peFoto">📷</button></div>
  <div class="pedb">
@@ -481,30 +563,33 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <div id="peVoz" class="hint" style="text-align:center;font-size:16px"></div>
   <div class="psec">🐔 Aves</div>
   <div class="pgrid">
-   <label>Saldo inicial<input data-k="saldo" inputmode="decimal"></label>
+   <label style="grid-column:1/-1">Código de galponero<input data-k="cod" inputmode="numeric"></label>
    <label>Muertas<input data-k="mman" inputmode="decimal"></label>
    <label>Venta<input data-k="venta" inputmode="decimal"></label>
-   <label>% tabla<input data-k="tabla" inputmode="decimal"></label>
   </div>
   <div class="psec">🌾 Alimento</div>
   <div class="pgrid">
    <label>Dieta<input data-k="dieta" autocapitalize="characters"></label>
-   <label>Sacos consumidos<input data-k="sacos" inputmode="decimal"></label>
-   <label>Saldo sacos (inicio)<input data-k="sini" inputmode="decimal"></label>
-   <label>Ingreso sacos<input data-k="ing" inputmode="decimal"></label>
+   <label>Sacos<input data-k="sacos" inputmode="decimal"></label>
   </div>
   <div class="psec">🥚 Huevos</div>
   <div class="pgrid">
    <label>Jabas<input data-k="jabas" inputmode="decimal"></label>
-   <label>Guiñado<input data-k="gu" inputmode="decimal"></label>
+   <label>Saldo<input data-k="js" inputmode="decimal"></label>
    <label>Blanco<input data-k="bl" inputmode="decimal"></label>
+   <label>Quiñado<input data-k="gu" inputmode="decimal"></label>
    <label>Cremoso<input data-k="cr" inputmode="decimal"></label>
    <label>Margarita<input data-k="ma" inputmode="decimal"></label>
-   <label>Doble yema<input data-k="dy" inputmode="decimal"></label>
+   <label>Doble Y.<input data-k="dy" inputmode="decimal"></label>
   </div>
+  <details class="pdet"><summary>Saldo de aves (solo para los cálculos de la app)</summary>
+   <div class="pgrid" style="margin-top:8px"><label>Saldo de aves<input data-k="saldo" inputmode="decimal"></label></div>
+   <div class="hint">Se arrastra solo del día anterior. Sirve para mostrar el % de postura y los gramos por ave; no se exporta.</div>
+  </details>
   <div class="psec">🧮 Resultado (automático)</div>
   <div class="pcalc" id="peCalc"></div>
   <div id="peAlert"></div>
+  <button class="btn danger w adm" id="peDel" style="margin-top:16px">🗑 Eliminar los datos de este galpón (esta fecha)</button>
  </div>
  <div class="pedf"><button class="btn ok w" id="peGuardar">✔ Guardar y siguiente galpón</button></div>
 </div>
@@ -546,11 +631,11 @@ const DEF_CAUSAS=[
  {c:'ENG',n:'Engrasada',s:'engrasada, engrasadas, grasa, gorda, gordas'},
  {c:'UR',n:'Uratosis',s:'uratosis, urato, uratos, gota'},
  {c:'ITX',n:'Intoxicada',s:'intoxicada, intoxicadas, intoxicacion'},
- {c:'HRI',n:'Huevo roto interno',s:'huevo roto interno, huevo roto, roto interno'},
+ {c:'HR',n:'Huevo rojo interno',s:'huevo rojo interno, huevo rojo, rojo interno'},
  {c:'FR',n:'Fractura',s:'fractura, fracturas, fracturada, fracturadas, quebrada, quebradas, pata rota'},
  {c:'FG',n:'Fango',s:'fango'},
  {c:'OI',n:'Obst. intestinal',s:'obstruccion intestinal, obstruccion, obstruida, obstruidas'},
- {c:'HI',n:'Hemorragia interna',s:'hemorragia interna, hemorragia'},
+ {c:'HI',n:'Hemorr. interna',s:'hemorragia interna, hemorragia'},
  {c:'PD',n:'Podrida',s:'podrida, podridas, descompuesta, descompuestas'},
  {c:'PLS',n:'Prolapso',s:'prolapso, prolapsos, prolapsada, prolapsadas'},
  {c:'TQT',n:'Traqueítis',s:'traqueitis, traquea'},
@@ -558,20 +643,21 @@ const DEF_CAUSAS=[
  {c:'RESP',n:'Respiratorio',s:'respiratorio, respiratoria, problema respiratorio, coriza'},
  {c:'DIG',n:'Digestivo',s:'digestivo, digestiva, enteritis, diarrea'},
  {c:'P.CR',n:'P. crónico',s:'cronico, cronica, cronicos, cronicas, p cronico, pe cronico, pollo cronico'},
- {c:'AST',n:'Ascitis',s:'ascitis, asitis'},
+ {c:'AST',n:'Asitis',s:'asitis, ascitis'},
  {c:'OTR',n:'Otras causas',s:'otras causas, otros, otras, otra, desconocida'},
- {c:'CG',n:'Gato',s:'gato, gatos, comida por gato, cg, c g, ce ge, cege'},
- {c:'NI',n:'No indica',s:'no indica, no indica mortalidad, sin causa, no se sabe'}
+ {c:'OTR',n:'Gato',s:'gato, gatos, comida por gato, matada por gato',obs:'Gato'}
 ];
-const DEF_PGAL=[[19,'2158',28,'P1',96],[23,'2156',28,'P1',96],[25,'2219',28,'P1',96],[17,'2109',35,'P1+SAL',95],[18,'2112',35,'P1+SAL',95],[20,'2140',35,'P1',95],[28,'',60,'P2',89],[29,'2340',60,'P2',89],[30,'2347',60,'P2',89],[31,'2137',60,'P2',89],[13,'2091',69,'P2',86],[14,'2151',69,'P2',86],[21,'2318',69,'P2',86],[24,'2314',69,'P2',86],[12,'3352',77,'P3',81],[16,'2208',77,'P3',81],[22,'2024',77,'P3',81],[26,'2179',77,'P3',81],[15,'2214',85,'DV',77],[32,'',85,'DV',77],[33,'2326',85,'DV',77],[34,'2059',85,'DV',77]].map(([g,lote,edad,dieta,tabla])=>({g,lote,edad,ref:'2026-11-22',dieta,tabla}));
+const GRUPO_LOTE={19:'L26-2',23:'L26-2',25:'L26-2',17:'L26-1',18:'L26-1',20:'L26-1',28:'L25-5',29:'L25-5',30:'L25-5',31:'L25-5',13:'L25-4',14:'L25-4',21:'L25-4',24:'L25-4',12:'L25-3',16:'L25-3',22:'L25-3',26:'L25-3',15:'L25-2',32:'L25-2',33:'L25-2',34:'L25-2'};
+const DEF_PGAL=[[19,'2158',28,'P1',96],[23,'2156',28,'P1',96],[25,'2219',28,'P1',96],[17,'2109',35,'P1+SAL',95],[18,'2112',35,'P1+SAL',95],[20,'2140',35,'P1',95],[28,'',60,'P2',89],[29,'2340',60,'P2',89],[30,'2347',60,'P2',89],[31,'2137',60,'P2',89],[13,'2091',69,'P2',86],[14,'2151',69,'P2',86],[21,'2318',69,'P2',86],[24,'2314',69,'P2',86],[12,'3352',77,'P3',81],[16,'2208',77,'P3',81],[22,'2024',77,'P3',81],[26,'2179',77,'P3',81],[15,'2214',85,'DV',77],[32,'',85,'DV',77],[33,'2326',85,'DV',77],[34,'2059',85,'DV',77]].map(([g,cod,edad,dieta,tabla])=>({g,lote:GRUPO_LOTE[g]||'',cod,edad,ref:'2026-11-22',dieta,tabla}));
 let cfg=load('cfg',null)||{galpones:'11-34',causas:DEF_CAUSAS.map(c=>({...c})),aves:{},tts:true,auto:true,usuarios:[]};
 if(!Array.isArray(cfg.usuarios))cfg.usuarios=[];
-if(!cfg.causasVer||cfg.causasVer<2){cfg.causas=DEF_CAUSAS.map(c=>({...c}));cfg.causasVer=3}
+if(!cfg.causasVer||cfg.causasVer<4){cfg.causas=DEF_CAUSAS.map(c=>({...c}));cfg.causasVer=4}
 if(cfg.causasVer===2){cfg.causas.forEach(c=>{if(c.c==='CG'&&/por confirmar/i.test(c.n)){c.n='Gato';c.s='gato, gatos, comida por gato, cg, c g, ce ge, cege'}if(c.c==='OTR')c.s=String(c.s).replace(/,\s*sin causa/,'')});if(!cfg.causas.some(c=>c.c==='NI'))cfg.causas.push({c:'NI',n:'No indica',s:'no indica, no indica mortalidad, sin causa, no se sabe'});cfg.causasVer=3}
-if(!Array.isArray(cfg.pgal))cfg.pgal=DEF_PGAL.map(x=>({...x}));if(!cfg.kgSaco)cfg.kgSaco=40;if(!cfg.hxj)cfg.hxj=360;
+if(!Array.isArray(cfg.pgal))cfg.pgal=DEF_PGAL.map(x=>({...x}));
+cfg.pgal.forEach(x=>{if(x.cod===undefined){x.cod=x.lote||'';x.lote=GRUPO_LOTE[x.g]||''}});if(!cfg.kgSaco)cfg.kgSaco=40;if(!cfg.hxj)cfg.hxj=360;
 try{localStorage.setItem('mortgalpon_cfg',JSON.stringify(cfg))}catch(e){}
 let regs=load('regs',[]);
-regs.forEach(r=>{if(r.counts&&r.counts['CG (por confirmar)']){r.counts['Gato']=(r.counts['Gato']||0)+r.counts['CG (por confirmar)'];delete r.counts['CG (por confirmar)']}});
+{const REN={'CG (por confirmar)':'Gato','Huevo roto interno':'Huevo rojo interno','Hemorragia interna':'Hemorr. interna','Ascitis':'Asitis'};let ch=false;regs.forEach(r=>{if(!r.counts)return;Object.keys(REN).forEach(k=>{if(r.counts[k]){r.counts[REN[k]]=(r.counts[REN[k]]||0)+r.counts[k];delete r.counts[k];ch=true}});if(r.counts['No indica']){delete r.counts['No indica'];ch=true}});if(ch)try{localStorage.setItem('mortgalpon_regs',JSON.stringify(regs))}catch(e){}}
 function saveCfg(){store('cfg',cfg)}function saveRegs(){store('regs',regs)}
 
 /* ---------- utilidades ---------- */
@@ -801,8 +887,9 @@ function renderHis(){
  const f=$('hFecha').value;let l=regs.filter(r=>r.fecha===f&&(!v||String(r.galpon)===v));
  l.sort((a,b)=>a.galpon-b.galpon||a.hora.localeCompare(b.hora));
  if(!l.length){$('hisList').innerHTML='<div class="hint">Sin registros para '+fmtF(f)+'.</div>';return}
- $('hisList').innerHTML=l.map(r=>`<div class="ent"><div class="h"><span>Galpón ${r.galpon}</span><span>${sumCounts(r.counts)} muertas</span></div><div class="d">${r.hora}${(r.nombre||r.usuario)?' · '+esc(r.nombre||r.usuario):''}${r.editadoPor?' · editado por '+esc(r.editadoPor):''}<br>${Object.entries(r.counts).map(([k,v])=>`<span class="tag">${esc(k)} ${v}</span>`).join('')}${r.texto?`<br><i>“${esc(r.texto)}”</i>`:''}</div>${puede(r)?`<div class="a"><button class="btn sm" data-ed="${r.id}">Editar</button><button class="btn sm danger" data-del="${r.id}">Eliminar</button></div>`:''}</div>`).join('');
- $('hisList').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>twoTap(b,()=>{const rr=regs.find(r=>r.id===b.dataset.del);if(!rr||!puede(rr))return;regs=regs.filter(r=>r.id!==b.dataset.del);saveRegs();encolar({op:'del',id:b.dataset.del});renderHis();toast('Registro eliminado')},'¿Eliminar?'));
+ $('hisList').innerHTML=(isAdmin()?`<button class="btn danger w" id="hDelTodo" style="margin-bottom:12px">🗑 Eliminar ${v?'la casuística del galpón '+v:'toda la casuística'} del ${fmtF(f)} (${l.length} registro${l.length>1?'s':''})</button>`:'')+l.map(r=>`<div class="ent"><div class="h"><span>Galpón ${r.galpon}</span><span>${sumCounts(r.counts)} muertas</span></div><div class="d">${r.hora}${(r.nombre||r.usuario)?' · '+esc(r.nombre||r.usuario):''}${r.editadoPor?' · editado por '+esc(r.editadoPor):''}<br>${Object.entries(r.counts).map(([k,v])=>`<span class="tag">${esc(k)} ${v}</span>`).join('')}${r.texto?`<br><i>“${esc(r.texto)}”</i>`:''}</div>${puede(r)?`<div class="a"><button class="btn sm" data-ed="${r.id}">Editar</button>${isAdmin()?`<button class="btn sm danger" data-del="${r.id}">Eliminar</button>`:''}</div>`:''}</div>`).join('');
+ $('hisList').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>twoTap(b,()=>{const rr=regs.find(r=>r.id===b.dataset.del);if(!rr||!isAdmin())return;regs=regs.filter(r=>r.id!==b.dataset.del);saveRegs();encolar({op:'del',id:b.dataset.del});renderHis();toast('Registro eliminado')},'¿Eliminar?'));
+ if($('hDelTodo'))$('hDelTodo').onclick=()=>confirmarBorrado('Eliminar casuística',`Se eliminarán <b>${l.length}</b> registro(s) de casuística de mortalidad del <b>${fmtF(f)}</b>${v?' del galpón <b>'+v+'</b>':' de todos los galpones'}.`,()=>{const n=borrarRegs(l);renderHis();toast(n+' registro(s) eliminados')});
  $('hisList').querySelectorAll('[data-ed]').forEach(b=>b.onclick=()=>{const r=regs.find(x=>x.id===b.dataset.ed);form={galpon:r.galpon,counts:{...r.counts},editId:r.id};$('fFecha').value=r.fecha;irA('reg')});
 }
 $('hFecha').onchange=renderHis;$('hGal').onchange=renderHis;
@@ -817,7 +904,7 @@ function datosRep(){
  const dias=new Set(l.map(r=>r.fecha)).size;
  return{a,b,l,m,usadas,gs,dias};
 }
-function renderRep(){
+function renderRep(){$('repProd').classList.toggle('hidden',granja==='lev');$('repLev').classList.toggle('hidden',granja!=='lev');if(granja==='lev')return;
  const d=datosRep();
  if(!d.l.length){$('repTabla').innerHTML='<div class="hint">Sin registros en el rango.</div>';$('repCausas').innerHTML='';return}
  const tieneAves=d.gs.some(g=>+cfg.aves[g]>0);
@@ -897,7 +984,7 @@ $('btnXlsx').onclick=exportarXlsx;
 /* ---------- PRODUCCIÓN ---------- */
 let prod=load('prod',{});
 function saveProd(){store('prod',prod)}
-const PCAMPOS=['saldo','mman','venta','tabla','dieta','sacos','sini','ing','jabas','gu','bl','cr','ma','dy'];
+const PCAMPOS=['saldo','mman','venta','tabla','dieta','ver','sacos','sini','ing','jabas','js','gu','bl','cr','ma','dy'];
 function pcfg(g){return(cfg.pgal||[]).find(x=>+x.g===+g)||{g:+g}}
 function dnum(f){const[y,m,d]=f.split('-').map(Number);return Date.UTC(y,m-1,d)/864e5}
 function edadEn(pc,f){if(pc.edad===''||pc.edad==null)return'';return +pc.edad+Math.floor((dnum(f)-dnum(pc.ref||f))/7)}
@@ -907,9 +994,9 @@ function prevRow(g,f){const fs=Object.keys(prod).filter(x=>x<f&&prod[x]&&prod[x]
 function muertasReg(f,g){return regs.filter(r=>r.fecha===f&&+r.galpon===+g).reduce((a,r)=>a+sumCounts(r.counts),0)}
 function pcalc(f,g,over,depth){
  depth=depth||0;const row=over||(prod[f]&&prod[f].g&&prod[f].g[g])||null;const r=row||{};const pc=pcfg(g);
- let prev=null;if(depth<4&&(pnum(r.saldo)==null||pnum(r.sini)==null||!r.dieta||pnum(r.tabla)==null)){const pf=prevRow(g,f);if(pf)prev=pcalc(pf,g,null,depth+1)}
+ let prev=null;if(depth<4&&(pnum(r.saldo)==null||pnum(r.sini)==null||!r.dieta||!r.ver||pnum(r.tabla)==null)){const pf=prevRow(g,f);if(pf)prev=pcalc(pf,g,null,depth+1)}
  const mreg=muertasReg(f,g);const mman=pnum(r.mman);
- const o={g:+g,f,lote:r.lote||pc.lote||'',edad:r.edad!=null&&r.edad!==''?r.edad:edadEn(pc,f),
+ const o={g:+g,f,lote:pc.lote||'',cod:r.cod||(prev&&prev.cod)||pc.cod||'',ver:r.ver||(prev&&prev.ver)||'',js:pnum(r.js)||0,edad:r.edad!=null&&r.edad!==''?r.edad:edadEn(pc,f),
   dieta:r.dieta||(prev&&prev.dieta)||pc.dieta||'',tabla:pnum(r.tabla)??(prev?prev.tabla:pnum(pc.tabla)),
   saldo:pnum(r.saldo)??(prev?prev.neto:null),mreg,muertas:mman!=null?mman:mreg,venta:pnum(r.venta)||0,
   sacos:pnum(r.sacos),ing:pnum(r.ing)||0,sini:pnum(r.sini)??(prev?prev.sfin:null),jabas:pnum(r.jabas),
@@ -918,21 +1005,20 @@ function pcalc(f,g,over,depth){
  o.neto=o.saldo!=null?o.saldo-o.muertas-o.venta:null;
  o.kg=o.sacos!=null?o.sacos*kgS:null;
  o.gr=o.kg!=null&&o.neto?o.kg*1000/o.neto:null;
- o.neta=o.jabas!=null?o.jabas*hxj:null;
+ o.neta=o.jabas!=null?o.jabas*hxj+o.js:null;
  o.huevos=o.neta!=null?o.neta+o.gu:null;
  o.pct=o.neta!=null&&o.neto?o.neta/o.neto*100:null;
  o.dif=o.pct!=null&&o.tabla!=null?o.pct-o.tabla:null;
  o.sfin=o.sini!=null?o.sini+o.ing-(o.sacos||0):null;
  o.mort=o.saldo?o.muertas/o.saldo*100:null;
  const A=[];
- if(o.saldo==null)A.push('Falta el saldo de aves');
  if(depth===0&&o.pct!=null){const pf=prevRow(g,f);if(pf){const pp=pcalc(pf,g,null,1);if(pp.pct!=null){const d=o.pct-pp.pct;if(d<-5)A.push('La postura bajó '+Math.abs(d).toFixed(1)+' puntos respecto al día anterior: revisa las jabas');if(d>5)A.push('La postura subió '+d.toFixed(1)+' puntos respecto al día anterior: revisa las jabas')}}}
  if(o.dif!=null&&o.dif>3)A.push('Postura por encima de la tabla: revisa las jabas');
  if(o.gr!=null&&(o.gr<85||o.gr>135))A.push('Gramos por ave fuera de lo normal ('+o.gr.toFixed(0)+' g)');
  if(o.sfin!=null&&o.sfin<0)A.push('El saldo de sacos queda negativo');
  if(o.mort!=null&&o.mort>0.15)A.push('Mortalidad alta ('+o.mort.toFixed(2)+'%)');
  if(mman!=null&&mreg>mman)A.push('La casuística registrada ('+mreg+') es mayor que las muertas ('+mman+')');
- o.alertas=A;o.completo=!!row&&o.saldo!=null&&o.sacos!=null&&o.jabas!=null;
+ o.alertas=A;o.completo=!!row&&o.sacos!=null&&o.jabas!=null;
  return o;
 }
 function pGalpones(){return(cfg.pgal||[]).map(x=>+x.g)}
@@ -946,10 +1032,10 @@ function renderPrd(){
  const t=totalesProd(f);
  $('pResumen').innerHTML=`<div><b>${t.ok}/${t.n}</b><span>galpones listos</span></div><div><b>${f1(t.neto)}</b><span>aves</span></div><div><b>${f1(t.muertas)}</b><span>muertas (${t.aves?(t.muertas/t.aves*100).toFixed(3):'0'}%)</span></div><div><b>${frac(t.jabas)}</b><span>jabas</span></div><div><b>${t.neto?(t.neta/t.neto*100).toFixed(1):'—'}%</b><span>postura</span></div><div><b>${frac(t.sacos)}</b><span>sacos</span></div>`;
  let html='',ult=null;
- pGalpones().forEach(g=>{const o=pcalc(f,g);const grp=(o.edad!==''?o.edad+' semanas':'')+(o.dieta?' · '+o.dieta:'');
+ pGalpones().forEach(g=>{const o=pcalc(f,g);const grp=(o.lote?o.lote+' · ':'')+(o.edad!==''?o.edad+' semanas':'')+(o.dieta?' · '+o.dieta:'');
   if(grp!==ult){html+=`<div class="pgrp">${esc(grp||'Galpones')}</div>`;ult=grp}
   const cls=o.completo?(o.alertas.length?'al':'ok'):'';const st=o.completo?(o.alertas.length?'⚠️':'✅'):'✏️';
-  html+=`<button class="pit ${cls}" data-g="${g}"><span class="st">${st}</span><span style="flex:1"><span class="pg">Galpón ${g}</span><br><span class="pl">Lote ${esc(o.lote||'—')} · ${f1(o.neto)} aves</span></span><span class="pv">${o.jabas!=null?frac(o.jabas)+' jabas':'Pendiente'}<br><span class="pl">${o.pct!=null?o.pct.toFixed(1)+'% postura':''}</span></span></button>`});
+  html+=`<button class="pit ${cls}" data-g="${g}"><span class="st">${st}</span><span style="flex:1"><span class="pg">Galpón ${g}</span><br><span class="pl">${esc(o.lote||'')}${o.cod?' · Galponero '+esc(o.cod):''} · ${f1(o.neto)} aves</span></span><span class="pv">${o.jabas!=null?frac(o.jabas)+' jabas':'Pendiente'}<br><span class="pl">${o.pct!=null?o.pct.toFixed(1)+'% postura':''}</span></span></button>`});
  $('pLista').innerHTML=html||'<div class="card hint">No hay galpones de producción configurados. El administrador los agrega en Ajustes.</div>';
  $('pLista').querySelectorAll('.pit').forEach(b=>b.onclick=()=>abrirEd(+b.dataset.g));
  cargarFotos(f);
@@ -957,33 +1043,45 @@ function renderPrd(){
 $('pFecha').onchange=renderPrd;
 /* editor */
 let edG=null;
-function edVals(){const o={};$('pEd').querySelectorAll('input[data-k]').forEach(i=>{if(i.value.trim()!=='')o[i.dataset.k]=i.dataset.k==='dieta'?i.value.trim().toUpperCase():i.value.trim()});return o}
+function edVals(){const o={};$('pEd').querySelectorAll('input[data-k]').forEach(i=>{if(i.value.trim()!=='')o[i.dataset.k]=['dieta','ver'].includes(i.dataset.k)?i.value.trim().toUpperCase():i.value.trim()});return o}
 function abrirEd(g){
  const f=$('pFecha').value||hoy();edG=g;const o=pcalc(f,g);const row=(prod[f]&&prod[f].g&&prod[f].g[g])||{};
- $('peTit').textContent='GALPÓN '+g;$('peSub').textContent='Lote '+(o.lote||'—')+(o.edad!==''?' · '+o.edad+' semanas':'')+' · '+fmtF(f);
+ $('peTit').textContent='GALPÓN '+g;$('peSub').textContent=(o.lote||'')+(o.cod?' · Galponero '+o.cod:'')+(o.edad!==''?' · '+o.edad+' semanas':'')+' · '+fmtF(f);
  $('pEd').querySelectorAll('input[data-k]').forEach(i=>{const k=i.dataset.k;let v=row[k];i.classList.remove('auto','voz');
-  if((v==null||v==='')&&['saldo','sini','dieta','tabla'].includes(k)){v=o[k];if(v!=null&&v!=='')i.classList.add('auto')}
+  if((v==null||v==='')&&['saldo','dieta','cod'].includes(k)){v=o[k];if(v!=null&&v!=='')i.classList.add('auto')}
   if(k==='mman'&&(v==null||v==='')&&o.mreg>0){v=o.mreg;i.classList.add('voz')}
   i.value=v==null?'':(typeof v==='number'?+v.toFixed(2):v);i.disabled=!puedeProd(f);i.oninput=()=>{i.classList.remove('auto','voz');edCalc()}});
  $('peGuardar').disabled=!puedeProd(f);$('peGuardar').textContent=puedeProd(f)?'✔ Guardar y siguiente galpón':'Solo lectura';
- $('peVoz').textContent='Di por ejemplo: “jabas 22, guiñado 24, blanco 10, sacos 26”';
+ $('peVoz').textContent='Di por ejemplo: “jabas 22, quiñado 24, blanco 10, sacos 26”';
  $('pEd').classList.remove('hidden');$('pEd').querySelector('.pedb').scrollTop=0;edCalc();
 }
 function edCalc(){
  const f=$('pFecha').value||hoy();const o=pcalc(f,edG,edVals());
  const c=(l,v,big)=>`<div class="${big?'big':''}"><span>${l}</span><b>${v}</b></div>`;
- $('peCalc').innerHTML=c('% de postura',o.pct!=null?o.pct.toFixed(1)+'%'+(o.tabla!=null?' <small style="font-size:16px;color:var(--mu)">(tabla '+o.tabla+'%)</small>':''):'—',true)+c('Neto aves',f1(o.neto))+c('Prod. neta (huevos)',f1(o.neta))+c('Prod. total huevos',f1(o.huevos))+c('Kg de alimento',f1(o.kg))+c('Gramos por ave',o.gr!=null?o.gr.toFixed(1):'—')+c('Saldo final sacos',o.sfin!=null?frac(o.sfin):'—');
+ $('peCalc').innerHTML=c('% de postura',o.pct!=null?o.pct.toFixed(1)+'%'+'':'—',true)+c('Neto aves',f1(o.neto))+c('Prod. neta (huevos)',f1(o.neta))+c('Prod. huevos (neta + quiñado)',f1(o.huevos))+c('Kg de alimento',f1(o.kg))+c('Gramos por ave',o.gr!=null?o.gr.toFixed(1):'—');
  $('peAlert').innerHTML=o.alertas.map(a=>`<div class="palert">⚠️ ${esc(a)}</div>`).join('');
 }
+$('peDel').onclick=()=>{const f=$('pFecha').value||hoy(),g=edG;const tiene=prod[f]&&prod[f].g&&prod[f].g[g];const rl=regs.filter(r=>r.fecha===f&&+r.galpon===+g);
+ if(!tiene&&!rl.length){toast('Este galpón no tiene datos en esta fecha');return}
+ modal('🗑 Eliminar galpón '+g,`<div class="palert" style="font-size:17px">Galpón <b>${g}</b> · ${fmtF(f)}</div><div class="switch"><input type="checkbox" id="dlP" ${tiene?'checked':'disabled'}> <span>Datos del parte (muertas, sacos, jabas…)</span></div><div class="switch"><input type="checkbox" id="dlM" ${rl.length?'':'disabled'}> <span>Casuística de mortalidad (${rl.length} registro${rl.length===1?'':'s'})</span></div><label style="margin-top:10px">Escribe ELIMINAR para confirmar</label><input id="mDelOk" autocapitalize="characters">`,
+ ()=>{if($('mDelOk').value.trim().toUpperCase()!=='ELIMINAR')return'Escribe ELIMINAR para confirmar';let n=0;if($('dlP').checked)n+=borrarProd(f,g);if($('dlM').checked)n+=borrarRegs(rl);$('pEd').classList.add('hidden');renderPrd();toast(n?'Datos eliminados':'No se eliminó nada')})};
+$('pDelDia').onclick=()=>{const f=$('pFecha').value||hoy();const gs=Object.keys((prod[f]&&prod[f].g)||{});const rl=regs.filter(r=>r.fecha===f);const nf=(fotosMem[f]||[]).length;
+ if(!gs.length&&!rl.length&&!nf){toast('No hay datos en '+fmtF(f));return}
+ modal('🗑 Eliminar parte del '+fmtF(f),`<div class="switch"><input type="checkbox" id="ddP" ${gs.length?'checked':'disabled'}> <span>Parte de producción (${gs.length} galpones)</span></div><div class="switch"><input type="checkbox" id="ddM" ${rl.length?'':'disabled'}> <span>Casuística de mortalidad (${rl.length} registros)</span></div><div class="switch"><input type="checkbox" id="ddF" ${nf?'':'disabled'}> <span>Fotos del parte (${nf})</span></div><div class="hint" style="font-size:15px">Se elimina del celular y de la hoja de Drive. No se puede deshacer.</div><label style="margin-top:10px">Escribe ELIMINAR para confirmar</label><input id="mDelOk" autocapitalize="characters">`,
+ async()=>{if($('mDelOk').value.trim().toUpperCase()!=='ELIMINAR')return'Escribe ELIMINAR para confirmar';let t=[];
+  if($('ddP').checked){gs.forEach(g=>borrarProd(f,+g));t.push(gs.length+' galpones')}
+  if($('ddM').checked){borrarRegs(rl);t.push(rl.length+' registros de casuística')}
+  if($('ddF').checked){fotosMem[f]=[];try{await IDB.set(f,[])}catch(e){}t.push('fotos')}
+  renderPrd();toast(t.length?'Eliminado: '+t.join(', '):'No se eliminó nada')})};
 $('peCerrar').onclick=()=>{$('pEd').classList.add('hidden');renderPrd()};
 $('peGuardar').onclick=()=>{
  const f=$('pFecha').value||hoy();if(!puedeProd(f)){toast('No tienes permiso para esta fecha');return}
  const v=edVals();const o=pcalc(f,edG,v);
  if(v.jabas==null&&v.sacos==null){toast('Ingresa al menos jabas o sacos');return}
- v.saldo=v.saldo??(o.saldo!=null?o.saldo:undefined);v.sini=v.sini??(o.sini!=null?o.sini:undefined);v.dieta=v.dieta||o.dieta;v.tabla=v.tabla??(o.tabla!=null?o.tabla:undefined);
+ v.saldo=v.saldo??(o.saldo!=null?o.saldo:undefined);v.dieta=v.dieta||o.dieta;
  if(v.mman!=null&&+pnum(v.mman)===o.mreg&&$('pEd').querySelector('[data-k=mman]').classList.contains('voz'))delete v.mman;
  Object.keys(v).forEach(k=>{if(v[k]===undefined)delete v[k]});
- v.lote=o.lote;v.edad=o.edad;v.por=cur.nombre;v.upd=new Date().toISOString();
+ v.lote=o.lote;v.cod=v.cod||o.cod;v.edad=o.edad;v.por=cur.nombre;v.upd=new Date().toISOString();
  prod[f]=prod[f]||{g:{}};prod[f].g=prod[f].g||{};prod[f].g[edG]=v;saveProd();
  encolar({op:'prod',fila:filaBD(f,edG)});
  const gs=pGalpones();const i=gs.indexOf(edG);exito('Galpón '+edG+' · '+(o.jabas!=null?frac(o.jabas)+' jabas':'guardado'));
@@ -992,7 +1090,7 @@ $('peGuardar').onclick=()=>{
  if(sig!=null&&sig!==edG)abrirEd(sig);else{$('pEd').classList.add('hidden');renderPrd();toast('Parte del día completo ✔')}
 };
 /* dictado en producción */
-const PVOZ={saldo:['saldo','saldo inicial','aves','saldo de aves'],venta:['venta','ventas','vendidas'],mman:['muertas','muerta','mortalidad'],sacos:['sacos consumidos','sacos','consumo','saco'],ing:['ingreso de sacos','ingreso','ingresaron'],sini:['saldo de sacos','sacos inicial','saldo sacos'],jabas:['jabas','jaba','javas','java','havas','habas'],bl:['blancos','blanco'],gu:['guinados','guinado','quinados','quinado','guinadas','guinada'],cr:['cremosos','cremoso','cremosas'],ma:['margaritas','margarita','margar'],dy:['doble yema','dobles','doble y','doble'],tabla:['porcentaje tabla','tabla']};
+const PVOZ={saldo:['saldo','saldo inicial','aves','saldo de aves'],venta:['venta','ventas','vendidas'],mman:['muertas','muerta','mortalidad'],sacos:['sacos consumidos','sacos','consumo','saco'],ing:['ingreso de sacos','ingreso','ingresaron'],sini:['saldo de sacos','sacos inicial','saldo sacos'],jabas:['jabas','jaba','javas','java','havas','habas'],bl:['blancos','blanco'],gu:['guinados','guinado','quinados','quinado','guinadas','guinada'],js:['saldo de huevos','huevos sueltos','sueltos'],cr:['cremosos','cremoso','cremosas'],ma:['margaritas','margarita','margar'],dy:['doble yema','dobles','doble y','doble'],tabla:['porcentaje tabla','tabla']};
 function numVoz(tk,i){let v=0,j=i,ok=false;
  if(/^\d+(p\d+)?$/.test(tk[j]||'')){v=+tk[j].replace('p','.');j++;ok=true}
  else{if(has(HUND,tk[j])){v+=HUND[tk[j]];j++;ok=true}
@@ -1022,7 +1120,7 @@ $('peMic').onclick=()=>{
  rc.onerror=e=>{$('peVoz').textContent=e.error==='no-speech'?'No se escuchó nada':'Error: '+e.error};
  rc.onend=()=>{$('peMic').textContent='🎤 Dictar datos de este galpón';const d=interpretarProd(fin);const ks=Object.keys(d);
   if(!ks.length){if(fin.trim())$('peVoz').textContent='No entendí: “'+fin.trim()+'”';return}
-  const nom={saldo:'saldo',venta:'venta',mman:'muertas',sacos:'sacos',ing:'ingreso de sacos',sini:'saldo de sacos',jabas:'jabas',bl:'blanco',gu:'guiñado',cr:'cremoso',ma:'margarita',dy:'doble yema',tabla:'tabla'};
+  const nom={js:'huevos sueltos',saldo:'saldo',venta:'venta',mman:'muertas',sacos:'sacos',ing:'ingreso de sacos',sini:'saldo de sacos',jabas:'jabas',bl:'blanco',gu:'quiñado',cr:'cremoso',ma:'margarita',dy:'doble yema',tabla:'tabla'};
   ks.forEach(k=>{const i=$('pEd').querySelector('[data-k='+k+']');if(i){i.value=d[k];i.classList.remove('auto');i.classList.add('voz')}});edCalc();
   const txt=ks.map(k=>nom[k]+' '+String(d[k]).replace('.5',' y medio').replace('.25',' y cuarto').replace('.75',' y tres cuartos')).join(', ');
   $('peVoz').textContent='✔ Entendí: '+txt+'. Revisa los números en verde.';hablar('Entendí: '+txt+'. Revise y guarde.')};
@@ -1036,12 +1134,12 @@ let fotosMem={},fvIdx=0,fvZoom=1;
 async function cargarFotos(f){const l=fotosMem[f]||await IDB.get(f)||[];fotosMem[f]=l;
  $('pFotos').innerHTML=l.map((u,i)=>`<img src="${u}" data-i="${i}" alt="Foto ${i+1}">`).join('');$('peFoto').classList.toggle('hidden',!l.length);
  $('pFotos').querySelectorAll('img').forEach(im=>im.onclick=()=>verFoto(+im.dataset.i))}
-function reducir(src,rot){return new Promise(res=>{const im=new Image();im.onload=()=>{const M=1800;let w=im.width,h=im.height;const k=Math.min(1,M/Math.max(w,h));w=Math.round(w*k);h=Math.round(h*k);const cv=document.createElement('canvas');const r90=rot%180!==0;cv.width=r90?h:w;cv.height=r90?w:h;const x=cv.getContext('2d');x.translate(cv.width/2,cv.height/2);x.rotate(rot*Math.PI/180);x.drawImage(im,-w/2,-h/2,w,h);res(cv.toDataURL('image/jpeg',0.75))};im.onerror=()=>res(null);im.src=src})}
+function reducir(src,rot,M0,q0){return new Promise(res=>{const im=new Image();im.onload=()=>{const M=M0||1800;let w=im.width,h=im.height;const k=Math.min(1,M/Math.max(w,h));w=Math.round(w*k);h=Math.round(h*k);const cv=document.createElement('canvas');const r90=rot%180!==0;cv.width=r90?h:w;cv.height=r90?w:h;const x=cv.getContext('2d');x.translate(cv.width/2,cv.height/2);x.rotate(rot*Math.PI/180);x.drawImage(im,-w/2,-h/2,w,h);res(cv.toDataURL('image/jpeg',q0||0.75))};im.onerror=()=>res(null);im.src=src})}
 $('pFotoBtn').onclick=()=>$('pFotoIn').click();
 $('pFotoIn').onchange=async e=>{const fl=e.target.files[0];e.target.value='';if(!fl)return;const f=$('pFecha').value||hoy();
  const rd=new FileReader();rd.onload=async()=>{const u=await reducir(rd.result,0);if(!u){toast('No se pudo leer la foto');return}
   const l=fotosMem[f]||[];l.push(u);fotosMem[f]=l;try{await IDB.set(f,l);toast('Foto guardada en el celular')}catch(err){toast('Foto solo en esta sesión (sin espacio)')}cargarFotos(f)};rd.readAsDataURL(fl)};
-function verFoto(i){const f=$('pFecha').value||hoy();const l=fotosMem[f]||[];if(!l.length)return;fvIdx=Math.min(i,l.length-1);fvZoom=1;$('fvImg').src=l[fvIdx];$('fvImg').style.width='100%';$('fotoV').classList.remove('hidden')}
+function verFoto(i,l0){['fvGirar','fvBorrar'].forEach(x=>$(x).classList.toggle('hidden',!!l0));$('fvBorrar').classList.toggle('hidden',!!l0||!isAdmin());const f=$('pFecha').value||hoy();const l=l0||fotosMem[f]||[];if(!l.length)return;fvIdx=Math.min(i,l.length-1);fvZoom=1;$('fvImg').src=l[fvIdx];$('fvImg').style.width='100%';$('fotoV').classList.remove('hidden')}
 $('peFoto').onclick=()=>verFoto(0);
 $('fvCerrar').onclick=()=>$('fotoV').classList.add('hidden');
 $('fvMas').onclick=()=>{fvZoom=Math.min(4,fvZoom+0.5);$('fvImg').style.width=(fvZoom*100)+'%'};
@@ -1049,68 +1147,285 @@ $('fvMenos').onclick=()=>{fvZoom=Math.max(1,fvZoom-0.5);$('fvImg').style.width=(
 $('fvGirar').onclick=async()=>{const f=$('pFecha').value||hoy();const l=fotosMem[f];const u=await reducir(l[fvIdx],90);if(!u)return;l[fvIdx]=u;$('fvImg').src=u;try{await IDB.set(f,l)}catch(e){}cargarFotos(f)};
 $('fvBorrar').onclick=e=>twoTap(e.target,async()=>{const f=$('pFecha').value||hoy();const l=fotosMem[f];l.splice(fvIdx,1);try{await IDB.set(f,l)}catch(err){}$('fotoV').classList.add('hidden');cargarFotos(f)},'¿Borrar foto?');
 /* exportación */
+/* ---------- CARGA DEL PARTE CON FOTOS (lectura con IA + revisión) ---------- */
+const FX_IZQ=[19,23,25,17,18,20,28,29,30,31],FX_DER=[13,14,21,24,12,16,22,26,15,32,33,34];
+const FXCAMPOS=[['cod','Cód. galponero','t'],['mman','Muertas'],['venta','Venta'],['dieta','Dieta','t'],['sacos','Sacos'],['jabas','Jabas'],['js','Saldo'],['bl','Blanco'],['gu','Quiñado'],['cr','Cremoso'],['ma','Margarita'],['dy','Doble Y.']];
+const FXMAP={cod_galponero:'cod',muerta:'mman',venta:'venta',dieta:'dieta',sacos:'sacos',jabas:'jabas',saldo:'js',blanco:'bl',quinado:'gu',cremoso:'cr',margar:'ma',doble_y:'dy',cant:'cant',observacion:'obs'};
+const FXCODS=['PCJ','PER','HG','DCT','ENG','UR','ITX','HR','FR','FG','OI','HI','PD','PLS','TQT','AH','RESP','DIG','P.CR','AST'];
+let fx=null;
+function ayer(){const d=new Date();d.setDate(d.getDate()-1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function fxNombreCampo(c){if(c.startsWith('m:'))return'Causa '+c.slice(2);if(c==='cant')return'CANT (mortalidad)';if(c==='obs')return'Observación';const x=FXCAMPOS.find(z=>z[0]===c);return x?x[1]:c}
+function svgHoja(z){let l='';for(let i=0;i<9;i++)l+=`<line x1="6" y1="${12+i*8}" x2="194" y2="${12+i*8}" stroke="#ccc"/>`;for(let i=0;i<4;i++)l+=`<line x1="6" y1="${92+i*8}" x2="96" y2="${92+i*8}" stroke="#ccc"/><line x1="104" y1="${92+i*8}" x2="194" y2="${92+i*8}" stroke="#ccc"/>`;
+ return`<svg viewBox="0 0 200 130" class="fxsvg" aria-hidden="true"><rect x="2" y="2" width="196" height="126" rx="4" fill="#fff" stroke="#888"/>${l}<rect x="6" y="88" width="90" height="34" fill="none" stroke="#aaa"/><rect x="104" y="88" width="90" height="34" fill="none" stroke="#aaa"/><rect x="${z==='sup'?4:4}" y="${z==='sup'?4:84}" width="192" height="${z==='sup'?80:42}" rx="4" fill="rgba(46,125,79,.22)" stroke="#2e7d4f" stroke-width="2.5" stroke-dasharray="6 4"/><text x="100" y="${z==='sup'?50:110}" text-anchor="middle" font-size="12" font-weight="800" fill="#1b5e3a">${z==='sup'?'PRODUCCIÓN':'CAUSA DE MORTALIDAD'}</text></svg>`}
+const FXPASOS=[{k:'sup',t:'Foto 1 de 2 · Parte de arriba',d:'La tabla de producción completa: desde LOTE / COD GPRO hasta el control de sacos, incluyendo la fila TOTAL.'},{k:'inf',t:'Foto 2 de 2 · Parte de abajo',d:'Las dos tablas de CAUSA DE MORTALIDAD completas, con sus filas TOTAL y la columna OBSERVACIÓN.'}];
+const FXTIPS='<ul class="fxtips"><li>📱 Celular <b>horizontal</b>, la hoja sobre una mesa</li><li>💡 Buena luz, sin sombras ni reflejos</li><li>🔍 Que se lean bien los números; toca la pantalla para enfocar</li><li>📐 Que no se corte ninguna columna</li></ul>';
+function fxAbrir(){
+ if(!cfg.gsUrl){modal('Falta conectar Drive','<div class="hint" style="font-size:16px">Para leer las fotos, la app usa tu hoja de Google Drive. Pide al administrador que la configure en <b>Ajustes → Google Drive</b> y que agregue la clave de lectura de fotos en la hoja.</div>',()=>{});return}
+ fx={f:puedeDia('prod',ayer())?ayer():hoy(),paso:-1,fotos:{},datos:{},ok:new Set(),filas:null};$('fx').classList.remove('hidden');fxInicio()}
+function fxPie(h){$('fxPie').innerHTML=h}
+function fxInicio(){
+ fx.paso=-1;$('fxSub').textContent='Granja de Producción';
+ $('fxBody').innerHTML=`<div class="card"><h2>📷 Cargar el parte con fotos</h2><div class="hint" style="font-size:16px">La app te pedirá <b>2 fotos</b> de la hoja física, leerá los datos que necesita el Sistema Avícola y te mostrará las alertas para que confirmes o corrijas antes de guardar.</div>
+ <label style="margin-top:14px">Fecha del parte</label><input type="date" id="fxF" value="${fx.f}"><div class="err" id="fxErr"></div>
+ <div class="fxpasos">${FXPASOS.map((p,i)=>`<div><b>${i+1}</b>${p.t.split('·')[1]}</div>`).join('')}<div><b>✔</b>Revisar alertas</div></div></div>`;
+ fxPie('<button class="btn ok w" id="fxEmp" style="min-height:64px;font-size:21px">Empezar ▶</button>');
+ $('fxEmp').onclick=()=>{const f=$('fxF').value;if(!f){$('fxErr').textContent='Elige la fecha';return}if(!puedeDia('prod',f)){$('fxErr').textContent='Solo puedes cargar el parte de hoy o de ayer';return}fx.f=f;fxPaso(0)}}
+function fxPaso(i){
+ fx.paso=i;const P=FXPASOS[i],foto=fx.fotos[P.k];$('fxSub').textContent=fmtF(fx.f);
+ $('fxBody').innerHTML=`<div class="card"><h2>${P.t}</h2>${svgHoja(P.k)}<div class="hint" style="font-size:17px;margin-top:8px">${P.d}</div>${foto?`<img src="${foto}" class="fxprev" alt="Foto tomada">`:FXTIPS}</div>`;
+ fxPie(foto?`<div class="row"><button class="btn" id="fxRep">↺ Repetir</button><button class="btn ok" id="fxUsar" style="flex:2">Usar esta foto ▶</button></div>`:`<button class="btn ok w" id="fxCamB" style="min-height:64px;font-size:21px">📷 Tomar foto</button><button class="btn w" id="fxGalB" style="margin-top:8px">🖼 Elegir de la galería</button>`+(i>0?'<button class="btn sm w" id="fxAtr" style="margin-top:8px">◀ Volver a la foto anterior</button>':''));
+ if(foto){$('fxRep').onclick=()=>{delete fx.fotos[P.k];fxPaso(i)};$('fxUsar').onclick=()=>i<FXPASOS.length-1?fxPaso(i+1):fxLeer()}
+ else{$('fxCamB').onclick=()=>$('fxCam').click();$('fxGalB').onclick=()=>$('fxGal').click();if(i>0)$('fxAtr').onclick=()=>fxPaso(i-1)}}
+async function fxFotoSel(e){const fl=e.target.files[0];e.target.value='';if(!fl||!fx)return;$('fxBody').insertAdjacentHTML('beforeend','<div class="hint" style="text-align:center">Procesando foto…</div>');
+ const rd=new FileReader();rd.onload=async()=>{const u=await reducir(rd.result,0,2400,0.85);if(!u){toast('No se pudo leer la foto');return}fx.fotos[FXPASOS[fx.paso].k]=u;fxPaso(fx.paso)};rd.readAsDataURL(fl)}
+$('fxCam').onchange=fxFotoSel;$('fxGal').onchange=fxFotoSel;
+$('fxCerrar').onclick=()=>{if(fx&&fx.filas&&!fx.guardado){if(!$('fxCerrar').dataset.arm){$('fxCerrar').dataset.arm=1;toast('Toca “Salir” otra vez para salir sin guardar');setTimeout(()=>delete $('fxCerrar').dataset.arm,2500);return}}fx=null;$('fx').classList.add('hidden');renderPrd()};
+async function fxLeer(){
+ const pasos=FXPASOS.filter(p=>!fx.datos[p.k]);
+ for(let i=0;i<pasos.length;i++){const P=pasos[i];
+  $('fxBody').innerHTML=`<div class="card" style="text-align:center;padding:30px 16px"><div class="fxspin"></div><div style="font-size:21px;font-weight:800;margin-top:14px">Leyendo ${P.t.split('·')[1].trim().toLowerCase()}…</div><div class="hint" style="font-size:16px">Puede tardar hasta un minuto. No cierres la app.</div></div>`;fxPie('');
+  try{const j=await gsPost({action:'leerFoto',parte:P.k,img:fx.fotos[P.k].split(',')[1],mime:'image/jpeg'});fx.datos[P.k]=j.datos||{}}
+  catch(e){$('fxBody').innerHTML=`<div class="card"><h2>⚠️ No se pudo leer la foto</h2><div class="hint" style="font-size:16px">${esc(e.message||'Sin conexión')}</div></div>`;
+   fxPie('<div class="row"><button class="btn" id="fxOtra">📷 Tomar otra foto</button><button class="btn ok" id="fxReint">↺ Reintentar</button></div>');
+   $('fxOtra').onclick=()=>{delete fx.fotos[P.k];fxPaso(FXPASOS.indexOf(P))};$('fxReint').onclick=fxLeer;return}}
+ fxArmar();fxRevision()}
+function fxN(v){if(v==null||v==='')return null;if(typeof v==='number')return v;const s=String(v).trim();if(s==='-'||s==='—')return 0;return pnum(s)}
+function fxArmar(){
+ const S=fx.datos.sup||{},I=fx.datos.inf||{};const F={};
+ (S.filas||[]).forEach(a=>{const[g,cod,mu,ve,di,sa,ja,sl,bl,qu,cr,ma,dy,ph,pn]=a;if(!g)return;F[+g]={g:+g,cod:cod==null?'':String(cod),mman:fxN(mu),venta:fxN(ve),dieta:di==null?'':String(di).toUpperCase(),sacos:fxN(sa),jabas:fxN(ja),js:fxN(sl),bl:fxN(bl),gu:fxN(qu),cr:fxN(cr),ma:fxN(ma),dy:fxN(dy),ph:fxN(ph),pn:fxN(pn),cant:null,mort:{},obs:'',sup:true}});
+ (I.filas||[]).forEach(a=>{const[g,cant,cs,obs]=a;if(!g)return;const r=F[+g]||(F[+g]={g:+g,mort:{},obs:''});r.cant=fxN(cant);r.mort={};Object.entries(cs||{}).forEach(([c,v])=>{const n=fxN(v);if(n)r.mort[String(c).toUpperCase()]=n});r.obs=obs?String(obs):'';r.inf=true});
+ fx.filas=F;fx.dudasIA=[];
+ [[S.dudas,'sup'],[I.dudas,'inf']].forEach(([l,src])=>(l||[]).forEach(d=>{if(!Array.isArray(d))return;const g=+d[0];let c=String(d[1]||'');c=FXMAP[c]||(FXCODS.includes(c.toUpperCase())?'m:'+c.toUpperCase():c);fx.dudasIA.push({g,campo:c,msg:'Letra poco clara'+(d[2]?': '+d[2]:''),nivel:'duda',src})}));
+ if(S.fecha&&/^\d{4}-\d{2}-\d{2}$/.test(S.fecha)&&S.fecha!==fx.f)fx.fechaHoja=S.fecha;
+}
+function fxGatos(obs){let n=0;String(obs||'').replace(/(\d+)?\s*(c\.?\s?g\.?|gatos?)\b/gi,(m,a)=>{n+=a?+a:1;return m});return n}
+function fxAlertas(){
+ const A=[],F=fx.filas,hxj=+cfg.hxj||360,S=fx.datos.sup||{},I=fx.datos.inf||{};
+ const add=(g,campo,nivel,msg,tipo)=>A.push({g,campo,nivel,msg,key:g+'|'+campo+'|'+(tipo||msg)});
+ pGalpones().forEach(g=>{if(!F[g]||!F[g].sup)add(g,'mman','error','No se leyó este galpón en la foto de arriba','falta-sup');else if(!F[g].inf)add(g,'cant','duda','No se leyó este galpón en la tabla de mortalidad','falta-inf')});
+ Object.values(F).forEach(r=>{const g=r.g;
+  if(!pGalpones().includes(g))add(g,'mman','duda','Este galpón no está en tu lista de producción (Ajustes)','nolista');
+  ['mman','sacos','jabas','dieta'].forEach(c=>{if(r.sup&&(r[c]==null||r[c]===''))add(g,c,'duda','No se leyó '+fxNombreCampo(c).toLowerCase(),'vacio')});
+  if(r.mman!=null&&r.cant!=null&&r.mman!==r.cant)add(g,'cant','error','Muertas de producción ('+r.mman+') no coincide con CANT de mortalidad ('+r.cant+')','m-cant');
+  const mu=r.mman!=null?r.mman:r.cant;const sc=Object.values(r.mort||{}).reduce((a,b)=>a+b,0)+fxGatos(r.obs);
+  if(mu!=null&&sc>mu)add(g,'cant','error','Las causas suman '+sc+' pero las muertas son '+mu,'causas-mas');
+  else if(mu!=null&&sc<mu&&!/no indica/i.test(r.obs))add(g,'cant','duda',(mu-sc)+' muerta(s) sin causa: se reportarán como “No indica mortalidad”','causas-menos');
+  if(r.jabas!=null&&r.pn!=null){const c=r.jabas*hxj+(r.js||0);if(Math.abs(c-r.pn)>0.5)add(g,'jabas','error','Jabas × '+hxj+' + saldo = '+f1(c)+', pero la PROD. NETA escrita es '+f1(r.pn),'jabas-neta')}
+  if(r.pn!=null&&r.ph!=null&&r.gu!=null&&Math.abs(r.pn+r.gu-r.ph)>0.5)add(g,'gu','duda','PROD. NETA + quiñado = '+f1(r.pn+r.gu)+', pero PROD. HUEVOS escrita es '+f1(r.ph),'q-huevos');
+  const pc=pcfg(g);if(r.cod&&pc.cod&&String(r.cod)!==String(pc.cod))add(g,'cod','duda','El código de galponero ('+r.cod+') es distinto al registrado ('+pc.cod+')','cod');
+  if(pGalpones().includes(g)&&r.sup){const o=pcalc(fx.f,g,fxRow(r));if(o.pct!=null&&(o.pct<30||o.pct>100))add(g,'jabas','duda','La postura daría '+o.pct.toFixed(1)+'%: revisa las jabas','pct');
+   if(o.gr!=null&&(o.gr<85||o.gr>135))add(g,'sacos','duda','Daría '+o.gr.toFixed(0)+' g por ave: revisa los sacos','gr');
+   o.alertas.filter(a=>/postura (bajó|subió)/.test(a)).forEach(a=>add(g,'jabas','duda',a,'dia'))}
+ });
+ fx.dudasIA.forEach(d=>{if(F[d.g])add(d.g,d.campo,'duda',d.msg,'ia-'+d.campo)});
+ // totales escritos en la hoja
+ const T=[];const tot=S.totales||{};const suma=k=>Object.values(F).filter(r=>r.sup).reduce((a,r)=>a+(r[k]||0),0);
+ [['muerta','mman','Muertas'],['jabas','jabas','Jabas'],['sacos','sacos','Sacos'],['blanco','bl','Blanco'],['quinado','gu','Quiñado'],['cremoso','cr','Cremoso'],['margar','ma','Margarita'],['doble_y','dy','Doble Y.']].forEach(([k,c,n])=>{const h=fxN(tot[k]),s=+suma(c).toFixed(2);T.push({n,hoja:h,suma:s,ok:h==null?null:Math.abs(h-s)<0.01})});
+ const ti=I.totales||{};[['izquierda',FX_IZQ,'Mortalidad · tabla izquierda'],['derecha',FX_DER,'Mortalidad · tabla derecha']].forEach(([k,l,n])=>{const h=fxN(ti[k]),s=l.reduce((a,g)=>a+((F[g]&&F[g].cant)||0),0);T.push({n,hoja:h,suma:s,ok:h==null?null:h===s})});
+ return{A,T}}
+function fxRow(r){const o={};FXCAMPOS.forEach(([k,,t])=>{if(r[k]!=null&&r[k]!=='')o[k]=t?r[k]:r[k]});const ex=prod[fx.f]&&prod[fx.f].g&&prod[fx.f].g[r.g];if(ex&&ex.saldo!=null)o.saldo=ex.saldo;return o}
+function fxRevision(){
+ const{A,T}=fxAlertas();const pend=A.filter(a=>!fx.ok.has(a.key));const nE=pend.filter(a=>a.nivel==='error').length,nD=pend.filter(a=>a.nivel==='duda').length,tE=T.filter(t=>t.ok===false).length;
+ $('fxSub').textContent='Revisión · '+fmtF(fx.f);
+ const est=g=>{const l=pend.filter(a=>a.g===g);return l.some(a=>a.nivel==='error')?'🔴':l.length?'🟡':'✅'};
+ const gs=[...new Set(pGalpones().concat(Object.keys(fx.filas).map(Number)))];
+ $('fxBody').innerHTML=`${fx.fechaHoja?`<div class="palert">📅 La hoja dice fecha ${fmtF(fx.fechaHoja)} y elegiste ${fmtF(fx.f)}. <button class="btn sm" id="fxUsaF">Usar ${fmtF(fx.fechaHoja)}</button></div>`:''}
+ <div class="card"><div class="semaf"><div class="r"><b>${nE+tE}</b>por corregir</div><div class="a"><b>${nD}</b>por confirmar</div><div class="v"><b>${gs.filter(g=>est(g)==='✅').length}</b>galpones OK</div></div></div>
+ <div class="card"><h2>🧮 Totales de la hoja</h2>${T.map(t=>`<div class="ftot ${t.ok===false?'bad':''}"><span>${t.ok===false?'🔴':t.ok?'✅':'⚪'} ${t.n}</span><span>${t.hoja==null?'sin total escrito':'hoja '+f1(t.hoja,2).replace(/,00$/,'')} · suma ${f1(t.suma,2).replace(/,00$/,'')}</span></div>`).join('')}${tE?'<div class="hint">Un total que no coincide indica que algún número de esa columna está mal leído o mal escrito. Revisa las consultas y los galpones de abajo.</div>':''}</div>
+ <div class="card"><h2>❓ Consultas (${pend.length})</h2>${pend.length?pend.map((a,i)=>fxConsulta(a,i)).join(''):'<div class="hint" style="font-size:16px">✅ No hay consultas pendientes.</div>'}</div>
+ <div class="card"><h2>🐔 Galpones</h2>${gs.map(g=>{const r=fx.filas[g]||{g,mort:{}};const m=Object.entries(r.mort||{}).map(([c,v])=>c+' '+v).join(' · ');return`<button class="fxg" data-g="${g}"><span class="st">${est(g)}</span><span style="flex:1;text-align:left"><b>Galpón ${g}</b>${r.cod?' · Galponero '+esc(r.cod):''}<br><small>M ${r.mman??'—'} · V ${r.venta??'—'} · ${esc(r.dieta||'—')} · Sacos ${r.sacos??'—'} · Jabas ${r.jabas??'—'} · Saldo ${r.js??'—'} · B ${r.bl??'—'} · Q ${r.gu??'—'} · C ${r.cr??'—'} · Mg ${r.ma??'—'} · DY ${r.dy??'—'}</small><br><small>☠️ ${r.cant??'—'}: ${esc(m||'sin causas')}${r.obs?' · '+esc(r.obs):''}</small></span><span>✏️</span></button>`}).join('')}</div>
+ <div class="row"><button class="btn sm" onclick="fxPaso(0)">📷 Ver / cambiar fotos</button><button class="btn sm" id="fxVerFotos">🔍 Ver fotos</button></div>`;
+ fxPie(`<button class="btn ok w" id="fxGuardar" style="min-height:64px;font-size:20px">${nE+tE?'⚠️ Guardar con '+(nE+tE)+' alerta(s) roja(s)':'✔ Guardar parte'}</button>`);
+ if(fx.fechaHoja)$('fxUsaF').onclick=()=>{if(!puedeDia('prod',fx.fechaHoja)){toast('No tienes permiso para esa fecha');return}fx.f=fx.fechaHoja;fx.fechaHoja=null;fxRevision()};
+ $('fxBody').querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>{fx.ok.add(b.dataset.ok);fxRevision()});
+ $('fxBody').querySelectorAll('[data-fix]').forEach(b=>b.onclick=()=>{const a=pend[+b.dataset.fix];const inp=$('fxIn'+b.dataset.fix);const r=fx.filas[a.g]||(fx.filas[a.g]={g:a.g,mort:{},obs:''});const v=inp.value.trim();
+  if(a.campo.startsWith('m:')){const c=a.campo.slice(2);const n=fxN(v);if(n)r.mort[c]=n;else delete r.mort[c]}else if(a.campo==='obs')r.obs=v;else if(a.campo==='dieta'||a.campo==='cod')r[a.campo]=a.campo==='dieta'?v.toUpperCase():v;else r[a.campo]=fxN(v);
+  fxRevision()});
+ $('fxBody').querySelectorAll('.fxg').forEach(b=>b.onclick=()=>fxEditar(+b.dataset.g));
+ $('fxVerFotos').onclick=()=>{const l=FXPASOS.map(p=>fx.fotos[p.k]).filter(Boolean);if(l.length)verFoto(0,l)};
+ $('fxGuardar').onclick=e=>{if(nE+tE&&!e.target.dataset.arm){e.target.dataset.arm=1;e.target.textContent='Toca otra vez para guardar igual';setTimeout(()=>{if(e.target)delete e.target.dataset.arm},3000);return}fxGuardar()};
+}
+function fxValor(a){const r=fx.filas[a.g]||{};if(a.campo.startsWith('m:'))return r.mort&&r.mort[a.campo.slice(2)]||'';if(a.campo==='obs')return r.obs||'';const v=r[a.campo];return v==null?'':v}
+function fxConsulta(a,i){return`<div class="fxq ${a.nivel}"><div class="fxqh">${a.nivel==='error'?'🔴':'🟡'} <b>Galpón ${a.g}</b> · ${esc(fxNombreCampo(a.campo))}</div><div class="fxqm">${esc(a.msg)}</div>
+ <div class="fxqa"><input id="fxIn${i}" value="${esc(fxValor(a))}" ${['dieta','obs','cod'].includes(a.campo)?'':'inputmode="decimal"'}><button class="btn sm" data-fix="${i}">Corregir</button><button class="btn sm ok" data-ok="${esc(a.key)}">✔ Está bien</button></div></div>`}
+function fxEditar(g){const r=fx.filas[g]||(fx.filas[g]={g,mort:{},obs:''});
+ modal('Galpón '+g+' · datos leídos','<div class="pgrid">'+FXCAMPOS.map(([k,n,t])=>`<label>${n}<input id="fe_${k}" value="${esc(r[k]??'')}" ${t?'':'inputmode="decimal"'}></label>`).join('')+`<label>CANT mortalidad<input id="fe_cant" value="${r.cant??''}" inputmode="decimal"></label></div><div class="zlbl" style="text-align:left;margin-top:12px">Causas de mortalidad</div><div class="fecods">`+FXCODS.map(c=>`<label>${c}<input id="fe_m_${c.replace('.','_')}" value="${r.mort[c]??''}" inputmode="numeric"></label>`).join('')+`</div><label style="margin-top:10px">Observación<input id="fe_obs" value="${esc(r.obs||'')}"></label>`,
+ ()=>{FXCAMPOS.forEach(([k,,t])=>{const v=$('fe_'+k).value.trim();r[k]=t?(k==='dieta'?v.toUpperCase():v):fxN(v)});r.cant=fxN($('fe_cant').value);r.mort={};FXCODS.forEach(c=>{const n=fxN($('fe_m_'+c.replace('.','_')).value);if(n)r.mort[c]=n});r.obs=$('fe_obs').value.trim();r.sup=true;r.inf=true;fxRevision()})}
+function fxCausaNombre(c){const x=cfg.causas.find(z=>z.c===c&&!z.obs);return x?x.n:c}
+async function fxGuardar(){
+ const f=fx.f;prod[f]=prod[f]||{g:{}};prod[f].g=prod[f].g||{};let n=0;
+ Object.values(fx.filas).forEach(r=>{const g=r.g;
+  if(r.sup){const ex=prod[f].g[g]||{};const o=pcalc(f,g);const v={...ex};FXCAMPOS.forEach(([k])=>{if(r[k]!=null&&r[k]!=='')v[k]=r[k];else delete v[k]});
+   if(v.saldo==null&&o.saldo!=null)v.saldo=o.saldo;v.lote=o.lote;v.edad=o.edad;v.fuente='foto';v.por='Foto · '+cur.nombre;v.upd=new Date().toISOString();prod[f].g[g]=v;n++}
+  const id='foto|'+f+'|'+g;const old=regs.find(x=>x.id===id);regs=regs.filter(x=>x.id!==id);if(old)encolar({op:'del',id});
+  const counts={};Object.entries(r.mort||{}).forEach(([c,v])=>{const nm=fxCausaNombre(c);counts[nm]=(counts[nm]||0)+v});const ga=fxGatos(r.obs);if(ga)counts['Gato']=(counts['Gato']||0)+ga;
+  if(Object.keys(counts).length){const nr={id,fecha:f,galpon:g,counts,hora:new Date().toTimeString().slice(0,5),usuario:cur.u,nombre:cur.nombre,texto:'Parte con fotos'+(r.obs?' · Obs: '+r.obs:'')};regs.push(nr);encolar({op:'up',r:nr})}});
+ saveProd();saveRegs();Object.keys(prod[f].g).forEach(g=>encolar({op:'prod',fila:filaBD(f,+g)}));
+ try{const l=(await IDB.get(f))||[];FXPASOS.forEach(p=>{if(fx.fotos[p.k])l.push(fx.fotos[p.k])});fotosMem[f]=l;await IDB.set(f,l)}catch(e){}
+ fx.guardado=true;$('fx').classList.add('hidden');fx=null;$('pFecha').value=f;exito('Parte guardado · '+n+' galpones');renderPrd()}
+$('pFotoParte').onclick=fxAbrir;
+
+/* ---------- DISTRIBUCIÓN DE ALIMENTO POR COMEDERO ---------- */
+const ALI_Z=['Tanque','Medio','Fondo'];
+let aliG=null,aliModo=load('aliModo','gr');
+function aliCfg(g){cfg.aliG=cfg.aliG||{};if(!cfg.aliG[g])cfg.aliG[g]={jxf:cfg.aliJxf||'',cuadros:Array(9).fill('')};if(!cfg.aliG[g].aves)cfg.aliG[g].aves=Array(9).fill('');return cfg.aliG[g]}
+function aliUltimo(g){const fs=Object.keys(prod).filter(f=>prod[f].g&&prod[f].g[g]).sort();if(!fs.length)return null;const f=fs[fs.length-1];return{f,o:pcalc(f,g)}}
+function renderAli(){
+ $('aGalChips').innerHTML=pGalpones().map(g=>`<button data-g="${g}" class="${g===aliG?'on':''}">${g}</button>`).join('');
+ $('aGalChips').querySelectorAll('button').forEach(b=>b.onclick=()=>aliElegir(+b.dataset.g));
+ document.querySelectorAll('#aModo button').forEach(b=>b.classList.toggle('on',b.dataset.m===aliModo));
+ $('aSacosBox').classList.toggle('hidden',aliModo!=='sacos');
+ if(aliG==null){$('aDatos').classList.add('hidden');$('aRes').innerHTML='<div class="hint" style="font-size:17px">Elige un galpón para empezar.</div>';return}
+ $('aDatos').classList.remove('hidden');aliCalc()}
+function aliElegir(g){aliG=g;const c=aliCfg(g);const u=aliUltimo(g);
+ $('aAves').value=u&&u.o.neto?Math.round(u.o.neto):'';$('aSacos').value=u&&u.o.sacos!=null?u.o.sacos:'';$('aGr').value=c.gr||cfg.aliGr||'';
+ $('aFuente').textContent=u?'Aves y sacos tomados del parte del '+fmtF(u.f)+'. Puedes cambiarlos.':'No hay parte registrado de este galpón: escribe las aves y los sacos.';
+ $('aJxf').value=c.jxf;renderCuadros();renderAli()}
+function renderCuadros(){const c=aliCfg(aliG);const def=aliDefJ();
+ $('aCuad').innerHTML='<div class="acz acz-h"><b></b><span>Jaulas con aves</span><span>Aves (si las contaste)</span></div>'+ALI_Z.map((z,zi)=>`<div class="aczona">${z}</div>`+[0,1,2].map(k=>{const i=zi*3+k;return`<div class="acz"><b>Cuadro ${k+1}</b><input data-i="${i}" data-t="j" inputmode="numeric" value="${c.cuadros[i]}" placeholder="${def||'jaulas'}"><input data-i="${i}" data-t="a" inputmode="numeric" value="${c.aves[i]}" placeholder="auto"></div>`}).join('')).join('');
+ $('aCuad').querySelectorAll('input').forEach(inp=>inp.oninput=()=>{(inp.dataset.t==='j'?c.cuadros:c.aves)[+inp.dataset.i]=inp.value.trim();saveCfg();aliCalc()})}
+function aliDefJ(){const j=pnum($('aJxf').value);return j?j*8:null} // 4 filas x 2 pisos
+function aliCalc(){
+ if(aliG==null)return;const aves=pnum($('aAves').value),def=aliDefJ(),c=aliCfg(aliG);
+ const jc=c.cuadros.map(x=>{const n=pnum(x);return n!=null?n:def});
+ const R=$('aRes');
+ if(!aves){R.innerHTML='<div class="palert">Escribe el número de aves del galpón.</div>';return}
+ if(jc.some(x=>x==null)){R.innerHTML='<div class="palert">Escribe las jaulas por fila (o las jaulas con aves de cada cuadro).</div>';return}
+ const J=jc.reduce((a,b)=>a+b,0);if(!J){R.innerHTML='<div class="palert">El total de jaulas es 0.</div>';return}
+ const ac=c.aves.map(x=>pnum(x));const avDad=ac.reduce((a,x)=>a+(x||0),0);const jSin=jc.reduce((a,j,i)=>a+(ac[i]==null?j:0),0);
+ if(avDad>aves){R.innerHTML='<div class="palert">Las aves anotadas por cuadro ('+f1(avDad)+') son más que las aves del galpón ('+f1(aves)+').</div>';return}
+ const apj=jSin?(aves-avDad)/jSin:0;const avC=jc.map((j,i)=>ac[i]!=null?ac[i]:j*apj);
+ const gMeta=pnum($('aGr').value);if(gMeta){c.gr=gMeta;cfg.aliGr=gMeta;saveCfg()}
+ let kg,difMeta=null;
+ if(aliModo==='gr'){if(!gMeta){R.innerHTML='<div class="palert">Escribe cuántos gramos debe comer cada ave.</div>';return}kg=aves*gMeta/1000}
+ else{const s=pnum($('aSacos').value);if(!s){R.innerHTML='<div class="palert">Escribe los sacos de alimento del día.</div>';return}kg=s*(+cfg.kgSaco||40);if(gMeta)difMeta=kg-aves*gMeta/1000}
+ const rep=+$('aRep').value||1,balde=pnum($('aBalde').value);cfg.aliBalde=balde||'';cfg.aliRep=rep;saveCfg();
+ const grAve=kg*1000/aves,sacos=kg/(+cfg.kgSaco||40);
+ const fmtKg=x=>x.toFixed(x<10?2:1).replace('.',',')+' kg';const bal=x=>balde?(x/balde).toFixed(1).replace('.',',')+' baldes':'';
+ const cuad=jc.map((j,i)=>({z:ALI_Z[Math.floor(i/3)],k:i%3+1,j,aves:avC[i],kg:avC[i]*grAve/1000,com:avC[i]*grAve/1000/8,real:ac[i]!=null}));
+ const unif=cuad.every(x=>Math.abs(x.com-cuad[0].com)<0.005);
+const apjT=aves/J;const warn=[];if(difMeta!=null&&Math.abs(difMeta)>=1)warn.push((difMeta>0?'Sobran ':'Faltan ')+Math.abs(difMeta).toFixed(1)+' kg ('+(Math.abs(difMeta)/(+cfg.kgSaco||40)).toFixed(2)+' sacos) para la meta de '+gMeta+' g por ave. Con estos sacos cada ave recibe '+grAve.toFixed(0)+' g.');cuad.forEach(x=>{const a=x.j?x.aves/x.j:0;if(x.j&&(a<3||a>8))warn.push(x.z+' cuadro '+x.k+': '+a.toFixed(1)+' aves por jaula, revisa sus datos.')});if(apjT<3||apjT>8)warn.push('Darían '+apjT.toFixed(1).replace('.',',')+' aves por jaula: revisa el número de jaulas o de aves.');if(grAve<85||grAve>135)warn.push('Equivale a '+grAve.toFixed(0)+' g por ave: revisa los sacos o los gramos.');
+ R.innerHTML=`${warn.map(w=>`<div class="palert">⚠️ ${esc(w)}</div>`).join('')}
+ <div class="card" style="text-align:center"><div class="hint" style="font-size:17px">${unif?'Echar en CADA comedero':'Promedio por comedero'}${rep>1?' (total del día)':''}</div>
+ <div style="font-size:52px;font-weight:900;color:var(--pri);line-height:1.1">${fmtKg(unif?cuad[0].com:kg/72)}</div>
+ ${balde?`<div style="font-size:22px;font-weight:800">= ${bal(unif?cuad[0].com:kg/72)}</div>`:''}
+ ${rep>1?`<div style="font-size:20px;font-weight:800;color:var(--ok);margin-top:6px">${rep} repartos: ${fmtKg((unif?cuad[0].com:kg/72)/rep)} cada vez${balde?' · '+bal((unif?cuad[0].com:kg/72)/rep):''}</div>`:''}</div>
+ <div class="card"><div class="pres"><div><b>${f1(kg)}</b><span>kg del día</span></div><div><b>${frac(+sacos.toFixed(2))}</b><span>sacos de 40 kg</span></div><div><b>${grAve.toFixed(0)}</b><span>g por ave</span></div><div><b>${f1(J)}</b><span>jaulas con aves</span></div><div><b>${apjT.toFixed(1).replace('.',',')}</b><span>aves por jaula</span></div><div><b>72</b><span>comederos</span></div></div></div>
+ <div class="card"><h2>Por cuadro (8 comederos cada uno)</h2><div class="scroll"><table><tr><th>Zona</th><th>Cuadro</th><th>Jaulas</th><th>Aves</th><th>Kg cuadro</th><th>Sacos</th><th>Kg por comedero</th>${balde?'<th>Baldes por comedero</th>':''}</tr>
+ ${cuad.map(x=>`<tr><td>${x.z}</td><td>${x.k}</td><td>${x.j}</td><td>${f1(x.aves)}${x.real?' ✔':''}</td><td>${x.kg.toFixed(1)}</td><td>${(x.kg/(+cfg.kgSaco||40)).toFixed(2)}</td><td><b>${x.com.toFixed(2)}</b></td>${balde?`<td>${(x.com/balde).toFixed(1)}</td>`:''}</tr>`).join('')}
+ <tr class="tot"><td colspan="2">Total</td><td>${J}</td><td>${f1(aves)}</td><td>${kg.toFixed(1)}</td><td>${sacos.toFixed(2)}</td><td></td>${balde?'<td></td>':''}</tr></table></div>
+ <div class="hint">Comedero = una fila de jaulas en un piso (4 filas × 2 pisos = 8 por cuadro). Cada cuadro recibe sus aves × gramos por ave, así ninguna zona recibe de más. Aves con ✔ = contadas; las demás se estiman con las jaulas.</div></div>`;
+}
+document.querySelectorAll('#aModo button').forEach(b=>b.onclick=()=>{aliModo=b.dataset.m;store('aliModo',aliModo);renderAli()});
+['aAves','aSacos','aGr','aBalde','aRep'].forEach(id=>$(id).oninput=aliCalc);$('aRep').onchange=aliCalc;
+$('aJxf').oninput=()=>{if(aliG==null)return;const c=aliCfg(aliG);c.jxf=$('aJxf').value.trim();cfg.aliJxf=c.jxf;saveCfg();renderCuadros();aliCalc()};
+$('aBalde').value=cfg.aliBalde||'';$('aRep').value=String(cfg.aliRep||1);
+
 function codigoDe(n){const c=cfg.causas.find(x=>x.n===n);return c&&c.c?c.c:n}
 function mortCodigos(f,g){const o={};regs.filter(r=>r.fecha===f&&+r.galpon===+g).forEach(r=>Object.entries(r.counts).forEach(([k,v])=>{const c=codigoDe(k);o[c]=(o[c]||0)+v}));return o}
-function mortParte(f,g){const m=mortCodigos(f,g);const s=Object.values(m).reduce((a,b)=>a+b,0);const mu=pcalc(f,g).muertas;if(mu>s)m.NI=(m.NI||0)+(mu-s);return m}
-function codigosTodos(extra){const l=cfg.causas.map(c=>c.c||c.n);(extra||[]).forEach(c=>{if(!l.includes(c))l.push(c)});return l}
-const BDCOLS=['Fecha','Lote','Galpón','Edad (sem)','Saldo','Muertas','Venta','Neto','Dieta','Sacos','Kg','Gr x ave','Jabas','Blanco','Guiñado','Cremoso','Margarita','Doble yema','Prod. huevos','Prod. neta','% postura','% tabla','Dif. %','Sacos saldo inicial','Sacos ingreso','Sacos saldo final','Registrado por'];
+function mortParte(f,g){return mortCodigos(f,g)}
+function obsMort(f,g){const ob={};regs.filter(r=>r.fecha===f&&+r.galpon===+g).forEach(r=>Object.entries(r.counts).forEach(([k,v])=>{const c=cfg.causas.find(x=>x.n===k);if(c&&c.obs)ob[c.obs]=(ob[c.obs]||0)+v}));const l=Object.entries(ob).map(([k,v])=>k+' ('+v+')');const s=Object.values(mortCodigos(f,g)).reduce((a,b)=>a+b,0);const mu=pcalc(f,g).muertas;if(mu>s)l.push('No indica mortalidad ('+(mu-s)+')');return l.join(' · ')}
+function codigosTodos(extra){const l=[...new Set(cfg.causas.map(c=>c.c||c.n))];(extra||[]).forEach(c=>{if(!l.includes(c))l.push(c)});return l}
+const BDC=[['Fecha','f','fecha'],['Lote','lote'],['Cód. GPRO','cod'],['Galpón','g'],['Edad (sem)','edad'],['Saldo','saldo','sum'],['Muertas','muertas','sum'],['Venta','venta','sum'],['Neto','neto','sum'],['Dieta','dieta'],['Versión','ver'],['Sacos','sacos','sum'],['Kg','kg','sum'],['Gr x ave','gr','gr'],['Jabas','jabas','sum'],['Saldo huevos','js','sum'],['Blanco','bl','sum'],['Quiñado','gu','sum'],['Cremoso','cr','sum'],['Margarita','ma','sum'],['Doble yema','dy','sum'],['Prod. huevos','huevos','sum'],['Prod. neta','neta','sum'],['% postura','pct','pct'],['% tabla','tabla','pct'],['Dif. %','dif','pct'],['Sacos saldo inicial','sini','sum'],['Sacos ingreso','ing','sum'],['Sacos consumo','sacos','sum'],['Sacos saldo final','sfin','sum'],['Registrado por','por']];
+const BDS=[['Fecha','f','fecha'],['Galpón','g'],['Cód. galponero','cod'],['Muertas','muertas','sum'],['Venta','venta','sum'],['Dieta','dieta'],['Sacos','sacos','sum'],['Jabas','jabas','sum'],['Saldo','js','sum'],['Blanco','bl','sum'],['Quiñado','gu','sum'],['Cremoso','cr','sum'],['Margarita','ma','sum'],['Doble Y.','dy','sum']];
+const BDCOLS=BDS.map(c=>c[0]);
+function valBD(o,c){const k=c[1];if(k==='f')return o.f;if(k==='g')return +o.g;const x=o[k];if(x==null||x==='')return k==='por'||k==='dieta'||k==='ver'||k==='lote'||k==='cod'?(x||''):null;
+ if(c[2]==='pct')return +(x/100).toFixed(4);if(c[2]==='gr')return +x.toFixed(1);return x}
+function celdaBD(c,x){if(c[2]==='fecha')return{v:serial(x),s:7};if(x==null)return null;if(c[2]==='pct')return{v:x,s:5};if(c[2]==='gr')return{v:x,s:6};return x}
 function filaBD(f,g){const o=pcalc(f,g);const r=(prod[f]&&prod[f].g&&prod[f].g[g])||{};
- return{clave:f+'|'+g,fecha:f,galpon:+g,datos:r,mort:mortParte(f,g),v:[f,o.lote,+g,o.edad,o.saldo,o.muertas,o.venta,o.neto,o.dieta,o.sacos,o.kg,o.gr!=null?+o.gr.toFixed(1):null,o.jabas,o.bl,o.gu,o.cr,o.ma,o.dy,o.huevos,o.neta,o.pct!=null?+(o.pct/100).toFixed(4):null,o.tabla!=null?o.tabla/100:null,o.dif!=null?+(o.dif/100).toFixed(4):null,o.sini,o.ing,o.sfin,o.por]}}
+ return{clave:f+'|'+g,fecha:f,galpon:+g,datos:r,mort:mortParte(f,g),obs:obsMort(f,g),cols:BDCOLS,v:BDS.map(c=>valBD(o,c))}}
 function serial(f){return dnum(f)-dnum('1899-12-30')}
-const PCT=new Set([20,21,22]);
-function celdasBD(f,g,cods){const fb=filaBD(f,g);return fb.v.map((x,i)=>i===0?{v:serial(f),s:7}:PCT.has(i)&&x!=null?{v:x,s:5}:i===11&&x!=null?{v:x,s:6}:x).concat(cods.map(c=>fb.mort[c]||0))}
+function celdasBD(f,g,cods){const fb=filaBD(f,g);return fb.v.map((x,i)=>celdaBD(BDS[i],x)).concat(cods.map(c=>fb.mort[c]||0),[fb.obs])}
+const BANDC=[['saldo','Saldo'],['qu','Quiñado'],['dy','Doble yema'],['ma','Margarita'],['bl','Blanco'],['cr','Crema'],['ro','Rosado']];
+function hojaBand(fechas){const r=[{c:['Fecha',...BANDC.map(x=>x[1]),'Registrado por'],s:1}];fechas.forEach(f=>{const b=prod[f]&&prod[f].band;if(b)r.push({c:[{v:serial(f),s:7},...BANDC.map(x=>pnum(b[x[0]])),b.por||'']})});return r.length>1?[['Bandejas',sheetXml(r,[11,9,9,10,10,9,9,9,16],1)]]:[]}
+const _pBand=()=>{const f=$('pFecha').value||hoy();prod[f]=prod[f]||{g:{}};const b=prod[f].band||{};const ok=puedeDia('prod',f);
+ modal('Control de bandejas · '+fmtF(f),'<div class="pgrid">'+BANDC.map(([k,n])=>`<label>${n}<input id="bd_${k}" inputmode="decimal" value="${b[k]??''}" ${ok?'':'disabled'}></label>`).join('')+'</div>',async()=>{
+  if(!ok)return;const nb={};BANDC.forEach(([k])=>{const v=$('bd_'+k).value.trim();if(v!=='')nb[k]=pnum(v)});nb.por=cur.nombre;nb.upd=new Date().toISOString();prod[f].band=nb;saveProd();
+  encolar({op:'band',fecha:f,cols:['Fecha',...BANDC.map(x=>x[1]),'Registrado por'],v:[f,...BANDC.map(x=>nb[x[0]]??null),cur.nombre]});toast('Bandejas guardadas')})};
 function exportParteDia(){
  const f=$('pFecha').value||hoy();const gs=pGalpones().filter(g=>pcalc(f,g).existe||muertasReg(f,g));if(!gs.length){toast('No hay datos para '+fmtF(f));return}
  const extra=[];gs.forEach(g=>Object.keys(mortParte(f,g)).forEach(c=>extra.push(c)));const cods=codigosTodos(extra);
- const tit={c:['GRANJA SANTA CLARITA — PARTE DIARIO DE PRODUCCIÓN'],s:3},per={c:[fechaLarga(f).replace('Hoy, ','')+'  ·  Exportado por '+cur.nombre]};
- const r1=[tit,per,{c:BDCOLS.slice(1,26),s:1}];const T=Array(25).fill(0);
- gs.forEach(g=>{const c=celdasBD(f,g,[]).slice(1,26);c.forEach((x,i)=>{const n=x&&typeof x==='object'?x.v:x;if(typeof n==='number'&&[3,4,5,6,8,9,11,12,13,14,15,16,17,18,22,23,24].includes(i))T[i]+=n});r1.push({c})});
- const t=T.map((x,i)=>[3,4,5,6,8,9,11,12,13,14,15,16,17,18,22,23,24].includes(i)?+x.toFixed(2):'');t[0]='TOTAL';t[19]=T[6]?{v:+(T[18]/T[6]).toFixed(4),s:5}:'';t[10]=T[6]?{v:+(T[9]*1000/T[6]).toFixed(1),s:6}:'';r1.push({c:t,s:2});
- r1.push({c:[]},{c:['% mortalidad del día',T[3]?{v:+(T[4]/T[3]).toFixed(5),s:4}:'']});
+ const tit={c:['GRANJA SANTA CLARITA — PARTE DIARIO (datos para el Sistema Avícola)'],s:3},per={c:[fechaLarga(f).replace('Hoy, ','')+'  ·  Exportado por '+cur.nombre]};
+ const PC=BDS.slice(1);const r1=[tit,per,{c:PC.map(c=>c[0]),s:1}];const T={};
+ gs.forEach(g=>{const fb=filaBD(f,g);const v=fb.v.slice(1);PC.forEach((c,i)=>{if(c[2]==='sum'&&typeof v[i]==='number')T[c[1]+i]=(T[c[1]+i]||0)+v[i]});r1.push({c:v.map((x,i)=>celdaBD(PC[i],x))})});
+ const tv=k=>{const i=PC.findIndex(c=>c[1]===k);return T[k+i]||0};
+ r1.push({c:PC.map((c,i)=>i===0?'TOTAL':c[2]==='sum'?+(T[c[1]+i]||0).toFixed(2):c[1]==='gr'&&tv('neto')?{v:+(tv('kg')*1000/tv('neto')).toFixed(1),s:6}:c[1]==='pct'&&tv('neto')?{v:+(tv('neta')/tv('neto')).toFixed(4),s:5}:''),s:2});
  const r2=[tit,per,{c:['Galpón',...cods,'Total causas','Muertas parte','Control','Observación'],s:1}];const TC={};
- gs.forEach(g=>{const m=mortParte(f,g);const s=Object.values(m).reduce((a,b)=>a+b,0);const mu=pcalc(f,g).muertas;cods.forEach(c=>TC[c]=(TC[c]||0)+(m[c]||0));r2.push({c:[g,...cods.map(c=>m[c]||''),s,mu,s===mu?'OK':'REVISAR',[m.NI?'No indica mortalidad':'',m.CG?m.CG+' gato':''].filter(Boolean).join(' · ')]})});
+ gs.forEach(g=>{const m=mortParte(f,g);const s=Object.values(m).reduce((a,b)=>a+b,0);const mu=pcalc(f,g).muertas;cods.forEach(c=>TC[c]=(TC[c]||0)+(m[c]||0));r2.push({c:[g,...cods.map(c=>m[c]||''),s,mu,s===mu?'OK':(s<mu?'OK (no indica)':'REVISAR'),obsMort(f,g)]})});
  r2.push({c:['TOTAL',...cods.map(c=>TC[c]||0),Object.values(TC).reduce((a,b)=>a+b,0)],s:2});
- const r3=[tit,per,{c:['Galpón','Saldo inicial','Ingreso','Consumo','Saldo final'],s:1}];
- gs.forEach(g=>{const o=pcalc(f,g);r3.push({c:[g,o.sini,o.ing,o.sacos,o.sfin]})});
- const r4=[{c:BDCOLS.concat(cods),s:1}];gs.forEach(g=>r4.push({c:celdasBD(f,g,cods)}));
- descargarXlsx('Parte_SantaClarita_'+f+'.xlsx',[['Producción',sheetXml(r1,[8,8,8,9,8,6,9,9,7,8,8,7,7,8,8,9,8,10,10,9,8,8,10,9,9])],['Mortalidad',sheetXml(r2,[8,...cods.map(()=>6),11,11,10,24])],['Sacos alimento',sheetXml(r3,[9,12,10,10,12])],['BD_Sistema',sheetXml(r4,BDCOLS.map(()=>11).concat(cods.map(()=>6)),1)]]);
+ const r4=[{c:BDCOLS.concat(cods,['Observación mortalidad']),s:1}];gs.forEach(g=>r4.push({c:celdasBD(f,g,cods)}));
+ descargarXlsx('Parte_SantaClarita_'+f+'.xlsx',[['Parte',sheetXml(r1,PC.map(()=>9))],['Mortalidad',sheetXml(r2,[8,...cods.map(()=>6),11,11,12,26])],['BD_Sistema',sheetXml(r4,BDCOLS.map(()=>11).concat(cods.map(()=>6),[26]),1)]]);
 }
 $('pXlsx').onclick=exportParteDia;
 function exportarBD(){
  const[a,b]=rango();const fechas=new Set();Object.keys(prod).forEach(f=>{if(f>=a&&f<=b)fechas.add(f)});regs.forEach(r=>{if(r.fecha>=a&&r.fecha<=b)fechas.add(r.fecha)});
- const fs=[...fechas].sort();const lp=[];Object.keys(lev).filter(f=>f>=a&&f<=b).sort().forEach(f=>Object.keys(lev[f].g||{}).map(Number).sort((x,y)=>x-y).forEach(g=>lp.push([f,g])));const pz=pes.filter(p=>p.fecha>=a&&p.fecha<=b).sort((x,y)=>x.fecha.localeCompare(y.fecha)||x.galpon-y.galpon);if(!fs.length&&!lp.length&&!pz.length){toast('No hay datos en el rango');return}
+ const fs=[...fechas].sort();const lp=[];Object.keys(lev).filter(f=>f>=a&&f<=b).sort().forEach(f=>Object.keys(lev[f].g||{}).map(Number).sort((x,y)=>x-y).forEach(g=>lp.push([f,g])));const pz=pes.filter(p=>p.tipo==='prod'&&p.fecha>=a&&p.fecha<=b).sort((x,y)=>x.fecha.localeCompare(y.fecha)||x.galpon-y.galpon);if(!fs.length&&!lp.length&&!pz.length){toast('No hay datos en el rango');return}
  const pares=[];fs.forEach(f=>{const gs=new Set(pGalpones().filter(g=>pcalc(f,g).existe));regs.filter(r=>r.fecha===f).forEach(r=>gs.add(+r.galpon));[...gs].sort((x,y)=>x-y).forEach(g=>pares.push([f,g]))});
  const extra=[];pares.forEach(([f,g])=>Object.keys(mortParte(f,g)).forEach(c=>extra.push(c)));const cods=codigosTodos(extra);
- const r=[{c:BDCOLS.concat(cods),s:1}];pares.forEach(([f,g])=>r.push({c:celdasBD(f,g,cods)}));
- const leg=[{c:['Código','Casuística'],s:1}].concat(cfg.causas.map(c=>({c:[c.c||'',c.n]})));
- descargarXlsx('BD_SistemaProduccion_'+a+(a!==b?'_al_'+b:'')+'.xlsx',[['BD_Sistema',sheetXml(r,BDCOLS.map(()=>11).concat(cods.map(()=>6)),1)],...(lp.length?[hojaLev(lp)]:[]),...(pz.length?hojasPes(pz):[]),['Leyenda casuística',sheetXml(leg,[10,28],1)]]);
+ const r=[{c:BDCOLS.concat(cods,['Observación mortalidad']),s:1}];pares.forEach(([f,g])=>r.push({c:celdasBD(f,g,cods)}));
+ const leg=[{c:['Código','Casuística'],s:1}].concat(cfg.causas.map(c=>({c:[c.c||'',c.obs?c.n+' → se suma en '+c.c+' y se anota “'+c.obs+'” en observación':c.n]})));
+ descargarXlsx('BD_SistemaProduccion_'+a+(a!==b?'_al_'+b:'')+'.xlsx',[['BD_Sistema',sheetXml(r,BDCOLS.map(()=>11).concat(cods.map(()=>6),[26]),1)],...(pz.length?hojasPes(pz):[]),['Leyenda casuística',sheetXml(leg,[10,28],1)]]);
 }
 $('btnBD').onclick=exportarBD;
+$('btnLevBD').onclick=()=>{const[a,b]=rango();const lp=[];Object.keys(lev).filter(f=>f>=a&&f<=b).sort().forEach(f=>Object.keys(lev[f].g||{}).map(Number).sort((x,y)=>x-y).forEach(g=>lp.push([f,g])));const pz=pes.filter(p=>p.tipo==='lev'&&p.fecha>=a&&p.fecha<=b).sort((x,y)=>x.fecha.localeCompare(y.fecha)||x.galpon-y.galpon);if(!lp.length&&!pz.length){toast('No hay datos de levante en el rango');return}descargarXlsx('BD_Levante_'+a+(a!==b?'_al_'+b:'')+'.xlsx',[...(lp.length?[hojaLev(lp)]:[]),...(pz.length?hojasPes(pz):[])])};
 
-/* ---------- MÓDULOS, ACCESOS E INICIO ---------- */
-const TABS=['ini','reg','prd','lev','pes','his','rep','aju'];
-const MODS=[{k:'mort',t:'reg',i:'🎤',n:'Mortalidad',d:'Casuística por voz'},{k:'prod',t:'prd',i:'🥚',n:'Producción',d:'Parte diario'},{k:'lev',t:'lev',i:'🐣',n:'Levante',d:'Alimento, agua y mortalidad'},{k:'pes',t:'pes',i:'⚖️',n:'Pesaje',d:'Producción y levante'},{k:'rep',t:'rep',i:'📊',n:'Reportes',d:'Excel y sistema'}];
-function accesoU(u,k){if(!u)return false;if(u.rol==='admin')return true;if(u.mods)return!!u.mods[k];return k==='mort'||(k==='rep'&&!!u.rep)||(k==='prod'&&!!u.prod)}
+/* ---------- ELIMINACIÓN (solo administrador) ---------- */
+function confirmarBorrado(tit,txt,fn){if(!isAdmin()){toast('Solo el administrador puede eliminar');return}
+ modal('🗑 '+tit,`<div class="palert" style="font-size:17px">${txt}</div><div class="hint" style="font-size:15px">Se elimina del celular y de la hoja de Drive. No se puede deshacer.</div><label style="margin-top:10px">Escribe ELIMINAR para confirmar</label><input id="mDelOk" autocapitalize="characters">`,
+ ()=>{if($('mDelOk').value.trim().toUpperCase()!=='ELIMINAR')return'Escribe ELIMINAR para confirmar';fn()})}
+function borrarRegs(l){regs=regs.filter(r=>!l.includes(r));saveRegs();l.forEach(r=>encolar({op:'del',id:r.id}));return l.length}
+function borrarProd(f,g){if(prod[f]&&prod[f].g&&prod[f].g[g]){delete prod[f].g[g];saveProd();encolar({op:'proddel',clave:f+'|'+g});return 1}return 0}
+function borrarLev(f,g){if(lev[f]&&lev[f].g&&lev[f].g[g]){delete lev[f].g[g];saveLev();encolar({op:'levdel',clave:f+'|'+g});return 1}return 0}
+function admVis(){document.querySelectorAll('.adm').forEach(b=>b.classList.toggle('hidden',!isAdmin()))}
+
+/* ---------- GRANJAS, MÓDULOS, ACCESOS E INICIO ---------- */
+const TABS=['ini','gra','reg','prd','ali','lev','pes','his','rep','aju'];
+const GRANJAS={
+ prod:{n:'Granja de Producción',i:'🥚',d:'Mortalidad, parte diario, pesaje y reportes',
+  mods:[{k:'prod',t:'prd',i:'📝',n:'Parte diario',d:'Producción, alimento y fotos del parte',nav:1},{k:'mort',t:'reg',i:'🎤',n:'Mortalidad',d:'Casuística por voz',nav:1},{k:'pesP',t:'pes',i:'⚖️',n:'Pesaje',d:'Tanque · Medio · Fondo',nav:1},{k:'prod',t:'ali',i:'🌾',n:'Alimento por comedero',d:'Cuánto echar en cada comedero'},{k:'mort',t:'his',i:'📋',n:'Historial',d:'Mortalidad registrada'},{k:'rep',t:'rep',i:'📊',n:'Reportes',d:'Excel y sistema'}]},
+ lev:{n:'Granja de Levante',i:'🐣',d:'Alimento, agua, mortalidad y pesaje de pollitas',
+  mods:[{k:'lev',t:'lev',i:'📝',n:'Registro diario',d:'Alimento, agua y mortalidad',nav:1},{k:'pesL',t:'pes',i:'⚖️',n:'Pesaje',d:'Pollitas · zonas A a H',nav:1},{k:'rep',t:'rep',i:'📊',n:'Reportes',d:'Excel y sistema',nav:1}]}};
+const MODS=[{k:'prod',g:'prod',i:'📝',n:'Producción · Parte diario'},{k:'mort',g:'prod',i:'🎤',n:'Producción · Mortalidad'},{k:'pesP',g:'prod',i:'⚖️',n:'Producción · Pesaje'},{k:'lev',g:'lev',i:'📝',n:'Levante · Registro diario'},{k:'pesL',g:'lev',i:'⚖️',n:'Levante · Pesaje'},{k:'rep',g:'',i:'📊',n:'Reportes y exportación'}];
+let granja=load('granja','');
+function accesoU(u,k){if(!u)return false;if(u.rol==='admin')return true;
+ if(k==='pes')return accesoU(u,'pesP')||accesoU(u,'pesL');
+ if(u.mods){if((k==='pesP'||k==='pesL')&&u.mods[k]===undefined)return!!u.mods.pes;return!!u.mods[k]}
+ return k==='mort'||(k==='rep'&&!!u.rep)||(k==='prod'&&!!u.prod)}
 function acceso(k){return accesoU(cur,k)}
+function granjaOk(gk){return GRANJAS[gk].mods.some(m=>m.k!=='rep'&&acceso(m.k))}
 function irA(t){
- if(!cur)return;const m=MODS.find(x=>x.t===t);if(m&&!acceso(m.k))t='ini';if(t==='aju'&&!isAdmin())t='ini';if(t==='his'&&!acceso('mort'))t='ini';
+ if(!cur)return;
+ if(t!=='ini'&&t!=='aju'&&(!granja||!granjaOk(granja)))t='ini';
+ if(t==='aju'&&!isAdmin())t='ini';
+ if(!['ini','gra','aju'].includes(t)){const m=GRANJAS[granja].mods.find(x=>x.t===t);if(!m||!acceso(m.k))t='gra'}
  TABS.forEach(x=>$('t-'+x).classList.toggle('hidden',x!==t));
- document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t||(t==='his'&&b.dataset.t==='reg')));
- ({ini:renderIni,reg:renderReg,prd:renderPrd,lev:renderLev,pes:renderPes,his:renderHis,rep:renderRep,aju:renderAju}[t]||(()=>{}))();
+ renderNav(t);admVis();
+ const G=granja&&t!=='ini'&&t!=='aju'?GRANJAS[granja]:null;
+ $('hdrSub').textContent=G?G.i+' '+G.n:'';$('hdrSub').style.display=G?'block':'none';
+ ({ini:renderIni,gra:renderGra,reg:renderReg,prd:renderPrd,ali:renderAli,lev:renderLev,pes:renderPes,his:renderHis,rep:renderRep,aju:renderAju}[t]||(()=>{}))();
  window.scrollTo(0,0);
 }
-function renderNav(){
- const l=[{t:'ini',i:'🏠',n:'Inicio'}].concat(MODS.filter(m=>m.k!=='rep'&&acceso(m.k)).map(m=>({t:m.t,i:m.i,n:m.n})));
- document.querySelector('nav').innerHTML=l.map(x=>`<button data-t="${x.t}"><i>${x.i}</i>${x.n}</button>`).join('');
- document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>irA(b.dataset.t));
+function renderNav(t){
+ const nav=document.querySelector('nav');
+ if(!cur||t==='ini'||t==='aju'||!granja){nav.innerHTML=t==='aju'?'<button data-t="ini"><i>🏠</i>Inicio</button>':'';nav.style.display=t==='aju'?'flex':'none';nav.querySelectorAll('button').forEach(b=>b.onclick=()=>irA('ini'));return}
+ nav.style.display='flex';
+ const l=[{t:'ini',i:'🏠',n:'Granjas'},{t:'gra',i:'☰',n:'Menú'}].concat(GRANJAS[granja].mods.filter(m=>m.nav&&acceso(m.k)).map(m=>({t:m.t,i:m.i,n:m.n})));
+ nav.innerHTML=l.map(x=>`<button data-t="${x.t}" class="${x.t===t||(t==='his'&&x.t==='reg')?'on':''}"><i>${x.i}</i>${x.n}</button>`).join('');
+ nav.querySelectorAll('button').forEach(b=>b.onclick=()=>irA(b.dataset.t));
 }
+function elegirGranja(gk){granja=gk;store('granja',gk);zT=gk==='lev'?'lev':'prod';irA('gra')}
 function renderIni(){
  $('iniHola').textContent='Hola, '+cur.nombre.split(' ')[0];$('iniFecha').textContent=fechaLarga(hoy());
- const t=MODS.filter(m=>acceso(m.k)).map(m=>({t:m.t,i:m.i,n:m.n,d:m.d}));
- if(acceso('mort'))t.splice(1,0,{t:'his',i:'📋',n:'Historial',d:'Mortalidad registrada'});
- if(isAdmin())t.push({t:'aju',i:'⚙️',n:'Ajustes',d:'Usuarios y configuración'});
- $('iniTiles').innerHTML=t.map(x=>`<button class="tile" data-t="${x.t}"><i>${x.i}</i><b>${x.n}</b><span>${x.d}</span></button>`).join('');
- $('iniTiles').querySelectorAll('.tile').forEach(b=>b.onclick=()=>irA(b.dataset.t));
+ const gs=['prod','lev'].filter(granjaOk);
+ $('iniTiles').innerHTML=gs.map(gk=>{const G=GRANJAS[gk];return`<button class="gtile ${gk}" data-g="${gk}"><i>${G.i}</i><b>${G.n}</b><span>${G.d}</span></button>`}).join('')+(isAdmin()?`<button class="tile" data-t="aju" style="grid-column:1/-1;min-height:80px"><b>⚙️ Ajustes</b><span>Usuarios, accesos, galpones y Drive</span></button>`:'')+(gs.length?'':'<div class="card hint">No tienes módulos asignados. Pide acceso al administrador.</div>');
+ $('iniTiles').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>elegirGranja(b.dataset.g));
+ $('iniTiles').querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>irA(b.dataset.t));
+}
+function renderGra(){
+ const G=GRANJAS[granja];$('graTit').textContent=G.i+' '+G.n;$('graFecha').textContent=fechaLarga(hoy());
+ const t=G.mods.filter(m=>acceso(m.k));
+ $('graTiles').innerHTML=t.map(x=>`<button class="tile" data-t="${x.t}"><i>${x.i}</i><b>${x.n}</b><span>${x.d}</span></button>`).join('');
+ $('graTiles').querySelectorAll('.tile').forEach(b=>b.onclick=()=>irA(b.dataset.t));
 }
 function puedeDia(k,f){if(isAdmin())return true;if(!acceso(k))return false;const d=dnum(hoy())-dnum(f);return d>=0&&d<=1}
 
@@ -1122,7 +1437,7 @@ let zT='prod',zCur=null,zZ=0,zJ=0,zBuf='',zConf=false;
 function defJxz(t){return t==='prod'?(cfg.jxz||10):(cfg.jxzL||1)}
 function defMax(t){return t==='prod'?(cfg.maxAvesP??6):(cfg.maxAvesL??'')}
 document.querySelectorAll('.tipo .btn').forEach(b=>b.onclick=()=>{zT=b.dataset.tipo;$('zJxz').value=defJxz(zT);$('zMax').value=defMax(zT);renderPesSetup()});
-function renderPes(){if(!$('zFecha').value)$('zFecha').value=hoy();if(!$('zJxz').value)$('zJxz').value=defJxz(zT);if($('zMax').value==='')$('zMax').value=defMax(zT);renderPesSetup();renderPesLista()}
+function renderPes(){const t0=granja==='lev'?'lev':'prod';if(zT!==t0){zT=t0;$('zJxz').value=defJxz(zT);$('zMax').value=defMax(zT)}$('zTipoTit').textContent=zT==='prod'?'⚖️ Pesaje de gallinas · Tanque, Medio y Fondo':'⚖️ Pesaje de pollitas · Zonas A a H';if(!$('zFecha').value)$('zFecha').value=hoy();if(!$('zJxz').value)$('zJxz').value=defJxz(zT);if($('zMax').value==='')$('zMax').value=defMax(zT);renderPesSetup();renderPesLista()}
 function renderPesSetup(){
  document.querySelectorAll('.tipo .btn').forEach(b=>b.classList.toggle('on',b.dataset.tipo===zT));
  const gs=(zT==='prod'?cfg.pgal:cfg.lgal||[]).map(x=>x.g).filter(g=>g!=='');
@@ -1139,8 +1454,9 @@ function statsPes(p){
  o.difStd=o.prom&&p.std?(o.prom-p.std)/p.std*100:null;
  return o}
 function renderPesLista(){
- const l=[...pes].sort((a,b)=>b.fecha.localeCompare(a.fecha)||(b.upd||'').localeCompare(a.upd||'')).slice(0,40);
- $('zLista').innerHTML=l.length?l.map(p=>{const s=statsPes(p);return`<button class="pit ${s.jp===s.tot?'ok':''}" data-id="${p.id}"><span class="st">${p.tipo==='prod'?'🥚':'🐣'}</span><span style="flex:1"><span class="pg">Galpón ${p.galpon}</span><br><span class="pl">${fmtF(p.fecha)} · ${p.tipo==='prod'?'Producción':'Levante'} · ${s.n} aves · ${s.jp}/${s.tot} jaulas</span></span><span class="pv">${s.prom?s.prom.toFixed(3)+' kg':'—'}<br><span class="pl">promedio</span></span></button>`}).join(''):'<div class="hint">Todavía no hay pesajes.</div>';
+ const l=pes.filter(p=>p.tipo===zT).sort((a,b)=>b.fecha.localeCompare(a.fecha)||(b.upd||'').localeCompare(a.upd||'')).slice(0,40);
+ $('zLista').innerHTML=l.length?l.map(p=>{const s=statsPes(p);return`<div class="pitw"><button class="pit ${s.jp===s.tot?'ok':''}" data-id="${p.id}"><span class="st">${p.tipo==='prod'?'🥚':'🐣'}</span><span style="flex:1"><span class="pg">Galpón ${p.galpon}</span><br><span class="pl">${fmtF(p.fecha)} · ${p.tipo==='prod'?'Producción':'Levante'} · ${s.n} aves · ${s.jp}/${s.tot} jaulas</span></span><span class="pv">${s.prom?s.prom.toFixed(3)+' kg':'—'}<br><span class="pl">promedio</span></span></button>${isAdmin()?`<button class="pdel" data-del="${p.id}" aria-label="Eliminar pesaje">🗑</button>`:''}</div>`}).join(''):'<div class="hint">Todavía no hay pesajes.</div>';
+ $('zLista').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{const p=pes.find(x=>x.id===b.dataset.del);if(!p)return;const s=statsPes(p);confirmarBorrado('Eliminar pesaje',`Pesaje del galpón <b>${p.galpon}</b> del <b>${fmtF(p.fecha)}</b> (${s.n} aves pesadas).`,()=>{pes=pes.filter(x=>x!==p);savePes();encolar({op:'pesdel',id:p.id});renderPes();toast('Pesaje eliminado')})});
  $('zLista').querySelectorAll('.pit').forEach(b=>b.onclick=()=>{const p=pes.find(x=>x.id===b.dataset.id);const s=statsPes(p);if(s.jp<s.tot&&puedeDia('pes',p.fecha))abrirZ(p);else verRes(p)});
 }
 $('zEmpezar').onclick=()=>{
@@ -1201,11 +1517,11 @@ function verRes(p){
  <div class="card"><div class="pres"><div><b>${s.unif!=null?s.unif.toFixed(0)+'%':'—'}</b><span>uniformidad</span></div><div><b>${s.cv!=null?s.cv.toFixed(1)+'%':'—'}</b><span>CV</span></div><div><b>${s.n}</b><span>${ave}</span></div></div>
  <div class="hint">Uniformidad = % de aves con peso a ±10% del promedio. Mínimo ${s.min?s.min.toFixed(3):'—'} kg · Máximo ${s.max?s.max.toFixed(3):'—'} kg. ${s.jp<s.tot?'<b>Faltan '+(s.tot-s.jp)+' jaulas por pesar.</b>':''}</div></div>
  <div class="card"><h2>Por zona</h2>${s.zonas.map(z=>`<div class="rz"><span><b style="font-size:20px;color:var(--tx)">${p.tipo==='prod'?'':'Zona '}${z.z}</b><br><span class="hint">${z.j} jaula(s) · ${z.aves} ${ave}</span></span><b>${z.prom?z.prom.toFixed(3):'—'}</b></div>`).join('')}</div>`;
- $('zResEdit').classList.toggle('hidden',!puedeDia('pes',p.fecha));$('zResDel').classList.toggle('hidden',!(isAdmin()||p.usuario===cur.u));
+ $('zResEdit').classList.toggle('hidden',!puedeDia('pes',p.fecha));$('zResDel').classList.toggle('hidden',!isAdmin());
  $('zRes').classList.remove('hidden')}
 $('zResCerrar').onclick=()=>{$('zRes').classList.add('hidden');renderPes()};
 $('zResEdit').onclick=()=>{$('zRes').classList.add('hidden');abrirZ(zVer)};
-$('zResDel').onclick=e=>twoTap(e.target,()=>{pes=pes.filter(x=>x!==zVer);savePes();encolar({op:'pesdel',id:zVer.id});$('zRes').classList.add('hidden');renderPes();toast('Pesaje eliminado')},'¿Eliminar?');
+$('zResDel').onclick=()=>{const p=zVer;confirmarBorrado('Eliminar pesaje',`Pesaje del galpón <b>${p.galpon}</b> del <b>${fmtF(p.fecha)}</b>.`,()=>{pes=pes.filter(x=>x!==p);savePes();encolar({op:'pesdel',id:p.id});$('zRes').classList.add('hidden');renderPes();toast('Pesaje eliminado')})};
 function hojasPes(lista){
  const zP=ZONAS.prod,zL=ZONAS.lev;const cab=['Fecha','Tipo','Galpón','Lote','Edad (sem)','Jaulas pesadas','Aves pesadas','Peso prom. kg','Peso mín. kg','Peso máx. kg','Estándar kg','Uniformidad','CV'];
  const res=[{c:cab.concat(zP.map(z=>'Prom '+z),zL.map(z=>'Prom zona '+z),['Registrado por']),s:1}];
@@ -1260,8 +1576,12 @@ function abrirLEd(g){const f=$('lFecha').value||hoy();leG=g;const o=lcalc(f,g);c
 function leCalc(){const f=$('lFecha').value||hoy();const o=lcalc(f,leG,leVals());const c=(l,v,big)=>`<div class="${big?'big':''}"><span>${l}</span><b>${v}</b></div>`;
  $('leCalc').innerHTML=c('Agua consumida',o.agua!=null?f1(o.agua)+' L':'—',true)+c('Neto aves',f1(o.neto))+c('Alimento por ave',o.gave!=null?o.gave.toFixed(1)+' g':'—')+c('Agua por ave',o.mlave!=null?f1(o.mlave)+' ml':'—')+c('Agua / alimento',o.ratio!=null?o.ratio.toFixed(2)+' L/kg':'—')+c('Último pesaje',o.peso?o.peso.toFixed(3)+' kg ('+fmtF(o.pesoF).slice(0,5)+')':'—');
  $('leAlert').innerHTML=o.alertas.map(a=>`<div class="palert">⚠️ ${esc(a)}</div>`).join('')}
+$('leDel').onclick=()=>{const f=$('lFecha').value||hoy(),g=leG;if(!(lev[f]&&lev[f].g&&lev[f].g[g])){toast('Este galpón no tiene datos en esta fecha');return}
+ confirmarBorrado('Eliminar galpón '+g,`Se eliminará el registro de levante del galpón <b>${g}</b> del <b>${fmtF(f)}</b>.`,()=>{borrarLev(f,g);$('lEd').classList.add('hidden');renderLev();toast('Registro eliminado')})};
+$('lDelDia').onclick=()=>{const f=$('lFecha').value||hoy();const gs=Object.keys((lev[f]&&lev[f].g)||{});if(!gs.length){toast('No hay datos en '+fmtF(f));return}
+ confirmarBorrado('Eliminar levante del '+fmtF(f),`Se eliminará el registro de levante de <b>${gs.length}</b> galpón(es) del <b>${fmtF(f)}</b>.`,()=>{gs.forEach(g=>borrarLev(f,+g));renderLev();toast('Registro del día eliminado')})};
 $('leCerrar').onclick=()=>{$('lEd').classList.add('hidden');renderLev()};
-$('lePesar').onclick=()=>{const f=$('lFecha').value||hoy();$('lEd').classList.add('hidden');zT='lev';$('zGal').value=leG;$('zFecha').value=f;$('zJxz').value=1;irA('pes')};
+$('lePesar').onclick=()=>{const f=$('lFecha').value||hoy();$('lEd').classList.add('hidden');granja='lev';store('granja','lev');zT='lev';$('zJxz').value=defJxz('lev');$('zMax').value=defMax('lev');$('zGal').value=leG;$('zFecha').value=f;$('zJxz').value=1;irA('pes')};
 $('leGuardar').onclick=()=>{const f=$('lFecha').value||hoy();if(!puedeDia('lev',f)){toast('No tienes permiso para esta fecha');return}
  const v=leVals();const o=lcalc(f,leG,v);if(v.kg==null&&v.sacos==null&&v.hfin==null&&v.muertas==null){toast('Ingresa al menos un dato');return}
  ['saldo','hini','dieta','edad'].forEach(k=>{if(v[k]==null&&o[k]!=null&&o[k]!=='')v[k]=o[k]});
@@ -1288,9 +1608,9 @@ function renderAju(){
  $('cCausas').querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>twoTap(b,()=>{cfg.causas.splice(+b.dataset.x,1);saveCfg();renderAju()},'¿?'));
 }
 function renderPgal(){
- $('cPgal').innerHTML=cfg.pgal.map((x,i)=>`<div class="pcfg"><input data-i="${i}" data-k="g" value="${x.g}" inputmode="numeric"><input data-i="${i}" data-k="lote" value="${esc(x.lote||'')}"><input data-i="${i}" data-k="edad" value="${edadEn(x,hoy())}" inputmode="numeric"><input data-i="${i}" data-k="dieta" value="${esc(x.dieta||'')}"><input data-i="${i}" data-k="tabla" value="${x.tabla??''}" inputmode="decimal"><button class="btn sm danger" data-x="${i}">✕</button></div>`).join('');
+ $('cPgal').innerHTML=cfg.pgal.map((x,i)=>`<div class="pcfg7"><input data-i="${i}" data-k="g" value="${x.g}" inputmode="numeric"><input data-i="${i}" data-k="lote" value="${esc(x.lote||'')}"><input data-i="${i}" data-k="cod" value="${esc(x.cod||'')}"><input data-i="${i}" data-k="edad" value="${edadEn(x,hoy())}" inputmode="numeric"><input data-i="${i}" data-k="dieta" value="${esc(x.dieta||'')}"><input data-i="${i}" data-k="tabla" value="${x.tabla??''}" inputmode="decimal"><button class="btn sm danger" data-x="${i}">✕</button></div>`).join('');
  $('cPgal').querySelectorAll('input').forEach(inp=>inp.onchange=()=>{const x=cfg.pgal[+inp.dataset.i],k=inp.dataset.k,v=inp.value.trim();
-  if(k==='edad'){x.edad=v===''?'':+v;x.ref=hoy()}else if(k==='g'||k==='tabla')x[k]=v===''?'':+v;else x[k]=k==='dieta'?v.toUpperCase():v;saveCfg()});
+  if(k==='edad'){x.edad=v===''?'':+v;x.ref=hoy()}else if(k==='g'||k==='tabla')x[k]=v===''?'':+v;else x[k]=['dieta','lote'].includes(k)?v.toUpperCase():v;saveCfg()});
  $('cPgal').querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>twoTap(b,()=>{cfg.pgal.splice(+b.dataset.x,1);saveCfg();renderPgal()},'¿?'));
 }
 function renderLgal(){cfg.lgal=cfg.lgal||[];
@@ -1300,7 +1620,7 @@ function renderLgal(){cfg.lgal=cfg.lgal||[];
  $('cLgal').querySelectorAll('[data-x]').forEach(b=>b.onclick=()=>twoTap(b,()=>{cfg.lgal.splice(+b.dataset.x,1);saveCfg();renderLgal()},'¿?'))}
 $('cLgalAdd').onclick=()=>{cfg.lgal=cfg.lgal||[];cfg.lgal.push({g:'',lote:'',edad:'',ref:hoy(),aves:'',dieta:''});saveCfg();renderLgal()};
 $('cHidU').onchange=e=>{cfg.hidU=e.target.value;saveCfg()};
-$('cPgalAdd').onclick=()=>{cfg.pgal.push({g:'',lote:'',edad:'',ref:hoy(),dieta:'',tabla:''});saveCfg();renderPgal()};
+$('cPgalAdd').onclick=()=>{cfg.pgal.push({g:'',lote:'',cod:'',edad:'',ref:hoy(),dieta:'',tabla:''});saveCfg();renderPgal()};
 $('cKgS').onchange=e=>{cfg.kgSaco=pnum(e.target.value)||40;saveCfg()};$('cHxj').onchange=e=>{cfg.hxj=pnum(e.target.value)||360;saveCfg()};
 $('cGalOk').onclick=()=>{const v=$('cGal').value.trim();cfg.galpones=v||'11-34';saveCfg();renderAju();toast(galList().length+' galpones configurados')};
 $('cAddCausa').onclick=()=>{cfg.causas.push({n:'Nueva casuística',s:''});saveCfg();renderAju()};
@@ -1310,7 +1630,7 @@ $('cVel').onchange=e=>{cfg.vel=+e.target.value;saveCfg()};
 $('cProbar').onclick=()=>{const t=cfg.tts;cfg.tts=true;hablar('Entendí. Galpón 15. Prolapso: 3. Picaje: 2. Total: 5 muertas. ¿Es correcto?');cfg.tts=t};
 $('bkExp').onclick=()=>{const b=new Blob([JSON.stringify({cfg,regs,prod,lev,pes},null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='respaldo_SantaClarita_'+hoy()+'.json';document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),1000)};
 $('bkImp').onclick=()=>$('bkFile').click();
-$('bkFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const o=JSON.parse(rd.result);if(o.cfg){['galpones','causas','causasVer','aves','tts','auto','vel','gsUrl','gsKey','pgal','kgSaco','hxj','lgal','hidU','jxz','jxzL','maxAvesP','maxAvesL'].forEach(k=>{if(k in o.cfg)cfg[k]=o.cfg[k]});(o.cfg.usuarios||[]).forEach(x=>{if(x&&x.u&&!findU(x.u))cfg.usuarios.push(x)})}if(Array.isArray(o.regs)){const ids=new Set(regs.map(r=>r.id));o.regs.forEach(r=>{if(!ids.has(r.id))regs.push(r)})}if(o.prod&&typeof o.prod==='object'){Object.entries(o.prod).forEach(([f,d])=>{if(!d||!d.g)return;prod[f]=prod[f]||{g:{}};Object.entries(d.g).forEach(([g,r])=>{const l=prod[f].g[g];if(!l||(r.upd||'')>=(l.upd||''))prod[f].g[g]=r})});saveProd()}
+$('bkFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const o=JSON.parse(rd.result);if(o.cfg){['galpones','causas','causasVer','aves','tts','auto','vel','gsUrl','gsKey','pgal','kgSaco','hxj','lgal','hidU','jxz','jxzL','maxAvesP','maxAvesL'].forEach(k=>{if(k in o.cfg)cfg[k]=o.cfg[k]});(o.cfg.usuarios||[]).forEach(x=>{if(x&&x.u&&!findU(x.u))cfg.usuarios.push(x)})}if(Array.isArray(o.regs)){const ids=new Set(regs.map(r=>r.id));o.regs.forEach(r=>{if(!ids.has(r.id))regs.push(r)})}if(o.prod&&typeof o.prod==='object'){Object.entries(o.prod).forEach(([f,d])=>{if(!d||!d.g)return;prod[f]=prod[f]||{g:{}};if(d.band&&(!prod[f].band||(d.band.upd||'')>=(prod[f].band.upd||'')))prod[f].band=d.band;Object.entries(d.g).forEach(([g,r])=>{const l=prod[f].g[g];if(!l||(r.upd||'')>=(l.upd||''))prod[f].g[g]=r})});saveProd()}
  if(o.lev&&typeof o.lev==='object'){Object.entries(o.lev).forEach(([f,d])=>{if(!d||!d.g)return;lev[f]=lev[f]||{g:{}};Object.entries(d.g).forEach(([g,r])=>{const l=lev[f].g[g];if(!l||(r.upd||'')>=(l.upd||''))lev[f].g[g]=r})});saveLev()}
  if(Array.isArray(o.pes)){o.pes.forEach(p=>{const i=pes.findIndex(x=>x.id===p.id);if(i<0)pes.push(p);else if((p.upd||'')>=(pes[i].upd||''))pes[i]=p});savePes()}
  saveCfg();saveRegs();renderAju();toast('Respaldo importado')}catch(err){toast('Archivo no válido')}};rd.readAsText(f);e.target.value=''};
@@ -1362,12 +1682,12 @@ function adminsActivos(){return cfg.usuarios.filter(x=>x.rol==='admin'&&x.activo
 function showLogin(){const setup=!cfg.usuarios.length;$('login').classList.remove('hidden');$('lgSetup').classList.toggle('hidden',!setup);$('lgNormal').classList.toggle('hidden',setup);$('lgErr').textContent='';$('uBox').classList.add('hidden');setTimeout(()=>{try{(setup?$('suP'):$('lgU')).focus()}catch(e){}},100)}
 function iniciarSesion(){const u=findU(load('ses',''));if(u&&u.activo)entrar(u,true);else showLogin()}
 function entrar(u,silencioso){cur=u;store('ses',u.u);$('login').classList.add('hidden');$('lgP').value='';$('lgU').value='';aplicarPermisos();if(!silencioso)toast('Bienvenido, '+u.nombre)}
-function salir(){cerrarConf();cur=null;store('ses','');form={galpon:null,counts:{},editId:null};pendientes=[];renderPend();TABS.forEach(t=>$('t-'+t).classList.add('hidden'));['pEd','lEd','zEd','zRes'].forEach(i=>$(i).classList.add('hidden'));document.querySelector('nav').innerHTML='';showLogin()}
+function salir(){cerrarConf();cur=null;store('ses','');form={galpon:null,counts:{},editId:null};pendientes=[];renderPend();TABS.forEach(t=>$('t-'+t).classList.add('hidden'));['pEd','lEd','zEd','zRes'].forEach(i=>$(i).classList.add('hidden'));document.querySelector('nav').innerHTML='';document.querySelector('nav').style.display='none';$('hdrSub').style.display='none';showLogin()}
 function aplicarPermisos(){
  $('uBox').classList.remove('hidden');$('uChip').textContent=cur.nombre.split(' ')[0]+(isAdmin()?' · Admin':'');ajNav();$('fUser').value=cur.nombre;
  renderNav();
  $('fFecha').disabled=!isAdmin();$('fFecha').classList.toggle('hidden',!isAdmin());if(!isAdmin())$('fFecha').value=hoy();
- const ms=MODS.filter(m=>m.k!=='rep'&&acceso(m.k));irA(ms.length===1&&!isAdmin()?ms[0].t:'ini');
+ const gs=['prod','lev'].filter(granjaOk);if(gs.length===1&&!isAdmin()){granja=gs[0];store('granja',granja);zT=granja==='lev'?'lev':'prod';irA('gra')}else irA('ini');
 }
 $('lgBtn').onclick=async()=>{const u=findU($('lgU').value),p=$('lgP').value;
  if(!u||u.h!==await hashPw(u.u,p)){$('lgErr').textContent='Usuario o contraseña incorrectos';return}
