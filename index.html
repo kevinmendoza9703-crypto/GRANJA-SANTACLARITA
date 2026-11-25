@@ -157,6 +157,8 @@ tr.tot td{font-weight:900;background:#faf1ec}
 .nectot{text-align:center;font-size:18px;margin-bottom:8px}.nectot b{font-size:34px;color:#1b5e3a}
 .necrow{display:grid;grid-template-columns:1fr 46px 56px 46px;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid #eee;font-size:19px}
 .necrow b{text-align:center;font-size:26px}.necrow button{height:46px;border-radius:12px;border:0;background:#e6dfd8;font-size:24px;font-weight:800}
+.ncg{border-bottom:1px solid #eee;padding:8px 0}.ncgh{display:flex;justify-content:space-between;font-size:19px}.ncgt{color:var(--pri)}
+.necgn{display:inline-block;margin-left:4px;background:#1b5e3a;color:#fff;border-radius:8px;padding:0 5px;font-size:11px;vertical-align:top}
 .necc button{font-size:15px;padding:8px 10px}
 #fx{position:fixed;inset:0;z-index:26;background:var(--bg);display:flex;flex-direction:column}
 .fxsvg{width:100%;max-width:420px;display:block;margin:4px auto}
@@ -303,6 +305,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <div class="row" style="margin-top:8px"><button class="btn" id="pendNo">Descartar</button><button class="btn ok" id="pendSi">✔ Guardar todos</button></div>
  </div>
 
+ <button class="btn w hidden" id="necResume" style="min-height:64px;font-size:18px;margin-bottom:10px;background:#ffd27a;color:#5a3d00;border:3px solid #e0a800"></button>
  <button class="btn w" id="necBtn" style="min-height:72px;font-size:20px;margin-bottom:12px;background:#1b5e3a;color:#fff">🔁 Modo necropsia<br><small style="font-weight:600;font-size:14px">dicta gallina por gallina y la app va sumando</small></button>
  <button class="btn w" id="manualBtn">✍️ Registrar sin voz (con botones)</button>
 
@@ -345,6 +348,11 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <div class="necest" id="necEst"></div>
   <div class="necoido" id="necOido"></div>
   <div class="necult" id="necUlt"></div>
+  <div id="necConf" class="card hidden" style="border:3px solid #1b5e3a">
+   <h2 style="color:#1b5e3a">¿Está bien lo registrado?</h2>
+   <div id="necConfTxt"></div>
+   <div class="row" style="margin-top:10px"><button class="btn" id="necConfMas" style="flex:1">➕ Agregar otra causa</button><button class="btn ok" id="necConfSi" style="flex:1">✔ Está bien, terminar</button></div>
+  </div>
   <div class="card" style="margin-top:10px"><div id="necTot" class="nectot"></div><div id="necLista"></div>
    <button class="btn w" id="necDeshacer" style="margin-top:10px">↶ Deshacer la última</button></div>
   <div class="zlbl" style="text-align:left">Sumar tocando (si hay mucho ruido)</div>
@@ -557,7 +565,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <input type="file" id="bkFile" accept=".json" class="hidden">
   <button class="btn danger w" id="bkDel" style="margin-top:10px">Borrar todos los registros</button>
  </div>
- <div class="hint" style="text-align:center">Granja Santa Clarita v3.9 · Kevin Mendoza Astocaza</div>
+ <div class="hint" style="text-align:center">Granja Santa Clarita v4.0 · Kevin Mendoza Astocaza</div>
 </section>
 
 </main>
@@ -748,6 +756,7 @@ $('manualBtn').onclick=()=>abrirManual(!manual);
 function exito(txt){$('exitoTxt').textContent=txt;$('exito').classList.remove('hidden');clearTimeout(exito._t);exito._t=setTimeout(()=>$('exito').classList.add('hidden'),2000)}
 $('exito').onclick=()=>$('exito').classList.add('hidden');
 function renderReg(){
+ necRevisarPendiente();
  const f=$('fFecha').value;$('fFechaTxt').textContent=fechaLarga(f);if(form.editId&&!manual)abrirManual(true);const enDia=new Set(regs.filter(r=>r.fecha===f).map(r=>r.galpon));
  $('galGrid').innerHTML=galList().map(g=>`<button data-g="${g}" class="${g===form.galpon?'on':''} ${enDia.has(g)?'has':''}">${g}</button>`).join('');
  $('galGrid').querySelectorAll('button').forEach(b=>b.onclick=()=>{form.galpon=+b.dataset.g;renderReg()});
@@ -947,59 +956,98 @@ function escuchar(){
 $('mic').onclick=escuchar;
 
 /* ---------- MODO NECROPSIA: suma gallina por gallina ---------- */
-let nec=null; // {g, activo, rec, hist:[], escuchando}
+let nec=null; // {g, activo, rec, hist:[], escuchando, fase:'normal'|'confirmar', wl}
 function necFecha(){return isAdmin()?($('fFecha').value||hoy()):hoy()}
-function necReg(f,g){const id='nec|'+f+'|'+g+'|'+cur.u;let r=regs.find(x=>x.id===id);if(!r){r={id,fecha:f,galpon:+g,counts:{},hora:new Date().toTimeString().slice(0,5),usuario:cur.u,nombre:cur.nombre,texto:'Necropsia (suma por gallina)'};regs.push(r)}return r}
+function necId(f,g){return'nec|'+f+'|'+g+'|'+cur.u}
+function necReg(f,g){const id=necId(f,g);let r=regs.find(x=>x.id===id);if(!r){r={id,fecha:f,galpon:+g,counts:{},hora:new Date().toTimeString().slice(0,5),usuario:cur.u,nombre:cur.nombre,texto:'Necropsia (suma por gallina)'};regs.push(r)}return r}
 function necSumar(g,causa,n){const f=necFecha();const r=necReg(f,g);r.counts[causa]=(r.counts[causa]||0)+n;if(r.counts[causa]<=0)delete r.counts[causa];
  if(!Object.keys(r.counts).length){regs=regs.filter(x=>x!==r);saveRegs();encolar({op:'del',id:r.id})}else{r.hora=new Date().toTimeString().slice(0,5);saveRegs();encolar({op:'up',r})}
  return r.counts[causa]||0}
-function necAbrir(){
- if(!SR){toast('Este navegador no permite dictado. Puedes sumar tocando las casuísticas.')}
- nec={g:form.galpon||null,activo:false,hist:[],ult:''};$('nec').classList.remove('hidden');necRender();if(SR)necIniciar()}
+// sesión guardada: permite retomar si entra una llamada o se cierra la app
+function necGuardarSes(){if(!nec||!cur)return;store('necSes',{f:necFecha(),u:cur.u,g:nec.g,activo:nec.activo,hist:nec.hist.slice(-50),t:Date.now()})}
+function necSesPend(){const s=load('necSes',null);return s&&cur&&s.u===cur.u&&s.f===hoy()?s:null}
+function necRegsHoy(){const f=necFecha();return regs.filter(r=>cur&&r.id.startsWith('nec|'+f+'|')&&r.id.endsWith('|'+cur.u))}
+async function necWake(){try{if('wakeLock' in navigator&&document.visibilityState==='visible'&&(!nec.wl||nec.wl.released))nec.wl=await navigator.wakeLock.request('screen')}catch(e){}}
+function necAbrir(ses){
+ if(!SR)toast('Este navegador no permite dictado. Puedes sumar tocando las casuísticas.');
+ nec={g:(ses&&ses.g)||form.galpon||null,activo:false,hist:(ses&&ses.hist)||[],ult:'',fase:'normal'};
+ $('nec').classList.remove('hidden');$('necConf').classList.add('hidden');necWake();necRender();
+ if(ses){const r=nec.g?regs.find(x=>x.id===necId(necFecha(),nec.g)):null;const n=r?sumCounts(r.counts):0;
+  $('necUlt').textContent='↻ Necropsia retomada';if(SR){nec.activo=true;necRender();necHablar((nec.g?'Continuamos en el galpón '+nec.g+'. Van '+n+' gallinas.':'Continuamos la necropsia.')+' Diga la casuística.',()=>setTimeout(necEscuchar,150))}}
+ else if(SR)necIniciar();
+ necGuardarSes()}
 function necRender(){
- const f=necFecha(),g=nec.g;$('necGal').textContent=g?'GALPÓN '+g:'Di el número de galpón';$('necFecha').textContent=fmtF(f);
- $('necEst').innerHTML=nec.activo?'<span class="necdot"></span> Escuchando… di la casuística':'⏸ En pausa';$('necPausa').textContent=nec.activo?'⏸ Pausar':'▶ Seguir';
- $('necOido').textContent=nec.ult||'Ej.: “galpón 20 picaje”, luego solo “peritonitis”, “picaje”…';
- const r=g?regs.find(x=>x.id==='nec|'+f+'|'+g+'|'+cur.u):null;const c=r?r.counts:{};const tot=Object.values(c).reduce((a,b)=>a+b,0);
+ if(!nec)return;const f=necFecha(),g=nec.g;$('necGal').textContent=g?'GALPÓN '+g:'Di el número de galpón';$('necFecha').textContent=fmtF(f);
+ $('necEst').innerHTML=nec.fase==='confirmar'?'❓ Esperando tu respuesta…':nec.activo?'<span class="necdot"></span> Escuchando… di la casuística':'⏸ En pausa';$('necPausa').textContent=nec.activo?'⏸ Pausar':'▶ Seguir';
+ if(nec.fase!=='confirmar')$('necOido').textContent=nec.ult||'Ej.: “galpón 20 picaje”, luego solo “peritonitis”, “picaje”…';
+ const r=g?regs.find(x=>x.id===necId(f,g)):null;const c=r?r.counts:{};const tot=Object.values(c).reduce((a,b)=>a+b,0);
  $('necTot').innerHTML=g?`<b>${tot}</b> gallina${tot===1?'':'s'} revisada${tot===1?'':'s'} en el galpón ${g}`:'';
  $('necLista').innerHTML=g?(Object.keys(c).length?Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="necrow"><span>${esc(k)}</span><button data-c="${esc(k)}" data-d="-1">−</button><b>${v}</b><button data-c="${esc(k)}" data-d="1">+</button></div>`).join(''):'<div class="hint" style="font-size:17px;text-align:center">Todavía no hay gallinas en este galpón.</div>'):'';
- $('necLista').querySelectorAll('button').forEach(b=>b.onclick=()=>{const v=necSumar(g,b.dataset.c,+b.dataset.d);nec.hist.push({g,c:b.dataset.c,n:+b.dataset.d});necRender()});
+ $('necLista').querySelectorAll('button').forEach(b=>b.onclick=()=>{necSumar(g,b.dataset.c,+b.dataset.d);nec.hist.push({g,c:b.dataset.c,n:+b.dataset.d});necGuardarSes();necRender()});
  $('necCausas').innerHTML=g?causaNames().map(n=>`<button data-c="${esc(n)}">${esc(n)}</button>`).join(''):'';
- $('necCausas').querySelectorAll('button').forEach(b=>b.onclick=()=>{const v=necAgregar(g,b.dataset.c,1,false);if(!nec.activo)necHablar(b.dataset.c+', van '+v)});
- $('necGals').innerHTML=galList().map(x=>`<button data-g="${x}" class="${x===g?'on':''}">${x}</button>`).join('');
- $('necGals').querySelectorAll('button').forEach(b=>b.onclick=()=>{nec.g=+b.dataset.g;necRender()});
+ $('necCausas').querySelectorAll('button').forEach(b=>b.onclick=()=>{const v=necAgregar(g,b.dataset.c,1);if(!nec.activo)necHablar(b.dataset.c+', van '+v)});
+ const hoyG={};necRegsHoy().forEach(r=>hoyG[r.galpon]=sumCounts(r.counts));
+ $('necGals').innerHTML=galList().map(x=>`<button data-g="${x}" class="${x===g?'on':''}">${x}${hoyG[x]?`<small class="necgn">${hoyG[x]}</small>`:''}</button>`).join('');
+ $('necGals').querySelectorAll('button').forEach(b=>b.onclick=()=>{nec.g=+b.dataset.g;necGuardarSes();necRender()});
  $('necDeshacer').disabled=!nec.hist.length;
 }
-function necAgregar(g,causa,n,voz){const v=necSumar(g,causa,n);nec.hist.push({g,c:causa,n});try{navigator.vibrate&&navigator.vibrate(60)}catch(e){}
+function necAgregar(g,causa,n){const v=necSumar(g,causa,n);nec.hist.push({g,c:causa,n});necGuardarSes();try{navigator.vibrate&&navigator.vibrate(60)}catch(e){}
  const el=$('necUlt');el.textContent='+'+n+' '+causa+' → '+v;el.classList.remove('flash');void el.offsetWidth;el.classList.add('flash');necRender();return v}
-function necDeshacer(hablarlo){const h=nec.hist.pop();if(!h){if(hablarlo)necHablar('No hay nada que deshacer');return'No hay nada que deshacer'}const v=necSumar(h.g,h.c,-h.n);$('necUlt').textContent='↶ Se quitó '+h.n+' '+h.c;necRender();const m='Quitado. '+h.c+', quedan '+v;if(hablarlo)necHablar(m);return m}
+function necDeshacer(hablarlo){const h=nec.hist.pop();if(!h){if(hablarlo)necHablar('No hay nada que deshacer');return'No hay nada que deshacer'}const v=necSumar(h.g,h.c,-h.n);necGuardarSes();$('necUlt').textContent='↶ Se quitó '+h.n+' '+h.c;necRender();const m='Quitado. '+h.c+', quedan '+v;if(hablarlo)necHablar(m);return m}
+function necAgregarTexto(texto){ // suma lo que se dicte; devuelve frase de confirmación o null
+ const r=interpretar(texto);if(!r.grupos.length)return null;const dichos=[];let cambio=false;
+ r.grupos.forEach(gr=>{if(gr.galpon!=null&&gr.galpon!==nec.g){nec.g=gr.galpon;cambio=true}const g=nec.g;if(!g)return;Object.entries(gr.counts).forEach(([c,n])=>{const v=necAgregar(g,c,n);dichos.push((n>1?'más '+n+', ':'')+c+', van '+v)})});
+ necGuardarSes();if(!nec.g)return'Diga el número de galpón';if(!dichos.length)return'Galpón '+nec.g+'. Diga la casuística';
+ return(cambio?'Galpón '+nec.g+'. ':'')+dichos.join('. ')}
 function necProcesar(texto){
  nec.ult='“'+texto+'”';const t=' '+norm(texto)+' ';
- if(/ (deshacer|borrar|borra|anular|anula|quitar|quita|me equivoque|error) /.test(t)){return necDeshacer(false)}
- if(/ (terminar|termina|finalizar|salir|listo termine) /.test(t)){necCerrar();return 'Necropsia terminada'}
- if(/ (pausa|pausar) /.test(t)){nec.activo=false;necRender();return 'En pausa'}
- const r=interpretar(texto);if(!r.grupos.length){necRender();return 'No entendí'}
- const dichos=[];
- let cambio=false;r.grupos.forEach(gr=>{if(gr.galpon!=null&&gr.galpon!==nec.g){nec.g=gr.galpon;cambio=true}const g=nec.g;if(!g)return;Object.entries(gr.counts).forEach(([c,n])=>{const v=necAgregar(g,c,n,true);dichos.push((n>1?'más '+n+', ':'')+c+', van '+v)})});
- if(!nec.g){necRender();return 'Diga el número de galpón'}
- if(!dichos.length){necRender();return 'Galpón '+nec.g+'. Diga la casuística'}
- necRender();return(cambio?'Galpón '+nec.g+'. ':'')+dichos.join('. ')}
-function necIniciar(){if(!nec||!SR)return;nec.activo=true;necRender();necEscuchar()}
+ if(nec.fase==='confirmar')return necRespuesta(texto);
+ if(/ (deshacer|borrar|borra|anular|anula|quitar|quita|me equivoque|error) /.test(t))return necDeshacer(false);
+ if(/ (terminar|termina|finalizar|termine|ya termine|listo termine) /.test(t))return necTerminar();
+ if(/ (pausa|pausar) /.test(t)){nec.activo=false;necGuardarSes();necRender();return 'En pausa'}
+ const m=necAgregarTexto(texto);necRender();return m||'No entendí'}
+// --- resumen final y confirmación por voz ---
+function necResumen(){const l=necRegsHoy().filter(r=>sumCounts(r.counts)>0).sort((a,b)=>a.galpon-b.galpon);
+ return{l,voz:l.map(r=>'Galpón '+r.galpon+': '+sumCounts(r.counts)+(sumCounts(r.counts)===1?' muerta. ':' muertas. ')+Object.entries(r.counts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>k+' '+v).join(', ')+'.').join(' '),
+  html:l.map(r=>`<div class="ncg"><div class="ncgh"><b>Galpón ${r.galpon}</b><b class="ncgt">${sumCounts(r.counts)} muertas</b></div><div>${Object.entries(r.counts).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<span class="tag">${esc(k)} ${v}</span>`).join('')}</div></div>`).join('')}}
+function necTerminar(){
+ const R=necResumen();if(!R.l.length){necCerrar(true);return 'No se registraron gallinas'}
+ nec.fase='confirmar';$('necConfTxt').innerHTML=R.html;$('necConf').classList.remove('hidden');$('necConf').scrollIntoView({block:'start'});necRender();
+ const preg=R.voz+' ¿Está bien, o desea agregar otra causa?';$('necOido').textContent='Di “está bien” para terminar, o la causa que falta.';
+ necHablar(preg,()=>{if(nec&&nec.fase==='confirmar'&&SR){nec.activo=true;setTimeout(necEscuchar,150)}});return null}
+function necRespuesta(texto){
+ const t=' '+norm(texto)+' ';
+ // si dicta una causa directamente, se suma y se vuelve a preguntar
+ const r=interpretar(texto);if(r.grupos.some(gr=>Object.keys(gr.counts).length)){nec.fase='normal';necAgregarTexto(texto);necTerminar();return null}
+ if(/ (agregar|agrega|adicionar|adiciona|falta|faltan|otra|otro|no|todavia|aun|corregir) /.test(t)){nec.fase='normal';$('necConf').classList.add('hidden');nec.activo=true;necRender();return 'Diga la casuística que falta. Cuando acabe, diga terminar.'}
+ if(/ (si|sip|esta bien|bien|correcto|ok|okey|listo|conforme|terminar|termina|asi es|exacto) /.test(t)){necCerrar(true);return null}
+ return 'No le entendí. ¿Está bien, o desea agregar otra causa?'}
+$('necConfSi').onclick=()=>{try{speechSynthesis.cancel()}catch(e){}necCerrar(true)};
+$('necConfMas').onclick=()=>{try{speechSynthesis.cancel()}catch(e){}nec.fase='normal';$('necConf').classList.add('hidden');necRender();if(SR){necHablar('Diga la casuística que falta',()=>{nec.activo=true;necRender();setTimeout(necEscuchar,150)})}};
+// --- reconocimiento continuo ---
+function necIniciar(){if(!nec||!SR)return;nec.activo=true;necGuardarSes();necRender();necEscuchar()}
 function necEscuchar(){
- if(!nec||!nec.activo)return;try{speechSynthesis.cancel()}catch(e){}
+ if(!nec||!nec.activo||nec.escuchando||document.visibilityState!=='visible')return;try{speechSynthesis.cancel()}catch(e){}
  const rc=new SR();nec.rec=rc;rc.lang='es-PE';rc.interimResults=true;rc.continuous=false;let fin='';
+ rc.onstart=()=>{if(nec)nec.escuchando=true};
  rc.onresult=e=>{let it='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)fin+=e.results[i][0].transcript+' ';else it+=e.results[i][0].transcript}$('necOido').textContent='“'+(fin+it).trim()+'”'};
- rc.onerror=e=>{if(e.error==='not-allowed'||e.error==='audio-capture'){nec.activo=false;necRender();toast('Activa el permiso del micrófono')}};
- rc.onend=()=>{if(!nec)return;const f=fin.trim();
-  if(f){const resp=necProcesar(f);if(nec&&nec.activo)necHablar(resp,()=>setTimeout(necEscuchar,150));else if(resp)necHablar(resp)}
+ rc.onerror=e=>{if(e.error==='not-allowed'||e.error==='audio-capture'){if(nec){nec.activo=false;necRender()}toast('Activa el permiso del micrófono')}};
+ rc.onend=()=>{if(!nec)return;nec.escuchando=false;const f=fin.trim();
+  if(f){const resp=necProcesar(f);if(!nec)return;if(resp){if(nec.activo)necHablar(resp,()=>setTimeout(necEscuchar,150));else necHablar(resp)}else if(nec.activo&&nec.fase==='normal')setTimeout(necEscuchar,200)}
   else if(nec.activo)setTimeout(necEscuchar,200)};
- try{rc.start()}catch(e){setTimeout(necEscuchar,500)}}
+ try{rc.start()}catch(e){nec.escuchando=false;setTimeout(necEscuchar,500)}}
 function necHablar(txt,cb){const t=cfg.tts;cfg.tts=true;hablar(txt,cb);cfg.tts=t}
-function necCerrar(){if(!nec)return;nec.activo=false;try{nec.rec&&nec.rec.abort()}catch(e){}try{speechSynthesis.cancel()}catch(e){}const f=necFecha();const n=regs.filter(r=>r.id.startsWith('nec|'+f+'|')).reduce((a,r)=>a+sumCounts(r.counts),0);nec=null;$('nec').classList.add('hidden');renderReg();if(n)toast('Necropsia guardada: '+n+' gallinas hoy')}
-$('necBtn').onclick=necAbrir;
-$('necPausa').onclick=()=>{if(!nec)return;if(nec.activo){nec.activo=false;try{nec.rec&&nec.rec.abort()}catch(e){}necRender()}else necIniciar()};
+function necCerrar(fin){if(!nec)return;nec.activo=false;try{nec.rec&&nec.rec.abort()}catch(e){}try{nec.wl&&nec.wl.release()}catch(e){}
+ const R=necResumen();const n=R.l.reduce((a,r)=>a+sumCounts(r.counts),0);nec=null;$('nec').classList.add('hidden');try{localStorage.removeItem(LS+'necSes');delete mem.necSes}catch(e){}
+ renderReg();if(fin&&n){try{speechSynthesis.cancel()}catch(e){}necHablar('Necropsia guardada. '+n+(n===1?' gallina.':' gallinas.'));exito('Necropsia guardada · '+n+' gallinas')}}
+// al volver de una llamada o mensaje: pantalla encendida y micrófono otra vez
+document.addEventListener('visibilitychange',()=>{if(!nec)return;if(document.visibilityState==='visible'){necWake();if(nec.activo){$('necUlt').textContent='↻ Continuamos';setTimeout(necEscuchar,400)}}else{try{nec.rec&&nec.rec.abort()}catch(e){}nec.escuchando=false;necGuardarSes()}});
+function necRevisarPendiente(){const s=necSesPend();const b=$('necResume');if(!b)return;if(s&&!nec){const n=necRegsHoy().reduce((a,r)=>a+sumCounts(r.counts),0);b.innerHTML=`↻ Continuar la necropsia${s.g?' del galpón '+s.g:''}<br><small>${n} gallina${n===1?'':'s'} registrada${n===1?'':'s'} hoy · toca para seguir o agregar causas</small>`;b.classList.remove('hidden')}else b.classList.add('hidden')}
+$('necBtn').onclick=()=>necAbrir(necSesPend());
+$('necResume').onclick=()=>necAbrir(necSesPend());
+$('necPausa').onclick=()=>{if(!nec)return;if(nec.activo){nec.activo=false;try{nec.rec&&nec.rec.abort()}catch(e){}nec.escuchando=false;necGuardarSes();necRender()}else necIniciar()};
 $('necDeshacer').onclick=()=>{if(nec)necDeshacer(!nec.activo)};
-$('necFin').onclick=necCerrar;
+$('necFin').onclick=()=>{if(!nec)return;try{nec.rec&&nec.rec.abort()}catch(e){}nec.escuchando=false;necTerminar()};
 
 /* ---------- historial ---------- */
 function renderHis(){
@@ -1882,12 +1930,13 @@ function adminsActivos(){return cfg.usuarios.filter(x=>x.rol==='admin'&&x.activo
 function showLogin(){const setup=!cfg.usuarios.length;$('login').classList.remove('hidden');$('lgSetup').classList.toggle('hidden',!setup);$('lgNormal').classList.toggle('hidden',setup);$('lgErr').textContent='';$('uBox').classList.add('hidden');setTimeout(()=>{try{(setup?$('suP'):$('lgU')).focus()}catch(e){}},100)}
 function iniciarSesion(){const u=findU(load('ses',''));if(u&&u.activo)entrar(u,true);else showLogin()}
 function entrar(u,silencioso){cur=u;store('ses',u.u);$('login').classList.add('hidden');$('lgP').value='';$('lgU').value='';aplicarPermisos();if(!silencioso)toast('Bienvenido, '+u.nombre)}
-function salir(){cerrarConf();if(nec)necCerrar();cur=null;store('ses','');form={galpon:null,counts:{},editId:null};pendientes=[];renderPend();TABS.forEach(t=>$('t-'+t).classList.add('hidden'));['pEd','lEd','zEd','zRes'].forEach(i=>$(i).classList.add('hidden'));document.querySelector('nav').innerHTML='';document.querySelector('nav').style.display='none';$('hdrSub').style.display='none';showLogin()}
+function salir(){cerrarConf();if(nec)necCerrar(false);cur=null;store('ses','');form={galpon:null,counts:{},editId:null};pendientes=[];renderPend();TABS.forEach(t=>$('t-'+t).classList.add('hidden'));['pEd','lEd','zEd','zRes'].forEach(i=>$(i).classList.add('hidden'));document.querySelector('nav').innerHTML='';document.querySelector('nav').style.display='none';$('hdrSub').style.display='none';showLogin()}
 function aplicarPermisos(){
  $('uBox').classList.remove('hidden');$('uChip').textContent=cur.nombre.split(' ')[0]+(isAdmin()?' · Admin':'');ajNav();$('fUser').value=cur.nombre;
  renderNav();
  $('fFecha').disabled=!isAdmin();$('fFecha').classList.toggle('hidden',!isAdmin());if(!isAdmin())$('fFecha').value=hoy();
  const gs=['prod','lev'].filter(granjaOk);if(gs.length===1&&!isAdmin()){granja=gs[0];store('granja',granja);zT=granja==='lev'?'lev':'prod';irA('gra')}else irA('ini');
+ setTimeout(()=>{if(cur&&!nec&&necSesPend()&&acceso('mort'))modal('↻ Necropsia sin terminar','<div class="hint" style="font-size:17px">La app se cerró durante la necropsia (llamada, mensaje o batería). Todo lo registrado está guardado. ¿Quieres continuar y agregar lo que falte?</div>',()=>{granja='prod';store('granja','prod');irA('reg');necAbrir(necSesPend())})},700);
 }
 $('lgBtn').onclick=async()=>{const u=findU($('lgU').value),p=$('lgP').value;
  if(!u||u.h!==await hashPw(u.u,p)){$('lgErr').textContent='Usuario o contraseña incorrectos';return}
