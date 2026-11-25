@@ -519,6 +519,8 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <div id="gsEstado" class="hint" style="font-weight:700"></div>
   <div class="row" style="margin-top:10px"><button class="btn sm" id="gsProbar">Guardar y probar</button><button class="btn sm" id="gsSubir">Subir todo</button></div>
   <button class="btn sm w" id="gsBajar" style="margin-top:8px">⬇ Traer registros de todos los celulares</button>
+  <button class="btn sm w" id="gsDiag" style="margin-top:8px">🔍 Probar lectura de fotos</button>
+  <div id="gsDiagRes"></div>
  </div>
  <div class="card">
   <h2>🥚 Producción: galpones y lotes</h2>
@@ -565,7 +567,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <input type="file" id="bkFile" accept=".json" class="hidden">
   <button class="btn danger w" id="bkDel" style="margin-top:10px">Borrar todos los registros</button>
  </div>
- <div class="hint" style="text-align:center">Granja Santa Clarita v4.0 · Kevin Mendoza Astocaza</div>
+ <div class="hint" style="text-align:center">Granja Santa Clarita v4.1 · Kevin Mendoza Astocaza</div>
 </section>
 
 </main>
@@ -1358,8 +1360,11 @@ async function fxLeer(){
  const tareas=fx.modo==='1'?[['sup','full','la tabla de producción'],['inf','full','las tablas de mortalidad']]:[['sup','sup','la parte de arriba'],['inf','inf','la parte de abajo']];
  for(const[k,foto,txt] of tareas){if(fx.datos[k])continue;
   $('fxBody').innerHTML=`<div class="card" style="text-align:center;padding:30px 16px"><div class="fxspin"></div><div style="font-size:21px;font-weight:800;margin-top:14px">Leyendo ${txt}…</div><div class="hint" style="font-size:16px">Puede tardar hasta un minuto. No cierres la app.</div></div>`;fxPie('');
-  try{const j=await gsPost({action:'leerFoto',parte:k,img:fx.fotos[foto].split(',')[1],mime:'image/jpeg'});fx.datos[k]=j.datos||{}}
-  catch(e){$('fxBody').innerHTML=`<div class="card"><h2>⚠️ No se pudo leer la foto</h2><div class="hint" style="font-size:16px">${esc(e.message||'Sin conexión')}</div></div>`;
+  try{const j=await gsPost({action:'leerFoto',parte:k,img:fx.fotos[foto].split(',')[1],mime:'image/jpeg'});
+   if(!j.datos)throw new Error('Tu hoja de Drive tiene un código anterior que no lee fotos. En Apps Script pega el último Codigo_AppsScript.gs y publica una “Nueva versión” (Implementar → Administrar implementaciones → Editar).');
+   if(!Array.isArray(j.datos.filas)||!j.datos.filas.length)throw new Error('La lectura no encontró datos en la foto. Toma otra foto más cerca, con buena luz, sin sombras y con la hoja completa y derecha.');
+   fx.datos[k]=j.datos}
+  catch(e){$('fxBody').innerHTML=`<div class="card"><h2>⚠️ No se pudo leer la foto</h2><div class="palert" style="font-size:17px">${esc(e.message||'Sin conexión')}</div><div class="hint" style="font-size:15px">Si no sabes la causa, el administrador puede tocar <b>Ajustes → Google Drive → 🔍 Probar lectura de fotos</b>.</div></div>`;
    fxPie('<div class="row"><button class="btn" id="fxOtra">📷 Tomar otra foto</button><button class="btn ok" id="fxReint">↺ Reintentar</button></div>');
    const ip=fxPasos().findIndex(p=>p.k===foto);$('fxOtra').onclick=()=>{delete fx.fotos[foto];delete fx.datos[k];fxPaso(Math.max(0,ip))};$('fxReint').onclick=fxLeer;return}}
  fxArmar();
@@ -1906,10 +1911,24 @@ function updSync(){
 }
 window.addEventListener('online',sincronizar);setInterval(sincronizar,60000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)sincronizar()});
+const VERSION_HOJA='4.1';
+$('gsDiag').onclick=async()=>{const R=$('gsDiagRes');const linea=(ok,t,ayuda)=>`<div class="ftot ${ok?'':'bad'}"><span>${ok?'✅':'❌'} ${t}</span></div>${!ok&&ayuda?`<div class="hint" style="font-size:15px;margin:4px 0 8px">${ayuda}</div>`:''}`;
+ cfg.gsUrl=$('gsUrl').value.trim();cfg.gsKey=$('gsKey').value.trim();saveCfg();
+ if(!cfg.gsUrl){R.innerHTML=linea(false,'Falta la URL de la hoja','Pega la URL que termina en /exec (Apps Script → Implementar).');return}
+ R.innerHTML='<div class="hint">Probando… puede tardar unos segundos.</div>';let h='';
+ try{const j=await gsPost({action:'ping'});h+=linea(true,'Conexión con la hoja “'+esc(j.hoja)+'”');
+  if(!j.version||j.version<VERSION_HOJA){h+=linea(false,'Código de la hoja desactualizado (versión '+(j.version||'antigua')+')','En Apps Script pega el último <b>Codigo_AppsScript.gs</b>, guarda y publica: Implementar → Administrar implementaciones → ✏️ Editar → Versión: <b>Nueva versión</b> → Implementar.');R.innerHTML=h;return}
+  h+=linea(true,'Código de la hoja al día (versión '+esc(j.version)+')');
+  const d=await gsPost({action:'diag'});
+  h+=linea(d.clave,d.clave?'Clave de lectura configurada ('+esc(d.proveedor)+(d.modelo?' · '+esc(d.modelo):'')+')':'Falta la clave de lectura de fotos','En Apps Script: ⚙️ Configuración del proyecto → Propiedades del script → Agregar propiedad <b>GEMINI_API_KEY</b> con tu clave de aistudio.google.com (gratis).');
+  if(d.clave)h+=linea(d.lectura,d.lectura?'Prueba de lectura: '+esc(d.prueba):'La prueba falló: '+esc(d.prueba),d.codigo===400||d.codigo===403?'La clave de Gemini no es válida: créala de nuevo en aistudio.google.com y vuelve a pegarla.':d.codigo===404?'El modelo no existe: agrega la propiedad <b>MODELO_GEMINI</b> con <b>gemini-3.6-flash</b>.':d.codigo===429?'Se alcanzó el límite gratuito: espera un minuto y prueba otra vez.':'');
+  if(d.clave&&d.lectura)h+='<div class="palert" style="background:#e3f4e8;border-color:#9fd3b0;color:#15652f">✔ Todo listo. Si aún no lee una foto, toma otra con buena luz y la hoja completa.</div>';
+ }catch(e){h+=linea(false,'No se pudo conectar: '+esc(e.message),e.message==='Clave incorrecta'?'La clave escrita aquí no es igual a la de la línea <b>const CLAVE</b> del código.':'Revisa que la URL termine en <b>/exec</b>, que la implementación tenga acceso para <b>Cualquier usuario</b> y que haya internet.')}
+ R.innerHTML=h};
 $('gsProbar').onclick=async()=>{cfg.gsUrl=$('gsUrl').value.trim();cfg.gsKey=$('gsKey').value.trim();saveCfg();
  if(!cfg.gsUrl){updSync();$('gsEstado').textContent='Conexión con Drive desactivada';return}
  $('gsEstado').textContent='Probando…';
- try{const j=await gsPost({action:'ping'});$('gsEstado').textContent='✔ Conectado a la hoja “'+j.hoja+'”';sincronizar()}
+ try{const j=await gsPost({action:'ping'});$('gsEstado').textContent='✔ Conectado a la hoja “'+j.hoja+'”'+(!j.version||j.version<VERSION_HOJA?' · ⚠️ su código está desactualizado: pega el último Codigo_AppsScript.gs y publica una Nueva versión':'');sincronizar()}
  catch(e){$('gsEstado').textContent='✖ No se pudo conectar: '+e.message}};
 $('gsSubir').onclick=e=>twoTap(e.target,()=>{const ids=new Set(cola.filter(o=>o.op==='up').map(o=>o.r.id));regs.forEach(r=>{if(!ids.has(r.id))cola.push({op:'up',r})});Object.keys(prod).forEach(f=>Object.keys(prod[f].g||{}).forEach(g=>cola.push({op:'prod',fila:filaBD(f,+g)})));Object.keys(lev).forEach(f=>Object.keys(lev[f].g||{}).forEach(g=>cola.push({op:'lev',fila:filaLev(f,+g)})));pes.forEach(p=>cola.push({op:'pes',p}));store('cola',cola);toast('Subiendo todo a Drive…');sincronizar()},'¿Subir todos?');
 $('gsBajar').onclick=async()=>{if(!cfg.gsUrl){toast('Primero configura la URL');return}$('gsEstado').textContent='Descargando…';
