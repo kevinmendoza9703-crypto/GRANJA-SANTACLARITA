@@ -147,6 +147,11 @@ tr.tot td{font-weight:900;background:#faf1ec}
 .fimapa{display:flex;flex-direction:column;gap:8px}.fizona{display:grid;grid-template-columns:.8fr repeat(3,minmax(0,1fr));gap:6px;align-items:stretch}
 .fizn{background:#1b5e3a;color:#fff;border-radius:12px;font-weight:900;font-size:15px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:4px}.fizn small{font-size:11px;font-weight:700;opacity:.85}
 .ficel{background:#fff;border:3px solid #1b5e3a;border-radius:12px;text-align:center;padding:6px 2px;display:flex;flex-direction:column;align-items:center}.ficel small{font-size:11px;color:var(--mu);font-weight:700}.ficel b{font-size:28px;line-height:1.05;color:var(--pri)}.ficel span{font-size:10px;color:var(--mu);font-weight:700}.ficel em{font-style:normal;font-size:12px;font-weight:800;background:#ffd27a;border-radius:8px;padding:1px 6px;margin-top:3px}
+#pv{position:fixed;inset:0;z-index:23;background:var(--bg);display:flex;flex-direction:column}
+.pvgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:10px}
+.pvc{background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 4px;text-align:center}.pvc span{display:block;font-size:12px;color:var(--mu);font-weight:700}.pvc b{font-size:24px;line-height:1.15}.pvc b i{font-style:normal;color:#9aa}
+.pvc.hl{border-color:var(--ok);background:#e3f4e8;animation:flash .8s}.pvc.falta{border-color:#e57373}
+#pvGals button.pvok{background:#e3f4e8;border-color:var(--ok)}#pvGals button.pvpar{border-color:#f0c94b}
 #nec{position:fixed;inset:0;z-index:27;background:var(--bg);display:flex;flex-direction:column}
 .necest{text-align:center;font-size:20px;font-weight:800;color:#1b5e3a}
 .necdot{display:inline-block;width:14px;height:14px;border-radius:50%;background:var(--no);animation:pulse 1.1s infinite;vertical-align:middle}
@@ -342,6 +347,23 @@ tr.tot td{font-weight:900;background:#faf1ec}
  <div class="pedb" id="fiBody"></div>
  <div class="pedf" id="fiPie"></div>
 </div>
+<div id="pv" class="hidden" role="dialog" aria-modal="true">
+ <div class="pedh" style="background:#1b5e3a"><button class="btn sm" id="pvFin">✔ Terminar</button><div><div class="pedt" id="pvGal"></div><div class="peds">Parte por voz · <span id="pvFecha"></span></div></div><button class="btn sm" id="pvPausa">⏸ Pausar</button></div>
+ <div class="pedb">
+  <div class="necest" id="pvEst"></div>
+  <div class="necoido" id="pvOido"></div>
+  <div id="pvConf" class="card hidden" style="border:3px solid #1b5e3a;margin-top:8px">
+   <h2 style="color:#1b5e3a" id="pvConfTit"></h2><div id="pvConfTxt"></div>
+   <div class="row" style="margin-top:10px"><button class="btn" id="pvConfNo" style="flex:1">✏️ Corregir</button><button class="btn ok" id="pvConfSi" style="flex:1.4">✔ Sí, siguiente galpón</button></div>
+  </div>
+  <div class="pvgrid" id="pvCampos"></div>
+  <div id="pvInfo"></div>
+  <div class="row" style="margin-top:10px"><button class="btn" id="pvDes">↶ Deshacer</button><button class="btn" id="pvMano">✍️ A mano</button><button class="btn ok" id="pvSig" style="flex:1.6">✔ Siguiente galpón</button></div>
+  <div class="zlbl" style="text-align:left;margin-top:14px" id="pvProg"></div>
+  <div class="chips" id="pvGals"></div>
+  <div class="hint" style="font-size:15px;margin-top:12px">Di <b>“galpón 19”</b> y luego los datos en cualquier orden: <b>muertas 8, venta 0, dieta P1, sacos 26, jabas 22, saldo 0, blanco 10, quiñado 24, cremoso 60, margarita 360, doble 90</b> (también “galponero 2158”). Puedes decirlos en varias frases. Al acabar el galpón di <b>“siguiente”</b>: la app repite todo y pregunta si está bien. También: <b>“deshacer”</b>, <b>“pausa”</b>, <b>“terminar”</b>.</div>
+ </div>
+</div>
 <div id="nec" class="hidden" role="dialog" aria-modal="true">
  <div class="pedh" style="background:#1b5e3a"><button class="btn sm" id="necFin">✔ Terminar</button><div><div class="pedt" id="necGal"></div><div class="peds">Modo necropsia · <span id="necFecha"></span></div></div><button class="btn sm" id="necPausa">⏸ Pausar</button></div>
  <div class="pedb">
@@ -449,7 +471,8 @@ tr.tot td{font-weight:900;background:#faf1ec}
 <!-- PRODUCCIÓN -->
 <section id="t-prd" class="hidden">
  <div class="fechabar">📅 <span id="pFechaTxt"></span><input type="date" id="pFecha" aria-label="Fecha del parte"></div>
- <button class="btn ok w" id="pFotoParte" style="min-height:76px;font-size:22px;margin-bottom:14px">📷 Cargar parte con fotos</button>
+ <button class="btn w" id="pVoz" style="min-height:80px;font-size:22px;margin-bottom:10px;background:#1b5e3a;color:#fff">🎤 Parte por voz<br><small style="font-size:14px;font-weight:600">dicta galpón por galpón · la app confirma en voz alta</small></button>
+ <button class="btn w" id="pFotoParte" style="min-height:56px;font-size:17px;margin-bottom:14px">📷 Cargar parte con fotos</button>
  <div class="card">
   <h2>Parte de producción</h2>
   <div class="pres" id="pResumen"></div>
@@ -567,7 +590,7 @@ tr.tot td{font-weight:900;background:#faf1ec}
   <input type="file" id="bkFile" accept=".json" class="hidden">
   <button class="btn danger w" id="bkDel" style="margin-top:10px">Borrar todos los registros</button>
  </div>
- <div class="hint" style="text-align:center">Granja Santa Clarita v4.1 · Kevin Mendoza Astocaza</div>
+ <div class="hint" style="text-align:center">Granja Santa Clarita v4.2 · Kevin Mendoza Astocaza</div>
 </section>
 
 </main>
@@ -760,7 +783,7 @@ $('exito').onclick=()=>$('exito').classList.add('hidden');
 function renderReg(){
  necRevisarPendiente();
  const f=$('fFecha').value;$('fFechaTxt').textContent=fechaLarga(f);if(form.editId&&!manual)abrirManual(true);const enDia=new Set(regs.filter(r=>r.fecha===f).map(r=>r.galpon));
- $('galGrid').innerHTML=galList().map(g=>`<button data-g="${g}" class="${g===form.galpon?'on':''} ${enDia.has(g)?'has':''}">${g}</button>`).join('');
+ $('galGrid').innerHTML=misGalpones(galList()).map(g=>`<button data-g="${g}" class="${g===form.galpon?'on':''} ${enDia.has(g)?'has':''}">${g}</button>`).join('');
  $('galGrid').querySelectorAll('button').forEach(b=>b.onclick=()=>{form.galpon=+b.dataset.g;renderReg()});
  $('formTit').textContent=form.editId?('✏️ Editando — Galpón '+(form.galpon??'?')):(form.galpon==null?'1. Toca el número de galpón':'Galpón '+form.galpon+' — 2. Marca las muertas');
  const gw=$('galWarn');
@@ -989,7 +1012,7 @@ function necRender(){
  $('necCausas').innerHTML=g?causaNames().map(n=>`<button data-c="${esc(n)}">${esc(n)}</button>`).join(''):'';
  $('necCausas').querySelectorAll('button').forEach(b=>b.onclick=()=>{const v=necAgregar(g,b.dataset.c,1);if(!nec.activo)necHablar(b.dataset.c+', van '+v)});
  const hoyG={};necRegsHoy().forEach(r=>hoyG[r.galpon]=sumCounts(r.counts));
- $('necGals').innerHTML=galList().map(x=>`<button data-g="${x}" class="${x===g?'on':''}">${x}${hoyG[x]?`<small class="necgn">${hoyG[x]}</small>`:''}</button>`).join('');
+ $('necGals').innerHTML=misGalpones(galList()).map(x=>`<button data-g="${x}" class="${x===g?'on':''}">${x}${hoyG[x]?`<small class="necgn">${hoyG[x]}</small>`:''}</button>`).join('');
  $('necGals').querySelectorAll('button').forEach(b=>b.onclick=()=>{nec.g=+b.dataset.g;necGuardarSes();necRender()});
  $('necDeshacer').disabled=!nec.hist.length;
 }
@@ -1050,6 +1073,123 @@ $('necResume').onclick=()=>necAbrir(necSesPend());
 $('necPausa').onclick=()=>{if(!nec)return;if(nec.activo){nec.activo=false;try{nec.rec&&nec.rec.abort()}catch(e){}nec.escuchando=false;necGuardarSes();necRender()}else necIniciar()};
 $('necDeshacer').onclick=()=>{if(nec)necDeshacer(!nec.activo)};
 $('necFin').onclick=()=>{if(!nec)return;try{nec.rec&&nec.rec.abort()}catch(e){}nec.escuchando=false;necTerminar()};
+
+/* ---------- PARTE POR VOZ: galpón por galpón ---------- */
+let pv=null; // {f,g,activo,fase:'normal'|'conf'|'fin',ok:{},hist:[],resaltar:{},escuchando,rec,wl}
+const PVCAMPOS=[['cod','Galponero'],['mman','Muertas'],['venta','Venta'],['dieta','Dieta'],['sacos','Sacos'],['jabas','Jabas'],['js','Saldo'],['bl','Blanco'],['gu','Quiñado'],['cr','Cremoso'],['ma','Margarita'],['dy','Doble Y.']];
+const PVREQ=['mman','sacos','jabas'];
+const PVVOZ={gal:['galpon','galpones','galpo','calpon','gal pon','galpones numero','galpon numero'],cod:['codigo de galponero','codigo del galponero','codigo galponero','galponero','codigo'],mman:['muertas','muerta','muertos','mortalidad'],venta:['ventas','venta','vendidas'],sacos:['sacos','saco'],jabas:['jabas','jaba','javas','java','havas','habas'],js:['saldo de huevos','huevos sueltos','sueltos','saldo'],bl:['blancos','blanco'],gu:['guinados','guinado','quinados','quinado','guinadas','guinada'],cr:['cremosos','cremoso','cremosas'],ma:['margaritas','margarita','margar'],dy:['doble yema','dobles','doble y','doble']};
+function misGalpones(l){return cur&&!isAdmin()&&Array.isArray(cur.galps)&&cur.galps.length?l.filter(g=>cur.galps.includes(+g)):l}
+function interpretarCampos(texto,VOZ){
+ let t=' '+String(texto).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/(\d)[.,](\d)/g,'$1p$2').replace(/(\d)\s*mil\b/g,'$1 mil').replace(/[.,;:!?¿¡()"']/g,' ').replace(/\s+/g,' ')+' ';
+ const syn=[];Object.entries(VOZ).forEach(([k,l])=>l.forEach(s=>syn.push([s,k])));syn.sort((a,b)=>b[0].length-a[0].length);
+ syn.forEach(([s,k])=>{t=t.replace(new RegExp('(^|\\s)'+reEsc(s)+'(?=\\s)','g'),' zk'+k+'z ')});
+ const tk=t.trim().split(/\s+/);const out={};let pK=null,pN=null;
+ for(let i=0;i<tk.length;){const m=tk[i].match(/^zk(\w+)z$/);
+  if(m){if(pN!=null){out[m[1]]=pN;pN=null}else pK=m[1];i++;continue}
+  const n=numVoz(tk,i);if(n){if(pK){out[pK]=n[0];pK=null}else pN=n[0];i=n[1];continue}
+  i++}
+ return out}
+function pvDieta(t){ // t normalizado; devuelve [dieta|null, texto sin la dieta]
+ const N={uno:1,dos:2,tres:3,cuatro:4,cinco:5};let m;
+ if((m=t.match(/(^|\s)dieta\s+(?:pe|p)\s*(\d|uno|dos|tres|cuatro|cinco)(?=\s|$)/)))return['P'+(N[m[2]]||m[2]),t.replace(m[0],' ')];
+ if((m=t.match(/(^|\s)dieta\s+(?:de ve|d ve|dv|de v|deve|d v)(?=\s|$)/)))return['DV',t.replace(m[0],' ')];
+ if((m=t.match(/(^|\s)dieta\s+([a-z]{1,3}\d?)(?=\s|$)/)))return[m[2].toUpperCase(),t.replace(m[0],' ')];
+ return[null,t]}
+function pvNumVoz(v){if(typeof v!=='number')return String(v);const e=Math.floor(v),r=+(v-e).toFixed(2);return(e||r===0?String(e):'')+(r===0.5?' y medio':r===0.25?' y cuarto':r===0.75?' y tres cuartos':r?' coma '+String(r).slice(2):'')}
+function pvGs(){return misGalpones(pGalpones())}
+function pvFila(g){return(prod[pv.f]&&prod[pv.f].g&&prod[pv.f].g[g])||null}
+function pvGuardar(g,campos){const f=pv.f;prod[f]=prod[f]||{g:{}};prod[f].g=prod[f].g||{};const o=pcalc(f,g);const r=prod[f].g[g]||{};
+ const prev={};Object.keys(campos).forEach(k=>prev[k]=r[k]);pv.hist.push({g,prev});
+ Object.assign(r,campos);if(r.saldo==null&&o.saldo!=null)r.saldo=o.saldo;if(!r.dieta&&o.dieta)r.dieta=o.dieta;if(!r.cod&&o.cod)r.cod=o.cod;
+ r.lote=o.lote;r.edad=o.edad;r.por=cur.nombre+' (voz)';r.upd=new Date().toISOString();prod[f].g[g]=r;saveProd();encolar({op:'prod',fila:filaBD(f,g)});pvSes()}
+function pvSes(){if(pv&&cur)store('pvSes',{f:pv.f,u:cur.u,g:pv.g,ok:pv.ok,t:Date.now()})}
+function pvSesPend(){const s=load('pvSes',null);return s&&cur&&s.u===cur.u&&(dnum(hoy())-dnum(s.f))<=1?s:null}
+function pvAbrir(ses){
+ const f=ses?ses.f:($('pFecha').value||hoy());if(!puedeDia('prod',f)){toast('Solo puedes llenar el parte de hoy o de ayer');return}
+ const gs=pvGs();if(!gs.length){toast('No tienes galpones asignados');return}
+ pv={f,g:(ses&&ses.g)||gs.find(g=>!pcalc(f,g).completo)||gs[0],activo:false,fase:'normal',ok:(ses&&ses.ok)||{},hist:[],resaltar:{},ult:''};
+ $('pv').classList.remove('hidden');$('pvConf').classList.add('hidden');pvWake();pvRender();pvSes();
+ const saludo=(ses?'Continuamos el parte. ':'Parte por voz. ')+'Galpón '+pv.g+'. Diga los datos.';
+ if(SR){pv.activo=true;pvRender();necHablar(saludo,()=>setTimeout(pvEscuchar,150))}else toast('Este navegador no permite dictado: usa Chrome en Android')}
+async function pvWake(){try{if('wakeLock' in navigator&&document.visibilityState==='visible'&&(!pv.wl||pv.wl.released))pv.wl=await navigator.wakeLock.request('screen')}catch(e){}}
+function pvRender(){
+ if(!pv)return;const f=pv.f,g=pv.g,r=pvFila(g)||{},o=pcalc(f,g);
+ $('pvGal').textContent='GALPÓN '+g;$('pvFecha').textContent=fmtF(f);
+ $('pvEst').innerHTML=pv.fase==='conf'||pv.fase==='fin'?'❓ Esperando tu respuesta…':pv.activo?'<span class="necdot"></span> Escuchando… di los datos':'⏸ En pausa';$('pvPausa').textContent=pv.activo?'⏸ Pausar':'▶ Seguir';
+ if(pv.fase==='normal')$('pvOido').textContent=pv.ult||'Ej.: “muertas 8, sacos 26, jabas 22, saldo 0, blanco 10, quiñado 24…”';
+ $('pvCampos').innerHTML=PVCAMPOS.map(([k,n])=>{let v=r[k];const auto=(v==null||v==='')&&(k==='cod'||k==='dieta')?o[k]:null;const falta=PVREQ.includes(k)&&(v==null||v==='');
+  return`<div class="pvc ${pv.resaltar[k]?'hl':''} ${falta?'falta':''}"><span>${n}</span><b>${v!=null&&v!==''?esc(typeof v==='number'?frac(v):v):auto?'<i>'+esc(auto)+'</i>':'—'}</b></div>`}).join('');
+ const al=[];if(o.pct!=null)al.push('Postura '+o.pct.toFixed(1)+'%');o.alertas.forEach(a=>al.push('⚠️ '+a));
+ $('pvInfo').innerHTML=al.map(a=>`<div class="${a.startsWith('⚠️')?'palert':'hint'}" style="${a.startsWith('⚠️')?'':'font-size:16px;text-align:center'}">${esc(a)}</div>`).join('');
+ $('pvGals').innerHTML=pvGs().map(x=>{const c=pcalc(f,x);return`<button data-g="${x}" class="${x===g?'on':''} ${pv.ok[x]?'pvok':c.completo?'pvpar':''}">${x}${pv.ok[x]?' ✔':''}</button>`}).join('');
+ $('pvGals').querySelectorAll('button').forEach(b=>b.onclick=()=>{pv.g=+b.dataset.g;pv.resaltar={};pv.fase='normal';$('pvConf').classList.add('hidden');pvSes();pvRender();if(pv.activo)necHablar('Galpón '+pv.g)});
+ const hechos=pvGs().filter(x=>pv.ok[x]).length;$('pvProg').textContent=hechos+' de '+pvGs().length+' galpones confirmados';
+}
+function pvResumenGalpon(g){const r=pvFila(g)||{},o=pcalc(pv.f,g);
+ const partes=PVCAMPOS.filter(([k])=>k!=='cod').map(([k,n])=>{const v=r[k]!=null&&r[k]!==''?r[k]:(k==='dieta'?o.dieta:null);return v==null||v===''?null:n+' '+(k==='dieta'?String(v).split('').join(' '):pvNumVoz(+v))}).filter(Boolean);
+ const falta=PVREQ.filter(k=>r[k]==null||r[k]==='').map(k=>PVCAMPOS.find(c=>c[0]===k)[1].toLowerCase());
+ return'Galpón '+g+'. '+partes.join(', ')+'.'+(falta.length?' Falta '+falta.join(' y ')+'.':'')+(o.alertas.length?' Atención: '+o.alertas.join('. ')+'.':'')}
+function pvConfirmar(){pv.fase='conf';const g=pv.g;
+ $('pvConfTit').textContent='¿Está bien el galpón '+g+'?';$('pvConfTxt').innerHTML='';$('pvConf').classList.remove('hidden');$('pvConfSi').textContent='✔ Sí, siguiente galpón';pvRender();
+ const t=pvResumenGalpon(g)+' ¿Está bien?';$('pvOido').textContent='Di “sí” para pasar al siguiente, o el dato a corregir.';
+ necHablar(t,()=>{if(pv&&pv.fase==='conf'&&SR){pv.activo=true;setTimeout(pvEscuchar,150)}});return null}
+function pvSiguiente(){const g=pv.g;pv.ok[g]=true;pv.fase='normal';pv.resaltar={};$('pvConf').classList.add('hidden');
+ const gs=pvGs();const sig=gs.slice(gs.indexOf(g)+1).find(x=>!pv.ok[x])??gs.find(x=>!pv.ok[x]);pvSes();
+ if(sig==null){return pvTerminar()}
+ pv.g=sig;pvSes();pvRender();return'Listo. Galpón '+sig+'. Diga los datos.'}
+function pvTotales(){const T={mman:0,sacos:0,jabas:0,js:0,bl:0,gu:0,cr:0,ma:0,dy:0};const falt=[];
+ pvGs().forEach(g=>{const r=pvFila(g);if(!r||!pcalc(pv.f,g).completo)falt.push(g);if(r)Object.keys(T).forEach(k=>T[k]+=pnum(r[k])||0)});return{T,falt}}
+function pvTerminar(){pv.fase='fin';const{T,falt}=pvTotales();
+ const nom={mman:'Muertas',sacos:'Sacos',jabas:'Jabas',js:'Saldo',bl:'Blanco',gu:'Quiñado',cr:'Cremoso',ma:'Margarita',dy:'Doble Y.'};
+ $('pvConfTit').textContent='Totales del parte · compáralos con la fila TOTAL de la hoja';
+ $('pvConfTxt').innerHTML=Object.entries(T).map(([k,v])=>`<div class="ftot"><span>${nom[k]}</span><b>${frac(+v.toFixed(2))}</b></div>`).join('')+(falt.length?`<div class="palert">Faltan datos en: ${falt.join(', ')}</div>`:'');
+ $('pvConfSi').textContent='✔ Coinciden, terminar';$('pvConf').classList.remove('hidden');pvRender();
+ const t='Totales del parte. '+Object.entries(T).filter(([k,v])=>v||['mman','sacos','jabas'].includes(k)).map(([k,v])=>nom[k]+' '+pvNumVoz(+v.toFixed(2))).join(', ')+'.'+(falt.length?' Faltan los galpones '+falt.join(', ')+'.':'')+' Compare con la fila total de la hoja. ¿Coinciden?';
+ $('pvOido').textContent='Di “sí” para terminar, o “galpón” y el número para corregir.';
+ necHablar(t,()=>{if(pv&&pv.fase==='fin'&&SR){pv.activo=true;setTimeout(pvEscuchar,150)}});return null}
+function pvDeshacer(){const h=pv.hist.pop();if(!h)return'No hay nada que deshacer';const r=pvFila(h.g);if(r){Object.entries(h.prev).forEach(([k,v])=>{if(v==null)delete r[k];else r[k]=v});r.upd=new Date().toISOString();saveProd();encolar({op:'prod',fila:filaBD(pv.f,h.g)})}pv.g=h.g;pv.resaltar={};pvRender();return'Deshecho el último dato del galpón '+h.g}
+function pvAplicar(texto){ // aplica galpón y datos dictados; devuelve frase o null
+ let t=' '+norm(texto)+' ';const[d0,t2]=pvDieta(t);const d=interpretarCampos(t2,PVVOZ);if(d0)d.dieta=d0;
+ let pre='';if(d.gal!=null){const g=Math.round(d.gal);delete d.gal;if(!pvGs().includes(g))return'El galpón '+g+(misGalpones(pGalpones()).length<pGalpones().length?' no está asignado a usted':' no está en la lista')+'.';if(g!==pv.g){pv.g=g;pv.resaltar={};pre='Galpón '+g+'. '}}
+ const campos={};Object.entries(d).forEach(([k,v])=>{if(PVCAMPOS.some(c=>c[0]===k))campos[k]=k==='cod'?String(Math.round(v)):v});
+ if(!Object.keys(campos).length){pvSes();pvRender();return pre?pre+'Diga los datos.':null}
+ pvGuardar(pv.g,campos);pv.resaltar={};Object.keys(campos).forEach(k=>pv.resaltar[k]=1);pvRender();
+ const nom=Object.fromEntries(PVCAMPOS);return pre+Object.entries(campos).map(([k,v])=>nom[k]+' '+(k==='dieta'?String(v).split('').join(' '):k==='cod'?String(v).split('').join(' '):pvNumVoz(v))).join(', ')}
+function pvProcesar(texto){
+ pv.ult='“'+texto+'”';const t=' '+norm(texto)+' ';
+ if(pv.fase==='conf'||pv.fase==='fin'){
+  if(/ (si|sip|esta bien|bien|correcto|ok|okey|listo|conforme|coinciden|coincide|asi es|exacto) /.test(t)&&!/ no /.test(t)){if(pv.fase==='fin'){pvCerrar(true);return null}return pvSiguiente()}
+  const m=pvAplicar(texto);if(m){const f0=pv.fase;pv.fase='normal';if(f0==='conf'){setTimeout(()=>{if(pv)pvConfirmar()},50);return m}$('pvConf').classList.add('hidden');return m+'. Cuando termine, diga siguiente.'}
+  if(/ (no|corregir|cambiar|falta|error) /.test(t)){pv.fase='normal';$('pvConf').classList.add('hidden');pvRender();return'Diga el dato a corregir.'}
+  return pv.fase==='fin'?'¿Coinciden los totales? Diga sí o no.':'¿Está bien? Diga sí, o el dato a corregir.'}
+ if(/ (deshacer|borrar|anular|me equivoque) /.test(t))return pvDeshacer();
+ if(/ (terminar|termina|finalizar|termine) /.test(t))return pvTerminar();
+ if(/ (siguiente|listo|ya esta|confirmar|repetir|repite) /.test(t))return pvConfirmar();
+ if(/ (pausa|pausar) /.test(t)){pv.activo=false;pvRender();return'En pausa'}
+ const m=pvAplicar(texto);return m||'No entendí. Diga, por ejemplo: jabas 22.'}
+function pvEscuchar(){
+ if(!pv||!pv.activo||pv.escuchando||document.visibilityState!=='visible')return;try{speechSynthesis.cancel()}catch(e){}
+ const rc=new SR();pv.rec=rc;rc.lang='es-PE';rc.interimResults=true;rc.continuous=false;let fin='';
+ rc.onstart=()=>{if(pv)pv.escuchando=true};
+ rc.onresult=e=>{let it='';for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)fin+=e.results[i][0].transcript+' ';else it+=e.results[i][0].transcript}$('pvOido').textContent='“'+(fin+it).trim()+'”'};
+ rc.onerror=e=>{if(e.error==='not-allowed'||e.error==='audio-capture'){if(pv){pv.activo=false;pvRender()}toast('Activa el permiso del micrófono')}};
+ rc.onend=()=>{if(!pv)return;pv.escuchando=false;const f=fin.trim();
+  if(f){const resp=pvProcesar(f);if(!pv)return;if(resp){if(pv.activo)necHablar(resp,()=>setTimeout(pvEscuchar,150));else necHablar(resp)}else if(pv.activo&&pv.fase==='normal')setTimeout(pvEscuchar,200)}
+  else if(pv.activo)setTimeout(pvEscuchar,200)};
+ try{rc.start()}catch(e){pv.escuchando=false;setTimeout(pvEscuchar,500)}}
+function pvCerrar(fin){if(!pv)return;pv.activo=false;try{pv.rec&&pv.rec.abort()}catch(e){}try{pv.wl&&pv.wl.release()}catch(e){}
+ const f=pv.f;const n=pvGs().filter(g=>pcalc(f,g).completo).length;if(fin){try{localStorage.removeItem(LS+'pvSes');delete mem.pvSes}catch(e){}}
+ pv=null;$('pv').classList.add('hidden');$('pFecha').value=f;renderPrd();if(fin){necHablar('Parte guardado. '+n+' galpones.');exito('Parte guardado · '+n+' galpones')}}
+document.addEventListener('visibilitychange',()=>{if(!pv)return;if(document.visibilityState==='visible'){pvWake();if(pv.activo)setTimeout(pvEscuchar,400)}else{try{pv.rec&&pv.rec.abort()}catch(e){}pv.escuchando=false;pvSes()}});
+$('pVoz').onclick=()=>{const s=pvSesPend();pvAbrir(s&&s.f===($('pFecha').value||hoy())?s:null)};
+$('pvPausa').onclick=()=>{if(!pv)return;if(pv.activo){pv.activo=false;try{pv.rec&&pv.rec.abort()}catch(e){}pv.escuchando=false;pvRender()}else{pv.activo=true;pvRender();pvEscuchar()}};
+$('pvSig').onclick=()=>{if(!pv)return;try{pv.rec&&pv.rec.abort()}catch(e){}pv.escuchando=false;pvConfirmar()};
+$('pvFin').onclick=()=>{if(!pv)return;try{pv.rec&&pv.rec.abort()}catch(e){}pv.escuchando=false;pvTerminar()};
+$('pvConfSi').onclick=()=>{if(!pv)return;try{speechSynthesis.cancel()}catch(e){}if(pv.fase==='fin'){pvCerrar(true);return}const m=pvSiguiente();if(m)necHablar(m,()=>{if(pv&&pv.activo)setTimeout(pvEscuchar,150)})};
+$('pvConfNo').onclick=()=>{if(!pv)return;try{speechSynthesis.cancel()}catch(e){}pv.fase='normal';$('pvConf').classList.add('hidden');pvRender();necHablar('Diga el dato a corregir.',()=>{if(pv&&pv.activo)setTimeout(pvEscuchar,150)})};
+$('pvDes').onclick=()=>{if(pv)necHablar(pvDeshacer())};
+$('pvMano').onclick=()=>{if(!pv)return;const g=pv.g,f=pv.f;pv.activo=false;try{pv.rec&&pv.rec.abort()}catch(e){}pv.escuchando=false;pvRender();$('pFecha').value=f;abrirEd(g)};
 
 /* ---------- historial ---------- */
 function renderHis(){
@@ -1193,16 +1333,16 @@ function pcalc(f,g,over,depth){
 }
 function pGalpones(){return(cfg.pgal||[]).map(x=>+x.g)}
 function f1(v,d){return v==null||v===''?'—':(+v).toLocaleString('es-PE',{maximumFractionDigits:d??0,minimumFractionDigits:d??0})}
-function frac(v){if(v==null)return'—';const e=Math.floor(v),r=+(v-e).toFixed(2);const m={0.25:'¼',0.5:'½',0.75:'¾'}[r];return m?(e?e:'')+m:f1(v,2).replace(/,00$/,'')}
+function frac(v){if(v==null)return'—';v=+v;const e=Math.floor(v),r=+(v-e).toFixed(2);const m={0.25:'¼',0.5:'½',0.75:'¾'}[r];if(m)return(e?f1(e):'')+m;return Number.isInteger(+v.toFixed(2))?f1(Math.round(v)):f1(v,2).replace(/[.,]?0+$/,'')}
 function puedeProd(f){return puedeDia('prod',f)}
-function totalesProd(f){const t={aves:0,muertas:0,neto:0,jabas:0,neta:0,huevos:0,sacos:0,kg:0,n:0,ok:0};pGalpones().forEach(g=>{const o=pcalc(f,g);t.n++;if(o.completo)t.ok++;t.aves+=o.saldo||0;t.muertas+=o.muertas||0;t.neto+=o.neto||0;t.jabas+=o.jabas||0;t.neta+=o.neta||0;t.huevos+=o.huevos||0;t.sacos+=o.sacos||0;t.kg+=o.kg||0});return t}
+function totalesProd(f,l){const t={aves:0,muertas:0,neto:0,jabas:0,neta:0,huevos:0,sacos:0,kg:0,n:0,ok:0};(l||pGalpones()).forEach(g=>{const o=pcalc(f,g);t.n++;if(o.completo)t.ok++;t.aves+=o.saldo||0;t.muertas+=o.muertas||0;t.neto+=o.neto||0;t.jabas+=o.jabas||0;t.neta+=o.neta||0;t.huevos+=o.huevos||0;t.sacos+=o.sacos||0;t.kg+=o.kg||0});return t}
 function renderPrd(){
  const f=$('pFecha').value||hoy();$('pFechaTxt').textContent=fechaLarga(f);
  $('pFecha').classList.toggle('hidden',false);
- const t=totalesProd(f);
+ const gsV=misGalpones(pGalpones());const t=totalesProd(f,gsV);
  $('pResumen').innerHTML=`<div><b>${t.ok}/${t.n}</b><span>galpones listos</span></div><div><b>${f1(t.neto)}</b><span>aves</span></div><div><b>${f1(t.muertas)}</b><span>muertas (${t.aves?(t.muertas/t.aves*100).toFixed(3):'0'}%)</span></div><div><b>${frac(t.jabas)}</b><span>jabas</span></div><div><b>${t.neto?(t.neta/t.neto*100).toFixed(1):'—'}%</b><span>postura</span></div><div><b>${frac(t.sacos)}</b><span>sacos</span></div>`;
  let html='',ult=null;
- pGalpones().forEach(g=>{const o=pcalc(f,g);const grp=(o.lote?o.lote+' · ':'')+(o.edad!==''?o.edad+' semanas':'')+(o.dieta?' · '+o.dieta:'');
+ gsV.forEach(g=>{const o=pcalc(f,g);const grp=(o.lote?o.lote+' · ':'')+(o.edad!==''?o.edad+' semanas':'')+(o.dieta?' · '+o.dieta:'');
   if(grp!==ult){html+=`<div class="pgrp">${esc(grp||'Galpones')}</div>`;ult=grp}
   const cls=o.completo?(o.alertas.length?'al':'ok'):'';const st=o.completo?(o.alertas.length?'⚠️':'✅'):'✏️';
   html+=`<button class="pit ${cls}" data-g="${g}"><span class="st">${st}</span><span style="flex:1"><span class="pg">Galpón ${g}</span><br><span class="pl">${esc(o.lote||'')}${o.cod?' · Galponero '+esc(o.cod):''} · ${f1(o.neto)} aves</span></span><span class="pv">${o.jabas!=null?frac(o.jabas)+' jabas':'Pendiente'}<br><span class="pl">${o.pct!=null?o.pct.toFixed(1)+'% postura':''}</span></span></button>`});
@@ -1214,7 +1354,7 @@ $('pFecha').onchange=renderPrd;
 /* editor */
 let edG=null;
 function edVals(){const o={};$('pEd').querySelectorAll('input[data-k]').forEach(i=>{if(i.value.trim()!=='')o[i.dataset.k]=['dieta','ver'].includes(i.dataset.k)?i.value.trim().toUpperCase():i.value.trim()});return o}
-function abrirEd(g){
+function abrirEd(g){if(!misGalpones([g]).length){toast('Este galpón no está asignado a tu usuario');return}
  const f=$('pFecha').value||hoy();edG=g;const o=pcalc(f,g);const row=(prod[f]&&prod[f].g&&prod[f].g[g])||{};
  $('peTit').textContent='GALPÓN '+g;$('peSub').textContent=(o.lote||'')+(o.cod?' · Galponero '+o.cod:'')+(o.edad!==''?' · '+o.edad+' semanas':'')+' · '+fmtF(f);
  $('pEd').querySelectorAll('input[data-k]').forEach(i=>{const k=i.dataset.k;let v=row[k];i.classList.remove('auto','voz');
@@ -1949,7 +2089,7 @@ function adminsActivos(){return cfg.usuarios.filter(x=>x.rol==='admin'&&x.activo
 function showLogin(){const setup=!cfg.usuarios.length;$('login').classList.remove('hidden');$('lgSetup').classList.toggle('hidden',!setup);$('lgNormal').classList.toggle('hidden',setup);$('lgErr').textContent='';$('uBox').classList.add('hidden');setTimeout(()=>{try{(setup?$('suP'):$('lgU')).focus()}catch(e){}},100)}
 function iniciarSesion(){const u=findU(load('ses',''));if(u&&u.activo)entrar(u,true);else showLogin()}
 function entrar(u,silencioso){cur=u;store('ses',u.u);$('login').classList.add('hidden');$('lgP').value='';$('lgU').value='';aplicarPermisos();if(!silencioso)toast('Bienvenido, '+u.nombre)}
-function salir(){cerrarConf();if(nec)necCerrar(false);cur=null;store('ses','');form={galpon:null,counts:{},editId:null};pendientes=[];renderPend();TABS.forEach(t=>$('t-'+t).classList.add('hidden'));['pEd','lEd','zEd','zRes'].forEach(i=>$(i).classList.add('hidden'));document.querySelector('nav').innerHTML='';document.querySelector('nav').style.display='none';$('hdrSub').style.display='none';showLogin()}
+function salir(){cerrarConf();if(nec)necCerrar(false);if(pv)pvCerrar(false);cur=null;store('ses','');form={galpon:null,counts:{},editId:null};pendientes=[];renderPend();TABS.forEach(t=>$('t-'+t).classList.add('hidden'));['pEd','lEd','zEd','zRes'].forEach(i=>$(i).classList.add('hidden'));document.querySelector('nav').innerHTML='';document.querySelector('nav').style.display='none';$('hdrSub').style.display='none';showLogin()}
 function aplicarPermisos(){
  $('uBox').classList.remove('hidden');$('uChip').textContent=cur.nombre.split(' ')[0]+(isAdmin()?' · Admin':'');ajNav();$('fUser').value=cur.nombre;
  renderNav();
@@ -1981,17 +2121,17 @@ function userModal(x){const nuevo=!x;
  `<label>Nombre completo</label><input id="m2" value="${esc(x?x.nombre:'')}">`+
  (nuevo?'<label>Contraseña</label><input type="password" id="m3">':'')+
  `<label>Tipo de usuario</label><select id="m4" ${x&&x.u===cur.u?'disabled':''}><option value="reg">Registrador</option><option value="admin" ${x&&x.rol==='admin'?'selected':''}>Administrador</option></select>`+
- `<div class="zlbl" style="margin-top:14px;text-align:left">Módulos a los que tiene acceso</div>`+MODS.map(m=>`<div class="switch"><input type="checkbox" id="mm_${m.k}" ${(x?accesoU(x,m.k):m.k==='mort')?'checked':''}> <span>${m.i} ${m.n}</span></div>`).join('')+`<div class="hint">El administrador siempre tiene acceso a todo.</div>`,
- async()=>{const nombre=$('m2').value.trim(),rol=$('m4').value,mods=Object.fromEntries(MODS.map(m=>[m.k,$('mm_'+m.k).checked]));
+ `<div class="zlbl" style="margin-top:14px;text-align:left">Módulos a los que tiene acceso</div>`+MODS.map(m=>`<div class="switch"><input type="checkbox" id="mm_${m.k}" ${(x?accesoU(x,m.k):m.k==='mort')?'checked':''}> <span>${m.i} ${m.n}</span></div>`).join('')+`<div class="hint">El administrador siempre tiene acceso a todo.</div><label style="margin-top:12px">Galpones asignados (para galponeros)</label><input id="mGal" value="${esc(x&&x.galps?x.galps.join(', '):'')}" placeholder="Vacío = todos los galpones · Ej.: 19, 23"><div class="hint">Si escribes galpones, este usuario solo verá y llenará esos galpones.</div>`,
+ async()=>{const nombre=$('m2').value.trim(),rol=$('m4').value,mods=Object.fromEntries(MODS.map(m=>[m.k,$('mm_'+m.k).checked])),galps=($('mGal').value.match(/\d+/g)||[]).map(Number);
   if(nuevo){const u=$('m1').value.trim().toLowerCase(),p=$('m3').value;
    if(!/^[a-z0-9._-]{3,20}$/.test(u))return'Usuario: 3 a 20 letras o números, sin espacios';
    if(findU(u))return'Ese usuario ya existe';if(p.length<4)return'La contraseña debe tener al menos 4 caracteres';
-   cfg.usuarios.push({u,nombre:nombre||u,rol,mods,activo:true,h:await hashPw(u,p)});toast('Usuario '+u+' creado')}
+   cfg.usuarios.push({u,nombre:nombre||u,rol,mods,galps,activo:true,h:await hashPw(u,p)});toast('Usuario '+u+' creado')}
   else{if(x.rol==='admin'&&rol!=='admin'&&adminsActivos().length<=1)return'Debe quedar al menos un administrador activo';
-   x.nombre=nombre||x.u;if(x.u!==cur.u)x.rol=rol;x.mods=mods;if(x.u===cur.u)aplicarPermisos();toast('Usuario actualizado')}
+   x.nombre=nombre||x.u;if(x.u!==cur.u)x.rol=rol;x.mods=mods;x.galps=galps;if(x.u===cur.u)aplicarPermisos();toast('Usuario actualizado')}
   saveCfg();renderUsers()})}
 function renderUsers(){
- $('uList').innerHTML=cfg.usuarios.map((x,i)=>`<div class="ent"><div class="h"><span>${esc(x.nombre)} <span style="color:var(--mu);font-weight:400">(${esc(x.u)})</span></span><span class="tag">${x.rol==='admin'?'Administrador':'Registrador'}</span></div><div class="d">${x.activo?'Activo':'<b style="color:#a11">Desactivado</b>'} · ${x.rol==='admin'?'Acceso a todos los módulos':(MODS.filter(m=>accesoU(x,m.k)).map(m=>m.i+' '+m.n).join(', ')||'Sin módulos')}${x.u===cur.u?' · (tú)':''}</div><div class="a" style="flex-wrap:wrap"><button class="btn sm" data-a="ed" data-i="${i}">Editar</button><button class="btn sm" data-a="pw" data-i="${i}">Cambiar clave</button>${x.u!==cur.u?`<button class="btn sm" data-a="ac" data-i="${i}">${x.activo?'Desactivar':'Activar'}</button><button class="btn sm danger" data-a="del" data-i="${i}">Eliminar</button>`:''}</div></div>`).join('');
+ $('uList').innerHTML=cfg.usuarios.map((x,i)=>`<div class="ent"><div class="h"><span>${esc(x.nombre)} <span style="color:var(--mu);font-weight:400">(${esc(x.u)})</span></span><span class="tag">${x.rol==='admin'?'Administrador':'Registrador'}</span></div><div class="d">${x.activo?'Activo':'<b style="color:#a11">Desactivado</b>'} · ${x.rol==='admin'?'Acceso a todos los módulos':(MODS.filter(m=>accesoU(x,m.k)).map(m=>m.i+' '+m.n).join(', ')||'Sin módulos')}${x.galps&&x.galps.length&&x.rol!=='admin'?' · 🏠 Galpones: '+x.galps.join(', '):''}${x.u===cur.u?' · (tú)':''}</div><div class="a" style="flex-wrap:wrap"><button class="btn sm" data-a="ed" data-i="${i}">Editar</button><button class="btn sm" data-a="pw" data-i="${i}">Cambiar clave</button>${x.u!==cur.u?`<button class="btn sm" data-a="ac" data-i="${i}">${x.activo?'Desactivar':'Activar'}</button><button class="btn sm danger" data-a="del" data-i="${i}">Eliminar</button>`:''}</div></div>`).join('');
  $('uList').querySelectorAll('button').forEach(b=>{const x=cfg.usuarios[+b.dataset.i];b.onclick=()=>{
   if(b.dataset.a==='ed')userModal(x);
   if(b.dataset.a==='pw')modal('Nueva contraseña para '+x.u,'<label>Nueva contraseña</label><input type="password" id="m1"><label>Repetir</label><input type="password" id="m2">',async()=>{if($('m1').value.length<4)return'Mínimo 4 caracteres';if($('m1').value!==$('m2').value)return'No coinciden';x.h=await hashPw(x.u,$('m1').value);saveCfg();toast('Clave de '+x.u+' cambiada')});
